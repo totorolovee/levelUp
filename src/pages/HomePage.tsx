@@ -26,6 +26,7 @@ export function HomePage() {
     <main className="shell">
       <AppHeader />
       <section className={isTransitioning ? 'title-screen leaving' : 'title-screen'}>
+        <span className="version-chip">LEVELUP / 01</span>
         <div className="title-mark">L</div>
         <div>
           <p className="eyebrow">Твоя жизнь. Только на уровень выше.</p>

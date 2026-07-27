@@ -2,11 +2,11 @@ import { useLocation } from 'wouter';
 import { SmoothLink } from './SmoothLink';
 
 const links = [
-  { href: '/', label: 'Обзор' },
-  { href: '/goals', label: 'Цели' },
-  { href: '/reading', label: 'Книги' },
-  { href: '/investing', label: 'Инвестиции' },
-  { href: '/journal', label: 'Журнал' },
+  { href: '/', label: 'Обзор', icon: '⌂' },
+  { href: '/goals', label: 'Цели', icon: '◎' },
+  { href: '/reading', label: 'Книги', icon: '▤' },
+  { href: '/investing', label: 'Инвестиции', icon: '↗' },
+  { href: '/journal', label: 'Журнал', icon: '◇' },
 ];
 
 export function AppHeader() {
@@ -27,10 +27,18 @@ export function AppHeader() {
             href={link.href}
             key={link.href}
           >
+            <span aria-hidden="true">{link.icon}</span>
             {link.label}
           </SmoothLink>
         ))}
       </nav>
+      <div className="sidebar-status">
+        <span>●</span>
+        <div>
+          <small>Твой статус</small>
+          <strong>Level 1</strong>
+        </div>
+      </div>
     </header>
   );
 }

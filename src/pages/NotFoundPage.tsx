@@ -1,4 +1,4 @@
-import { Link } from 'wouter';
+import { SmoothLink } from '../components/SmoothLink';
 
 export function NotFoundPage() {
   return (
@@ -6,7 +6,7 @@ export function NotFoundPage() {
       <section className="hello">
         <h1>Такой страницы пока нет</h1>
         <p>
-          <Link href="/">Вернуться на главную</Link>
+          <SmoothLink href="/">Вернуться на главную</SmoothLink>
         </p>
       </section>
     </main>

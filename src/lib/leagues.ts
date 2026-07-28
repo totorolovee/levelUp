@@ -1,5 +1,6 @@
 import { supabase } from './supabase';
 import { loadCurrentProfile } from './profile';
+import { unlockAchievement } from './achievements';
 
 export type LeagueId = 'bronze' | 'silver' | 'gold' | 'diamond' | 'master';
 
@@ -41,6 +42,7 @@ export async function loadLeagueLeaderboard() {
     chosen_username: profile.displayName.slice(0, 30),
   });
   if (syncError) throw syncError;
+  void unlockAchievement('league_joined').catch(() => undefined);
 
   const { data, error } = await supabase.rpc('get_league_leaderboard');
   if (error) throw error;

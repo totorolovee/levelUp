@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { loadReadingProgress, saveReadingProgress } from './readingProgress';
 import { supabase } from './supabase';
+import { unlockAchievement } from './achievements';
 
 type ReadingContextValue = {
   selectedTitles: string[];
@@ -53,11 +54,15 @@ export function ReadingProvider({ children }: { children: ReactNode }) {
     );
     setProgress((current) => ({ ...current, [title]: current[title] ?? 0 }));
     void saveReadingProgress(title, progress[title] ?? 0);
+    void unlockAchievement('first_book').catch(() => undefined);
   };
 
   const updateProgress = (title: string, value: number) => {
     setProgress((current) => ({ ...current, [title]: value }));
     void saveReadingProgress(title, value);
+    if (value >= 100) {
+      void unlockAchievement('book_completed').catch(() => undefined);
+    }
   };
 
   return (

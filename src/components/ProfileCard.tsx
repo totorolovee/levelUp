@@ -1,6 +1,7 @@
 import type { UserProfile } from '../lib/profile';
 import { useLanguage } from '../lib/language';
 import { AvatarUploader } from './AvatarUploader';
+import { AchievementsGrid } from './AchievementsGrid';
 
 export function ProfileCard({
   profile,
@@ -69,6 +70,7 @@ export function ProfileCard({
           <dd>{registrationDate}</dd>
         </div>
       </dl>
+      <AchievementsGrid unlocked={profile.achievements} />
     </section>
   );
 }

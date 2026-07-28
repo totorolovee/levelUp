@@ -2,6 +2,11 @@ import { supabase } from './supabase';
 import { recordAndLoadDailyStreak } from './dailyActivity';
 import { loadExperience } from './experience';
 import { getUserAvatarUrl } from './avatars';
+import {
+  loadAchievements,
+  syncEarnedAchievements,
+  type AchievementKey,
+} from './achievements';
 
 export type UserProfile = {
   email: string;
@@ -15,6 +20,7 @@ export type UserProfile = {
   xpToNextRank: number;
   rankProgress: number;
   registeredAt: string;
+  achievements: AchievementKey[];
 };
 
 export async function loadCurrentProfile(): Promise<UserProfile | null> {
@@ -32,6 +38,8 @@ export async function loadCurrentProfile(): Promise<UserProfile | null> {
     : email.split('@')[0];
   const activity = await recordAndLoadDailyStreak(user.id);
   const experience = await loadExperience(activity.totalActiveDays);
+  await syncEarnedAchievements(activity.streak);
+  const achievements = await loadAchievements();
 
   return {
     email,
@@ -41,5 +49,6 @@ export async function loadCurrentProfile(): Promise<UserProfile | null> {
     dailyStreak: activity.streak,
     ...experience,
     registeredAt: user.created_at,
+    achievements,
   };
 }

@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
 import { createNextAction } from './goalCoach';
 import { useLanguage } from './language';
+import { unlockAchievement } from './achievements';
 
 export type GoalPlan = {
   id: string;
@@ -35,6 +36,7 @@ export function GoalsProvider({ children }: { children: ReactNode }) {
     const completedAction = goal.actions[0];
     const history = [...goal.completedActions, completedAction];
     const nextAction = await createNextAction(goal.title, goal.availableTime, history, language);
+    void unlockAchievement('goal_first_step').catch(() => undefined);
     setGoal((current) => current && {
       ...current,
       actions: [...current.actions.slice(1), nextAction],

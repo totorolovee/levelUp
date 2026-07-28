@@ -5,6 +5,7 @@ import {
   saveInvestmentDecision,
 } from './investmentDecisions';
 import { supabase } from './supabase';
+import { unlockAchievement } from './achievements';
 
 export type Decision = {
   id: string;
@@ -71,6 +72,7 @@ export function PortfolioProvider({ children }: { children: ReactNode }) {
 
   const addDecision = async (decision: Omit<Decision, 'id' | 'createdAt'>) => {
     const saved = await saveInvestmentDecision(decision);
+    void unlockAchievement('first_investment').catch(() => undefined);
     setBalance((current) => current - saved.price * saved.quantity);
     setDecisions((current) => [saved, ...current]);
   };

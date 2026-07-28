@@ -433,6 +433,15 @@ button:disabled { opacity: .45; cursor: not-allowed; }
 .profile-stats dt { color: #69716c; font-size: 11px; font-weight: 800; text-transform: uppercase; }
 .profile-stats dd { margin: 8px 0 0; color: #255e3a; font-size: 24px; font-weight: 850; }
 .profile-stats small { color: #69716c; font-size: 11px; }
+.achievements-section { margin-top: 24px; padding-top: 22px; border-top: 1px solid #e0e6df; }
+.achievements-section h2 { margin-bottom: 14px; }
+.achievements-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+.achievement { display: flex; align-items: center; gap: 10px; min-height: 82px; padding: 13px; border: 1px solid #e1e6df; border-radius: 13px; opacity: .55; background: #f6f7f4; }
+.achievement > span { display: grid; width: 34px; height: 34px; flex: 0 0 auto; place-items: center; border-radius: 10px; color: #69716c; background: #e5e9e3; font-size: 18px; }
+.achievement strong { font-size: 13px; }
+.achievement p { margin: 3px 0 0; color: #69716c; font-size: 12px; line-height: 1.35; }
+.achievement.unlocked { opacity: 1; border-color: #bad0bf; background: #eef5ee; }
+.achievement.unlocked > span { color: #fff; background: #39764f; }
 .profile-stats .streak-stat { background: #f5ead2; }
 .profile-status { color: #69716c; }
 .decision-facts { display: grid; gap: 10px; margin: 18px 0; }
@@ -541,6 +550,9 @@ html[data-theme="dark"] .league-table { border-color: #334138; background: #1b25
 html[data-theme="dark"] .league-table article { border-color: #334138; }
 html[data-theme="dark"] .league-table article.current { color: #d8eee0; background: #2d4735; }
 html[data-theme="dark"] .avatar-uploader button { color: #d8eee0; border-color: #3c4b41; background: #222f27; }
+html[data-theme="dark"] .achievements-section { border-color: #334138; }
+html[data-theme="dark"] .achievement { border-color: #334138; background: #18221c; }
+html[data-theme="dark"] .achievement.unlocked { border-color: #4f6b58; background: #23362a; }
 html[data-theme="dark"] .section-card p,
 html[data-theme="dark"] .hero-card p,
 html[data-theme="dark"] .features p,
@@ -676,6 +688,7 @@ html[data-theme="dark"] ::selection { color: #101713; background: #83bd94; }
   .requirement-grid, .university-columns, .readiness-items { grid-template-columns: 1fr; }
   .sat-resources { grid-template-columns: 1fr; }
   .profile-stats { grid-template-columns: 1fr; }
+  .achievements-grid { grid-template-columns: 1fr; }
   .university-title { align-items: start; }
   .university-title > span { width: 52px; height: 52px; border-radius: 14px; }
   .university-source, .admission-invite { align-items: flex-start; flex-direction: column; }

@@ -874,3 +874,88 @@ html[data-theme="dark"] .daily-note p { color: #c9cbe0; }
   .preview-widgets { grid-template-columns: 1fr; }
   .sections-reveal { padding: 0 14px 16px; }
 }
+
+/* Пастельная дневная версия dashboard */
+html[data-theme="light"] body:has(.home-shell) {
+  background:
+    radial-gradient(circle at 10% 34%, rgba(199, 184, 255, .34), transparent 28%),
+    radial-gradient(circle at 90% 80%, rgba(170, 221, 241, .32), transparent 30%),
+    linear-gradient(180deg, #f6f3fb, #eef2fa 60%, #f8f3f7);
+}
+html[data-theme="light"] .home-shell .app-header {
+  color: #252842;
+  background: rgba(246, 243, 251, .88);
+}
+html[data-theme="light"] .home-shell .brand { color: #252842; }
+html[data-theme="light"] .home-shell .creator-name { color: #777b96; border-color: #d8d2e6; }
+html[data-theme="light"] .home-shell .nav-trigger { color: #666b86; }
+html[data-theme="light"] .home-shell .language-toggle,
+html[data-theme="light"] .home-shell .header-username,
+html[data-theme="light"] .home-shell .theme-toggle {
+  border-color: #d8d2e6;
+  background: rgba(255,255,255,.72);
+}
+html[data-theme="light"] .home-shell .nav-menu,
+html[data-theme="light"] .home-shell nav { border-color: #d8d2e6; background: rgba(250,248,253,.97); }
+html[data-theme="light"] .home-shell .nav-link { color: #626781; }
+
+html[data-theme="light"] .title-screen {
+  color: #272943;
+  border-color: rgba(126, 103, 190, .16);
+  background:
+    radial-gradient(circle at 78% 12%, rgba(232, 184, 244, .55), transparent 28%),
+    radial-gradient(circle at 18% 100%, rgba(176, 218, 244, .58), transparent 32%),
+    linear-gradient(145deg, #eee8fa, #e4eafb 52%, #f3e9f1);
+  box-shadow: 0 28px 80px rgba(78, 67, 119, .14);
+}
+html[data-theme="light"] .title-screen::before {
+  opacity: .45;
+  background-image: linear-gradient(rgba(92,76,138,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(92,76,138,.05) 1px, transparent 1px);
+}
+html[data-theme="light"] .title-content .eyebrow { color: #735db4; }
+html[data-theme="light"] .title-screen h1 { color: #292b49; text-shadow: none; }
+html[data-theme="light"] .title-screen h1 span { color: #8067c7; }
+html[data-theme="light"] .title-copy { color: #666b86; }
+html[data-theme="light"] .title-footer { color: #8589a0; }
+html[data-theme="light"] .title-footer strong { color: #66569a; }
+
+html[data-theme="light"] .hero-dashboard-preview {
+  border-color: rgba(111, 91, 164, .14);
+  background: rgba(255,255,255,.6);
+  box-shadow: 0 30px 65px rgba(82, 68, 123, .18), inset 0 1px rgba(255,255,255,.8);
+}
+html[data-theme="light"] .preview-topline { color: #777b96; }
+html[data-theme="light"] .preview-highlight {
+  color: #fff;
+  background: linear-gradient(135deg, #9a86dc, #ca8fce);
+  box-shadow: 0 18px 38px rgba(139, 105, 185, .22);
+}
+html[data-theme="light"] .preview-widgets article {
+  color: #30334f;
+  border-color: rgba(112, 96, 157, .12);
+  background: rgba(248,247,253,.88);
+  box-shadow: 0 12px 25px rgba(84, 72, 118, .1);
+}
+html[data-theme="light"] .preview-widgets small,
+html[data-theme="light"] .preview-widgets p { color: #777c98; }
+html[data-theme="light"] .preview-xp { color: #30334f; }
+html[data-theme="light"] .preview-line { background: #e2deed; }
+
+html[data-theme="light"] .sections-reveal {
+  color: #292c47;
+  border-color: #ddd7ea;
+  background: linear-gradient(145deg, rgba(247,244,251,.96), rgba(235,240,249,.96));
+  box-shadow: 0 28px 70px rgba(79, 67, 112, .1);
+}
+html[data-theme="light"] .dashboard-intro p { color: #70758d; }
+html[data-theme="light"] .section-card {
+  border-color: #ded9e9;
+  background: linear-gradient(145deg, #fbf9fd, #f1f3fa);
+  box-shadow: 0 14px 32px rgba(78, 67, 108, .08);
+}
+html[data-theme="light"] .section-card p { color: #72768d; }
+html[data-theme="light"] .level-pill { border-color: #dcd6e8; background: #faf8fc; }
+html[data-theme="light"] .level-pill span { color: #81849a; }
+html[data-theme="light"] .daily-note { background: linear-gradient(120deg, #e9e2f7, #dfeef5); }
+html[data-theme="light"] .daily-note p { color: #555b76; }

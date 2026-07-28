@@ -40,7 +40,7 @@ export function HomePage() {
   };
 
   return (
-    <main className="shell">
+    <main className="shell home-shell">
       <AppHeader />
       <section className={isTransitioning ? 'title-screen leaving' : 'title-screen'}>
         <div className="title-content">

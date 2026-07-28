@@ -62,7 +62,11 @@ export function InvestingPage() {
       <section className="page-intro">
         <div>
           <p className="eyebrow">Виртуальный портфель</p>
-          <h1>Твои {formatMoney(balance)}. Твои решения. Ноль риска.</h1>
+          <h1>
+            {language === 'ru'
+              ? `Твои ${formatMoney(balance)}. Твои решения. Ноль риска.`
+              : `Your ${formatMoney(balance)}. Your decisions. Zero risk.`}
+          </h1>
           <p>Не угадывай цену — научись видеть бизнес за графиком.</p>
         </div>
         <div className="balance-card">

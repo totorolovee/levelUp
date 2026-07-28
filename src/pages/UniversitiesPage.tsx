@@ -20,6 +20,8 @@ import {
   type UniversitySpecialty,
 } from '../lib/universitySpecialties';
 import { qsWorldRankings2027 } from '../lib/universityRankings';
+import { useLanguage } from '../lib/language';
+import { getSpecialtyTranslation } from '../lib/universityTranslations';
 
 const initialProfile: StudentProfile = {
   ielts: '',
@@ -34,6 +36,7 @@ const initialSpecialty = universitySpecialties.find(
 const initialRegions = filterRegionsForSpecialty(initialSpecialty, initialDirection);
 
 export function UniversitiesPage() {
+  const { language } = useLanguage();
   const [direction, setDirection] = useState<UniversityDirection>(initialDirection);
   const [specialty, setSpecialty] = useState<UniversitySpecialty>(initialSpecialty);
   const [selectedRegions, setSelectedRegions] = useState<UniversityRegion[]>([initialRegions[0]]);
@@ -102,6 +105,8 @@ export function UniversitiesPage() {
     () => filterRegionsForSpecialty(specialty, direction),
     [direction, specialty],
   );
+  const specialtyDisplayName = getSpecialtyTranslation(specialty, language)?.name
+    ?? specialty.name;
 
   return (
     <main className="shell">
@@ -113,11 +118,7 @@ export function UniversitiesPage() {
           <p>Выбери направление, специальность, регион и университет — затем сравни требования.</p>
         </div>
       </header>
-      <DirectionPicker
-        directions={universityDirections}
-        onSelect={selectDirection}
-        selectedId={direction.id}
-      />
+      <DirectionPicker directions={universityDirections} onSelect={selectDirection} selectedId={direction.id} />
       <SpecialtyPicker
         onSelect={selectSpecialty}
         selectedId={specialty.id}
@@ -136,11 +137,11 @@ export function UniversitiesPage() {
           selectedId={selected.id}
           universities={filtered}
         />
-        <UniversityDetails specialty={specialty.name} university={selected} />
+        <UniversityDetails specialty={specialtyDisplayName} university={selected} />
       </div>
       <div className="readiness-layout">
         <StudentProfileForm onChange={setProfile} profile={profile} />
-        <ReadinessPanel profile={profile} specialty={specialty.name} university={selected} />
+        <ReadinessPanel profile={profile} specialty={specialtyDisplayName} university={selected} />
       </div>
       <p className="admission-disclaimer">
         Это навигатор для подготовки, а не гарантия поступления. Перед подачей всегда проверяй официальный сайт.

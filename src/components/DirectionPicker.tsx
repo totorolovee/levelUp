@@ -1,4 +1,6 @@
 import type { UniversityDirection } from '../lib/universities';
+import { useLanguage } from '../lib/language';
+import { getDirectionTranslation } from '../lib/universityTranslations';
 
 type Props = {
   directions: UniversityDirection[];
@@ -7,6 +9,8 @@ type Props = {
 };
 
 export function DirectionPicker({ directions, selectedId, onSelect }: Props) {
+  const { language } = useLanguage();
+
   return (
     <section className="choice-step" aria-labelledby="direction-picker-title">
       <div>
@@ -21,8 +25,11 @@ export function DirectionPicker({ directions, selectedId, onSelect }: Props) {
             onClick={() => onSelect(direction)}
             type="button"
           >
-            <strong>{direction.name}</strong>
-            <span>{direction.description}</span>
+            <strong>{getDirectionTranslation(direction.id, language)?.name ?? direction.name}</strong>
+            <span>
+              {getDirectionTranslation(direction.id, language)?.description
+                ?? direction.description}
+            </span>
           </button>
         ))}
       </div>

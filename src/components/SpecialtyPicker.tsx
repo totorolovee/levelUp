@@ -1,4 +1,6 @@
 import type { UniversitySpecialty } from '../lib/universitySpecialties';
+import { useLanguage } from '../lib/language';
+import { getSpecialtyTranslation } from '../lib/universityTranslations';
 
 type Props = {
   specialties: UniversitySpecialty[];
@@ -7,6 +9,8 @@ type Props = {
 };
 
 export function SpecialtyPicker({ specialties, selectedId, onSelect }: Props) {
+  const { language } = useLanguage();
+
   return (
     <section className="choice-step" aria-labelledby="specialty-picker-title">
       <div>
@@ -21,8 +25,11 @@ export function SpecialtyPicker({ specialties, selectedId, onSelect }: Props) {
             onClick={() => onSelect(specialty)}
             type="button"
           >
-            <strong>{specialty.name}</strong>
-            <span>{specialty.description}</span>
+            <strong>{getSpecialtyTranslation(specialty, language)?.name ?? specialty.name}</strong>
+            <span>
+              {getSpecialtyTranslation(specialty, language)?.description
+                ?? specialty.description}
+            </span>
           </button>
         ))}
       </div>

@@ -1,11 +1,10 @@
 import { supabase } from './supabase';
 import type { Stock } from './stocks';
-
-type MarketQuote = {
-  symbol: string;
-  price: number;
-  change: number;
-};
+import {
+  loadCachedQuotes,
+  saveCachedQuotes,
+  type MarketQuote,
+} from './marketPriceCache';
 
 type MarketResponse = {
   quotes?: unknown;
@@ -13,8 +12,12 @@ type MarketResponse = {
 };
 
 export async function loadMarketPrices(stocks: Stock[]) {
+  const symbols = stocks.map(({ symbol }) => symbol);
+  const cached = await loadCachedQuotes(symbols);
+  if (cached) return mergeQuotes(stocks, cached.quotes, cached.updatedAt);
+
   const { data, error } = await supabase.functions.invoke<MarketResponse>('market-prices', {
-    body: { symbols: stocks.map(({ symbol }) => symbol) },
+    body: { symbols },
   });
   if (error || !Array.isArray(data?.quotes)) throw new Error('Котировки недоступны');
 
@@ -25,13 +28,19 @@ export async function loadMarketPrices(stocks: Stock[]) {
       && typeof item.price === 'number'
       && typeof item.change === 'number';
   });
-  const quoteBySymbol = new Map(quotes.map((quote) => [quote.symbol, quote]));
+  const updatedAt = typeof data.updatedAt === 'string' ? data.updatedAt : null;
+  if (updatedAt) void saveCachedQuotes(quotes, updatedAt);
 
+  return mergeQuotes(stocks, quotes, updatedAt);
+}
+
+function mergeQuotes(stocks: Stock[], quotes: MarketQuote[], updatedAt: string | null) {
+  const quoteBySymbol = new Map(quotes.map((quote) => [quote.symbol, quote]));
   return {
     stocks: stocks.flatMap((stock) => {
       const quote = quoteBySymbol.get(stock.symbol);
       return quote ? [{ ...stock, price: quote.price, change: quote.change }] : [];
     }),
-    updatedAt: typeof data.updatedAt === 'string' ? data.updatedAt : null,
+    updatedAt,
   };
 }

@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import {
   loadInvestmentDecisions,
+  loadInvestmentBalance,
   saveDecisionLesson,
   saveInvestmentDecision,
 } from './investmentDecisions';
@@ -27,7 +28,7 @@ export type Decision = {
 type PortfolioContextValue = {
   balance: number;
   decisions: Decision[];
-  status: 'loading' | 'guest' | 'ready';
+  status: 'loading' | 'guest' | 'ready' | 'error';
   addDecision: (decision: Omit<Decision, 'id' | 'createdAt'>) => Promise<void>;
   reviewDecision: (id: string, lesson: string) => Promise<void>;
 };
@@ -35,7 +36,7 @@ type PortfolioContextValue = {
 const PortfolioContext = createContext<PortfolioContextValue | null>(null);
 
 export function PortfolioProvider({ children }: { children: ReactNode }) {
-  const [balance, setBalance] = useState(10_000);
+  const [balance, setBalance] = useState(0);
   const [decisions, setDecisions] = useState<Decision[]>([]);
   const [status, setStatus] = useState<PortfolioContextValue['status']>('loading');
 
@@ -46,21 +47,21 @@ export function PortfolioProvider({ children }: { children: ReactNode }) {
       if (!data.session) {
         if (isActive) {
           setDecisions([]);
-          setBalance(10_000);
+          setBalance(0);
           setStatus('guest');
         }
         return;
       }
-      const saved = await loadInvestmentDecisions();
+      const [saved, savedBalance] = await Promise.all([
+        loadInvestmentDecisions(),
+        loadInvestmentBalance(),
+      ]);
       if (!isActive) return;
       setDecisions(saved);
-      setBalance(10_000 - saved.reduce(
-        (spent, decision) => spent + decision.price * decision.quantity,
-        0,
-      ));
+      setBalance(savedBalance);
       setStatus('ready');
     };
-    void load().catch(() => isActive && setStatus('guest'));
+    void load().catch(() => isActive && setStatus('error'));
     const { data: listener } = supabase.auth.onAuthStateChange(() => {
       window.setTimeout(() => void load(), 0);
     });
@@ -71,10 +72,10 @@ export function PortfolioProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const addDecision = async (decision: Omit<Decision, 'id' | 'createdAt'>) => {
-    const saved = await saveInvestmentDecision(decision);
+    const purchase = await saveInvestmentDecision(decision);
     void unlockAchievement('first_investment').catch(() => undefined);
-    setBalance((current) => current - saved.price * saved.quantity);
-    setDecisions((current) => [saved, ...current]);
+    setBalance(purchase.balance);
+    setDecisions((current) => [purchase.decision, ...current]);
   };
 
   const reviewDecision = async (id: string, lesson: string) => {

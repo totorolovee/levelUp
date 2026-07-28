@@ -10,6 +10,7 @@ import { evaluateInvestment } from '../lib/investmentEvaluator';
 import { formatMoney, stocks } from '../lib/stocks';
 import { useLiveMarket } from '../lib/useLiveMarket';
 import { useLanguage } from '../lib/language';
+import { SmoothLink } from '../components/SmoothLink';
 
 export function InvestingPage() {
   const { language } = useLanguage();
@@ -21,7 +22,8 @@ export function InvestingPage() {
     status: marketStatus,
     updatedAt: marketUpdatedAt,
   } = useLiveMarket(stocks);
-  const { addDecision, balance, decisions } = usePortfolio();
+  const { addDecision, balance, decisions, status: portfolioStatus } = usePortfolio();
+  const balanceText = portfolioStatus === 'ready' ? formatMoney(balance) : '…';
   const score = Math.min(
     100,
     decisions.filter((item) => item.analysisApproved).length * 30
@@ -64,18 +66,31 @@ export function InvestingPage() {
           <p className="eyebrow">Виртуальный портфель</p>
           <h1>
             {language === 'ru'
-              ? `Твои ${formatMoney(balance)}. Твои решения. Ноль риска.`
-              : `Your ${formatMoney(balance)}. Your decisions. Zero risk.`}
+              ? `Твои ${balanceText}. Твои решения. Ноль риска.`
+              : `Your ${balanceText}. Your decisions. Zero risk.`}
           </h1>
           <p>Не угадывай цену — научись видеть бизнес за графиком.</p>
         </div>
         <div className="balance-card">
           <span>Доступно</span>
-          <strong>{formatMoney(balance)}</strong>
+          <strong>{balanceText}</strong>
           <small>виртуальные деньги</small>
         </div>
       </section>
 
+      {portfolioStatus === 'guest' && (
+        <p className="market-status">
+          <SmoothLink href="/login">{language === 'ru' ? 'Войди в аккаунт' : 'Sign in'}</SmoothLink>
+          {language === 'ru' ? ', чтобы покупки сохранялись.' : ' to save purchases.'}
+        </p>
+      )}
+      {portfolioStatus === 'error' && (
+        <p className="coach-error" role="alert">
+          {language === 'ru'
+            ? 'Не удалось загрузить портфель. Обнови страницу и не совершай покупку, пока баланс не появится.'
+            : 'Could not load your portfolio. Refresh the page and wait for the balance before buying.'}
+        </p>
+      )}
       {notice && <p className="success">{notice}</p>}
       <InvestorProgress score={score} />
       <section className="investing-layout">
@@ -140,7 +155,9 @@ export function InvestingPage() {
           </div>
           {selected && <CompanyProfile stock={selected} />}
         </div>
-        {selected && <BuyStockForm balance={balance} onBuy={buyStock} stock={selected} />}
+        {selected && portfolioStatus === 'ready' && (
+          <BuyStockForm balance={balance} onBuy={buyStock} stock={selected} />
+        )}
       </section>
     </main>
   );

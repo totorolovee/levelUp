@@ -18,6 +18,11 @@ type DecisionRow = {
   created_at: string;
 };
 
+type PurchaseResult = {
+  balance: number | string;
+  decision: DecisionRow;
+};
+
 const columns = [
   'id', 'symbol', 'company', 'quantity', 'price', 'reason', 'risk',
   'invalidation', 'horizon', 'confidence', 'analysis_approved',
@@ -52,25 +57,34 @@ export async function loadInvestmentDecisions() {
   return (data as unknown as DecisionRow[]).map(fromRow);
 }
 
+export async function loadInvestmentBalance() {
+  const { data, error } = await supabase.rpc('get_my_investment_balance');
+  if (error) throw error;
+  return Number(data);
+}
+
 export async function saveInvestmentDecision(
   decision: Omit<Decision, 'id' | 'createdAt'>,
 ) {
-  const { data, error } = await supabase.from('investment_decisions').insert({
-    symbol: decision.symbol,
-    company: decision.company,
-    quantity: decision.quantity,
-    price: decision.price,
-    reason: decision.reason,
-    risk: decision.risk,
-    invalidation: decision.invalidation,
-    horizon: decision.horizon,
-    confidence: decision.confidence,
-    analysis_approved: decision.analysisApproved,
-    analysis_feedback: decision.analysisFeedback,
-    lesson: decision.lesson ?? null,
-  }).select(columns).single();
+  const { data, error } = await supabase.rpc('buy_investment', {
+    chosen_symbol: decision.symbol,
+    chosen_company: decision.company,
+    chosen_quantity: decision.quantity,
+    chosen_price: decision.price,
+    chosen_reason: decision.reason,
+    chosen_risk: decision.risk,
+    chosen_invalidation: decision.invalidation,
+    chosen_horizon: decision.horizon,
+    chosen_confidence: decision.confidence,
+    chosen_analysis_approved: decision.analysisApproved,
+    chosen_analysis_feedback: decision.analysisFeedback,
+  });
   if (error) throw error;
-  return fromRow(data as unknown as DecisionRow);
+  const result = data as unknown as PurchaseResult;
+  return {
+    balance: Number(result.balance),
+    decision: fromRow(result.decision),
+  };
 }
 
 export async function saveDecisionLesson(id: string, lesson: string) {

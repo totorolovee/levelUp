@@ -13,6 +13,7 @@ const links = [
   { href: '/investing', label: 'Инвестиции' },
   { href: '/journal', label: 'Журнал' },
   { href: '/coach', label: 'AI совет' },
+  { href: '/reflection', label: 'Рефлексия', authOnly: true },
   { href: '/leagues', label: 'Лиги', authOnly: true },
   { href: '/login', label: 'Вход' },
 ];

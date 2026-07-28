@@ -115,6 +115,7 @@ export function HomePage() {
             <SectionCard
               accent="#e65fb7"
               description="Понимай свои эмоции, энергию и привычки"
+              href="/reflection"
               icon="♡"
               title="Reflection"
             />

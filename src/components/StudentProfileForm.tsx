@@ -12,21 +12,35 @@ export function StudentProfileForm({ profile, onChange }: Props) {
     onChange({ ...profile, [key]: value });
   };
 
+  const updateIelts = (value: string) => {
+    const normalized = value.replace(',', '.');
+    if (normalized === '' || /^(?:[0-8](?:\.[05]?)?|9(?:\.0?)?)$/.test(normalized)) {
+      update('ielts', normalized);
+    }
+  };
+
   return (
     <section className="student-profile">
       <p className="eyebrow">Твой профиль</p>
       <h2>Что уже готово?</h2>
       <label>
         Текущий IELTS
-        <select
-          onChange={(event) => update('ielts', event.target.value)}
+        <input
+          inputMode="decimal"
+          list="ielts-scores"
+          onBlur={() => {
+            if (profile.ielts) update('ielts', Number(profile.ielts).toFixed(1));
+          }}
+          onChange={(event) => updateIelts(event.target.value)}
+          placeholder="Например: 6.5 или 6,5"
+          type="text"
           value={profile.ielts}
-        >
-          <option value="">Выбери результат</option>
+        />
+        <datalist id="ielts-scores">
           {ieltsScores.map((score) => (
             <option key={score} value={score}>{score}</option>
           ))}
-        </select>
+        </datalist>
       </label>
       <ProfileCheck
         checked={profile.hasSatOrAct}

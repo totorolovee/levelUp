@@ -12,7 +12,6 @@ const links = [
   { href: '/journal', label: 'Журнал' },
   { href: '/coach', label: 'AI совет' },
   { href: '/login', label: 'Вход' },
-  { href: '/profile', label: 'Профиль' },
 ];
 
 export function AppHeader() {

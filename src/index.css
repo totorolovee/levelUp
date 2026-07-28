@@ -580,7 +580,7 @@ html[data-theme="dark"] ::selection { color: #101713; background: #83bd94; }
   .creator-name { display: none; }
   .theme-toggle { --thumb-shift: 0px; width: 62px; }
   html[data-theme="dark"] .theme-toggle { --thumb-shift: 28px; }
-  nav { position: fixed; z-index: 50; left: 12px; right: 12px; bottom: 12px; display: grid; width: auto; grid-template-columns: repeat(8, 1fr); gap: 2px; padding: 6px; border-radius: 18px; background: rgba(255, 255,255, .94); box-shadow: 0 12px 40px rgba(29, 54, 37, .18); backdrop-filter: blur(18px); }
+  nav { position: fixed; z-index: 50; left: 12px; right: 12px; bottom: 12px; display: grid; width: auto; grid-template-columns: repeat(7, 1fr); gap: 2px; padding: 6px; border-radius: 18px; background: rgba(255, 255,255, .94); box-shadow: 0 12px 40px rgba(29, 54, 37, .18); backdrop-filter: blur(18px); }
   html[data-theme="dark"] nav { background: rgba(27, 37, 31, .96); }
   .nav-trigger { display: none; }
   .nav-menu { display: contents; opacity: 1; pointer-events: auto; transform: none; }

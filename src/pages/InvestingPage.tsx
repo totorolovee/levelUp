@@ -14,6 +14,7 @@ export function InvestingPage() {
   const [selected, setSelected] = useState<Stock | null>(null);
   const [notice, setNotice] = useState('');
   const [marketStatus, setMarketStatus] = useState<'loading' | 'live' | 'error'>('loading');
+  const [marketUpdatedAt, setMarketUpdatedAt] = useState<Date | null>(null);
   const { addDecision, balance, decisions } = usePortfolio();
   const score = Math.min(
     100,
@@ -22,8 +23,8 @@ export function InvestingPage() {
 
   useEffect(() => {
     let isActive = true;
-    loadMarketPrices(stocks)
-      .then(({ stocks: updatedStocks }) => {
+    const refreshPrices = () => {
+      void loadMarketPrices(stocks).then(({ stocks: updatedStocks, updatedAt }) => {
         if (!isActive) return;
         setMarketStocks(updatedStocks);
         setSelected((current) =>
@@ -31,11 +32,22 @@ export function InvestingPage() {
           ?? updatedStocks[0]
           ?? null,
         );
+        setMarketUpdatedAt(updatedAt ? new Date(updatedAt) : new Date());
         setMarketStatus('live');
       })
       .catch(() => setMarketStatus('error'));
+    };
+    const refreshWhenVisible = () => {
+      if (document.visibilityState === 'visible') refreshPrices();
+    };
+
+    refreshPrices();
+    const intervalId = window.setInterval(refreshWhenVisible, 5 * 60 * 1000);
+    document.addEventListener('visibilitychange', refreshWhenVisible);
     return () => {
       isActive = false;
+      window.clearInterval(intervalId);
+      document.removeEventListener('visibilitychange', refreshWhenVisible);
     };
   }, []);
 
@@ -105,6 +117,14 @@ export function InvestingPage() {
               <span className="negative">−1.3% снижение</span>
             </div>
           </aside>
+          {marketUpdatedAt && (
+            <p className="market-update-note">
+              Обновлено {marketUpdatedAt.toLocaleTimeString('ru-RU', {
+                hour: '2-digit',
+                minute: '2-digit',
+              })} · автоматически каждые 5 минут
+            </p>
+          )}
           {marketStatus === 'loading' && (
             <p className="market-status">Загружаю последние доступные цены…</p>
           )}

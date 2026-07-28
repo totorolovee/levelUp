@@ -330,6 +330,7 @@ a.section-card:hover { transform: translateY(-3px); box-shadow: 0 14px 36px rgba
 .market-explainer strong { color: #255e3a; font-size: 12px; }
 .market-explainer p { margin: 3px 0 0; color: #5d6860; font-size: 11px; line-height: 1.45; }
 .market-status { padding: 18px; border-radius: 13px; color: #526058; background: #edf3ec; }
+.market-update-note { margin: -5px 0 14px; color: #7a817c; font-size: 11px; text-align: right; }
 .change-examples { display: grid; gap: 3px; font-size: 10px; font-weight: 750; white-space: nowrap; }
 .buy-form { position: sticky; top: 24px; display: grid; gap: 18px; padding: 26px; }
 label { display: grid; gap: 8px; font-size: 13px; font-weight: 700; }

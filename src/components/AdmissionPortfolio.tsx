@@ -29,7 +29,8 @@ export function AdmissionPortfolio() {
   const ieltsIsValid = !portfolio.ielts
     || /^(?:[0-8](?:\.[05])?|9(?:\.0)?)$/.test(portfolio.ielts);
   const satValue = Number(portfolio.satScore);
-  const satIsValid = !portfolio.satScore || (satValue >= 400 && satValue <= 1600);
+  const satIsValid = !portfolio.satScore
+    || (satValue >= 400 && satValue <= 1600 && satValue % 10 === 0);
 
   const save = async () => {
     setStatus('saving');
@@ -73,11 +74,22 @@ export function AdmissionPortfolio() {
             inputMode="numeric"
             max="1600"
             min="400"
-            onChange={(event) => update('satScore', event.target.value)}
+            onChange={(event) => {
+              const value = event.target.value;
+              if (value === '' || (/^\d{1,4}$/.test(value) && Number(value) <= 1600)) {
+                update('satScore', value);
+              }
+            }}
             placeholder="1400"
+            step="10"
             type="number"
             value={portfolio.satScore}
           />
+          {portfolio.satScore && !satIsValid && (
+            <small className="field-hint error">
+              {isRussian ? 'Только 400–1600, последняя цифра — 0.' : 'Use 400–1600 and end the score with 0.'}
+            </small>
+          )}
         </label>
         <label className="portfolio-wide">
           {isRussian ? 'Honors — награды и достижения' : 'Honors and achievements'}

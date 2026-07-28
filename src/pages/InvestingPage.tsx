@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { AppHeader } from '../components/AppHeader';
 import { BuyStockForm } from '../components/BuyStockForm';
 import type { BuyDecision } from '../components/BuyStockForm';
@@ -6,50 +6,23 @@ import { CompanyProfile } from '../components/CompanyProfile';
 import { InvestorProgress } from '../components/InvestorProgress';
 import { StockCard } from '../components/StockCard';
 import { usePortfolio } from '../lib/portfolio';
-import { loadMarketPrices } from '../lib/marketPrices';
-import { formatMoney, stocks, type Stock } from '../lib/stocks';
+import { formatMoney, stocks } from '../lib/stocks';
+import { useLiveMarket } from '../lib/useLiveMarket';
 
 export function InvestingPage() {
-  const [marketStocks, setMarketStocks] = useState<Stock[]>([]);
-  const [selected, setSelected] = useState<Stock | null>(null);
   const [notice, setNotice] = useState('');
-  const [marketStatus, setMarketStatus] = useState<'loading' | 'live' | 'error'>('loading');
-  const [marketUpdatedAt, setMarketUpdatedAt] = useState<Date | null>(null);
+  const {
+    marketStocks,
+    selected,
+    setSelected,
+    status: marketStatus,
+    updatedAt: marketUpdatedAt,
+  } = useLiveMarket(stocks);
   const { addDecision, balance, decisions } = usePortfolio();
   const score = Math.min(
     100,
     decisions.length * 30 + decisions.filter((item) => item.lesson).length * 20,
   );
-
-  useEffect(() => {
-    let isActive = true;
-    const refreshPrices = () => {
-      void loadMarketPrices(stocks).then(({ stocks: updatedStocks, updatedAt }) => {
-        if (!isActive) return;
-        setMarketStocks(updatedStocks);
-        setSelected((current) =>
-          updatedStocks.find(({ symbol }) => symbol === current?.symbol)
-          ?? updatedStocks[0]
-          ?? null,
-        );
-        setMarketUpdatedAt(updatedAt ? new Date(updatedAt) : new Date());
-        setMarketStatus('live');
-      })
-      .catch(() => setMarketStatus('error'));
-    };
-    const refreshWhenVisible = () => {
-      if (document.visibilityState === 'visible') refreshPrices();
-    };
-
-    refreshPrices();
-    const intervalId = window.setInterval(refreshWhenVisible, 5 * 60 * 1000);
-    document.addEventListener('visibilitychange', refreshWhenVisible);
-    return () => {
-      isActive = false;
-      window.clearInterval(intervalId);
-      document.removeEventListener('visibilitychange', refreshWhenVisible);
-    };
-  }, []);
 
   const buyStock = (decision: BuyDecision) => {
     if (!selected) return;

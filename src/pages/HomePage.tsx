@@ -98,6 +98,13 @@ export function HomePage() {
               title="Reading"
             />
             <SectionCard
+              accent="#e4e4f1"
+              description="Выбирай направление, страну и подходящий университет"
+              href="/universities"
+              icon="◇"
+              title="Universities"
+            />
+            <SectionCard
               accent="#dce8ed"
               description="Виртуальный портфель и журнал решений"
               href="/investing"

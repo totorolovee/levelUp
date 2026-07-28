@@ -20,6 +20,7 @@ const links = [
 
 export function AppHeader() {
   const [location] = useLocation();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null | undefined>(undefined);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const { theme, toggleTheme } = useTheme();
@@ -35,6 +36,8 @@ export function AppHeader() {
 
     return () => data.subscription.unsubscribe();
   }, []);
+
+  useEffect(() => setIsMenuOpen(false), [location]);
 
   useEffect(() => {
     if (!user) {
@@ -100,8 +103,13 @@ export function AppHeader() {
           <span aria-hidden="true" className="theme-icon moon">☾</span>
           <span aria-hidden="true" className="theme-thumb" />
         </button>
-        <nav aria-label="Главная навигация">
-          <button className="nav-trigger" type="button">
+        <nav aria-label="Главная навигация" className={isMenuOpen ? 'mobile-open' : ''}>
+          <button
+            aria-expanded={isMenuOpen}
+            className="nav-trigger"
+            onClick={() => setIsMenuOpen((current) => !current)}
+            type="button"
+          >
             Разделы <span>↓</span>
           </button>
           <div className="nav-menu">

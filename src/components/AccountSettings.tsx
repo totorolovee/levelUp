@@ -3,6 +3,8 @@ import type { UserProfile } from '../lib/profile';
 import { updateCurrentUsername } from '../lib/profile';
 import { useLanguage } from '../lib/language';
 import { AvatarUploader } from './AvatarUploader';
+import { supabase } from '../lib/supabase';
+import { useLocation } from 'wouter';
 
 type Props = {
   profile: UserProfile;
@@ -12,6 +14,7 @@ type Props = {
 
 export function AccountSettings({ profile, onAvatarChange, onNameChange }: Props) {
   const { language } = useLanguage();
+  const [, setLocation] = useLocation();
   const [username, setUsername] = useState(profile.displayName);
   const [message, setMessage] = useState('');
   const [isSaving, setIsSaving] = useState(false);
@@ -46,6 +49,17 @@ export function AccountSettings({ profile, onAvatarChange, onNameChange }: Props
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const signOut = async () => {
+    setIsSaving(true);
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      setMessage(isRussian ? 'Не удалось выйти из аккаунта.' : 'Could not sign out.');
+      setIsSaving(false);
+      return;
+    }
+    setLocation('/');
   };
 
   return (
@@ -90,6 +104,9 @@ export function AccountSettings({ profile, onAvatarChange, onNameChange }: Props
         </label>
         {message && <p className="settings-message">{message}</p>}
       </div>
+      <button className="account-signout" disabled={isSaving} onClick={signOut} type="button">
+        {isRussian ? 'Выйти из аккаунта' : 'Sign out'}
+      </button>
     </section>
   );
 }

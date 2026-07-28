@@ -19,6 +19,7 @@ import {
   universitySpecialties,
   type UniversitySpecialty,
 } from '../lib/universitySpecialties';
+import { qsWorldRankings2027 } from '../lib/universityRankings';
 
 const initialProfile: StudentProfile = {
   ielts: '',
@@ -40,7 +41,13 @@ export function UniversitiesPage() {
   const [selected, setSelected] = useState<University>(initialRegions[0].universities[0]);
   const [profile, setProfile] = useState<StudentProfile>(initialProfile);
   const selectedUniversities = useMemo(
-    () => selectedRegions.flatMap((region) => region.universities),
+    () => selectedRegions
+      .flatMap((region) => region.universities)
+      .sort(
+        (first, second) =>
+          Number(qsWorldRankings2027[first.id] ?? Number.POSITIVE_INFINITY)
+          - Number(qsWorldRankings2027[second.id] ?? Number.POSITIVE_INFINITY),
+      ),
     [selectedRegions],
   );
   const filtered = useMemo(() => {

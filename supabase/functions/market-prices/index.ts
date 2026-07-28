@@ -33,27 +33,27 @@ Deno.serve(async (request) => {
       : [];
     if (!symbols.length) return json({ error: 'Не переданы тикеры.' }, 400);
 
-    const quotes = await Promise.all(symbols.map(async (symbol) => {
+    const availableQuotes: Array<{ symbol: string; price: number; change: number }> = [];
+    for (const symbol of symbols) {
       const url = new URL('https://www.alphavantage.co/query');
       url.searchParams.set('function', 'GLOBAL_QUOTE');
       url.searchParams.set('symbol', symbol);
       url.searchParams.set('apikey', ALPHA_VANTAGE_API_KEY);
       const response = await fetch(url);
-      if (!response.ok) return null;
+      if (!response.ok) continue;
       const data = (await response.json()) as AlphaVantageResponse;
       const price = Number(data['Global Quote']?.['05. price']);
       const change = Number.parseFloat(
         String(data['Global Quote']?.['10. change percent'] ?? '0'),
       );
-      if (!Number.isFinite(price) || price <= 0) return null;
-      return {
+      if (!Number.isFinite(price) || price <= 0) continue;
+      availableQuotes.push({
         symbol,
         price,
         change: Number.isFinite(change) ? change : 0,
-      };
-    }));
+      });
+    }
 
-    const availableQuotes = quotes.filter((quote) => quote !== null);
     if (!availableQuotes.length) {
       return json({ error: 'Alpha Vantage не вернул котировки. Проверь лимит API.' }, 502);
     }

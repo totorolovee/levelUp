@@ -10,10 +10,10 @@ import { loadMarketPrices } from '../lib/marketPrices';
 import { formatMoney, stocks, type Stock } from '../lib/stocks';
 
 export function InvestingPage() {
-  const [marketStocks, setMarketStocks] = useState<Stock[]>(stocks);
-  const [selected, setSelected] = useState<Stock>(stocks[0]);
+  const [marketStocks, setMarketStocks] = useState<Stock[]>([]);
+  const [selected, setSelected] = useState<Stock | null>(null);
   const [notice, setNotice] = useState('');
-  const [pricesAreLive, setPricesAreLive] = useState(false);
+  const [marketStatus, setMarketStatus] = useState<'loading' | 'live' | 'error'>('loading');
   const { addDecision, balance, decisions } = usePortfolio();
   const score = Math.min(
     100,
@@ -27,17 +27,20 @@ export function InvestingPage() {
         if (!isActive) return;
         setMarketStocks(updatedStocks);
         setSelected((current) =>
-          updatedStocks.find(({ symbol }) => symbol === current.symbol) ?? current,
+          updatedStocks.find(({ symbol }) => symbol === current?.symbol)
+          ?? updatedStocks[0]
+          ?? null,
         );
-        setPricesAreLive(true);
+        setMarketStatus('live');
       })
-      .catch(() => setPricesAreLive(false));
+      .catch(() => setMarketStatus('error'));
     return () => {
       isActive = false;
     };
   }, []);
 
   const buyStock = (decision: BuyDecision) => {
+    if (!selected) return;
     const purchaseTotal = selected.price * decision.quantity;
     const remainingBalance = balance - purchaseTotal;
     addDecision({
@@ -83,7 +86,9 @@ export function InvestingPage() {
               <h2>Кому доверишь свои первые $?</h2>
             </div>
             <span className="demo-badge">
-              {pricesAreLive ? 'Последние рыночные цены' : 'Учебные цены'}
+              {marketStatus === 'live'
+                ? `Alpha Vantage · ${marketStocks.length}/${stocks.length}`
+                : 'Загрузка биржи'}
             </span>
           </div>
           <aside className="market-explainer">
@@ -100,19 +105,33 @@ export function InvestingPage() {
               <span className="negative">−1.3% снижение</span>
             </div>
           </aside>
+          {marketStatus === 'loading' && (
+            <p className="market-status">Загружаю последние доступные цены…</p>
+          )}
+          {marketStatus === 'error' && (
+            <p className="coach-error" role="alert">
+              Биржа сейчас не вернула цены. Учебные значения не показываются.
+            </p>
+          )}
+          {marketStatus === 'live' && marketStocks.length < stocks.length && (
+            <p className="market-status">
+              Показаны только котировки, которые сейчас вернула биржа.
+              Учебные цены скрыты.
+            </p>
+          )}
           <div className="stock-grid">
             {marketStocks.map((stock) => (
               <StockCard
                 key={stock.symbol}
                 onSelect={setSelected}
-                selected={selected.symbol === stock.symbol}
+                selected={selected?.symbol === stock.symbol}
                 stock={stock}
               />
             ))}
           </div>
-          <CompanyProfile stock={selected} />
+          {selected && <CompanyProfile stock={selected} />}
         </div>
-        <BuyStockForm balance={balance} onBuy={buyStock} stock={selected} />
+        {selected && <BuyStockForm balance={balance} onBuy={buyStock} stock={selected} />}
       </section>
     </main>
   );

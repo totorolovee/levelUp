@@ -28,9 +28,9 @@ export async function loadMarketPrices(stocks: Stock[]) {
   const quoteBySymbol = new Map(quotes.map((quote) => [quote.symbol, quote]));
 
   return {
-    stocks: stocks.map((stock) => {
+    stocks: stocks.flatMap((stock) => {
       const quote = quoteBySymbol.get(stock.symbol);
-      return quote ? { ...stock, price: quote.price, change: quote.change } : stock;
+      return quote ? [{ ...stock, price: quote.price, change: quote.change }] : [];
     }),
     updatedAt: typeof data.updatedAt === 'string' ? data.updatedAt : null,
   };

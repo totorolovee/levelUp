@@ -1,4 +1,5 @@
 import type { Book } from '../lib/books';
+import { BookCover } from './BookCover';
 
 type BookCardProps = {
   book: Book;
@@ -19,11 +20,7 @@ export function BookCard({
 }: BookCardProps) {
   return (
     <article className="book-card">
-      <div className="book-cover" style={{ background: book.color }}>
-        <span>{book.topic}</span>
-        <strong>{book.title}</strong>
-        <small>{book.author}</small>
-      </div>
+      <BookCover book={book} />
       <div className="book-details">
         <span>{selected ? 'В моих книгах' : book.topic}</span>
         <h2>{book.title}</h2>

@@ -1,0 +1,27 @@
+export const qsWorldRankings2027: Record<string, string> = {
+  stanford: '2',
+  mit: '1',
+  harvard: '5',
+  berkeley: '20',
+  princeton: '27',
+  yale: '16',
+  caltech: '7',
+  oxford: '4',
+  cambridge: '6',
+  imperial: '2',
+  'st-andrews': '115',
+  edinburgh: '35',
+  lse: '62',
+  kings: '37',
+  manchester: '40',
+  nus: '10',
+  'ntu-singapore': '12',
+  tsinghua: '14',
+  tokyo: '39',
+  'seoul-national': '38',
+  hku: '11',
+  hkust: '33',
+  kaist: '65',
+};
+
+export const qsRankingSourceUrl = 'https://www.topuniversities.com/qs-top-uni-wur';

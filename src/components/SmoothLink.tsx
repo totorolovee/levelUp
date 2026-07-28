@@ -7,7 +7,11 @@ type SmoothLinkProps = {
   children: ReactNode;
 };
 
-export function SmoothLink({ href, className, children }: SmoothLinkProps) {
+export function SmoothLink({
+  href,
+  className,
+  children,
+}: SmoothLinkProps) {
   const [location, navigate] = useLocation();
 
   const followLink = (event: MouseEvent<HTMLAnchorElement>) => {
@@ -17,7 +21,11 @@ export function SmoothLink({ href, className, children }: SmoothLinkProps) {
     window.setTimeout(() => {
       navigate(href);
       document.documentElement.classList.remove('is-leaving');
-    }, 220);
+      document.documentElement.classList.add('is-entering');
+      window.setTimeout(() => {
+        document.documentElement.classList.remove('is-entering');
+      }, 650);
+    }, 320);
   };
 
   return (

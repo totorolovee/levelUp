@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { useLocation } from 'wouter';
 import { isSupabaseConfigured, supabase } from '../lib/supabase';
 import { SupabaseSetupMessage } from './SupabaseSetupMessage';
 
-// Вход и регистрация по email + паролю. Это пример — Codex поможет улучшить (Google-вход и т.д.).
 export function Auth() {
+  const [, navigate] = useLocation();
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
@@ -22,12 +24,18 @@ export function Auth() {
           ? supabase.auth.signUp({
               email,
               password,
-              options: { emailRedirectTo: window.location.origin },
+              options: {
+                data: { display_name: username.trim() },
+                emailRedirectTo: `${window.location.origin}/profile`,
+              },
             })
           : supabase.auth.signInWithPassword({ email, password });
-      const { error } = await fn;
+      const { data, error } = await fn;
       if (error) setMessage(error.message);
-      else if (mode === 'signup') setMessage('Готово! Проверь почту, если нужна подтверждалка.');
+      else if (data.session) navigate('/profile');
+      else if (mode === 'signup') {
+        setMessage('Готово! Проверь почту, если нужна подтверждалка.');
+      }
     } catch {
       setMessage('Что-то пошло не так. Попробуй ещё раз.');
     } finally {
@@ -35,11 +43,66 @@ export function Auth() {
     }
   }
 
+  async function signInWithGoogle() {
+    setBusy(true);
+    setMessage('');
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: `${window.location.origin}/profile` },
+      });
+      if (error) setMessage(error.message);
+    } catch {
+      setMessage('Не получилось открыть вход через Google. Попробуй ещё раз.');
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
     <section className="card">
-      <h2>{mode === 'signin' ? 'Вход' : 'Регистрация'}</h2>
+      <div className="auth-tabs" aria-label="Вход или регистрация">
+        <button
+          className={mode === 'signin' ? 'active' : ''}
+          onClick={() => setMode('signin')}
+          type="button"
+        >
+          Вход
+        </button>
+        <button
+          className={mode === 'signup' ? 'active' : ''}
+          onClick={() => setMode('signup')}
+          type="button"
+        >
+          Регистрация
+        </button>
+      </div>
+      <h2>{mode === 'signin' ? 'С возвращением!' : 'Создай аккаунт'}</h2>
+      <button
+        className="google-auth"
+        disabled={busy}
+        onClick={signInWithGoogle}
+        type="button"
+      >
+        <span aria-hidden="true">G</span>
+        Войти через Google
+      </button>
+      <div className="auth-divider"><span>или по email</span></div>
       <form onSubmit={handleSubmit} className="form">
+        {mode === 'signup' && (
+          <input
+            autoComplete="username"
+            maxLength={30}
+            minLength={2}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="username"
+            required
+            type="text"
+            value={username}
+          />
+        )}
         <input
+          autoComplete="email"
           type="email"
           placeholder="email"
           value={email}
@@ -47,6 +110,7 @@ export function Auth() {
           required
         />
         <input
+          autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
           type="password"
           placeholder="пароль (6+ символов)"
           value={password}
@@ -59,12 +123,6 @@ export function Auth() {
         </button>
       </form>
       {message && <p className="message">{message}</p>}
-      <button
-        className="ghost"
-        onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')}
-      >
-        {mode === 'signin' ? 'Нет аккаунта? Зарегистрируйся' : 'Уже есть аккаунт? Войти'}
-      </button>
     </section>
   );
 }

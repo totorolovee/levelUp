@@ -61,7 +61,7 @@ export function GoalOnboarding({ onComplete }: { onComplete: (plan: GoalPlan) =>
         <h1>С какой целью будем работать?</h1>
         <p>Сначала я задам несколько вопросов. Потом соберу маршрут именно под тебя.</p>
         <div className="coach-input">
-          <textarea onChange={(event) => setGoal(event.target.value)} placeholder="Например: получить 1 разряд по шахматам" rows={3} value={goal} />
+          <textarea onChange={(event) => setGoal(event.target.value)} placeholder="Например: поступить в университет в США" rows={3} value={goal} />
           <button disabled={goal.trim().length < 5 || isLoading} onClick={begin} type="button">
             {isLoading ? 'Coach думает…' : 'Поговорить с коучем →'}
           </button>

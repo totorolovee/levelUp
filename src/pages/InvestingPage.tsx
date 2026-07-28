@@ -57,8 +57,22 @@ export function InvestingPage() {
               <p className="eyebrow">Рынок</p>
               <h2>Кому доверишь свои первые $?</h2>
             </div>
-            <span className="demo-badge">Учебные цены</span>
+            <span className="demo-badge">Учебный рынок</span>
           </div>
+          <aside className="market-explainer">
+            <span className="market-info-icon">i</span>
+            <div>
+              <strong>Что означают проценты?</strong>
+              <p>
+                Это изменение цены акции за сегодняшний день. Зелёный процент
+                означает рост, красный — снижение. Это не твоя прибыль.
+              </p>
+            </div>
+            <div className="change-examples">
+              <span className="positive">+1.8% рост</span>
+              <span className="negative">−1.3% снижение</span>
+            </div>
+          </aside>
           <div className="stock-grid">
             {stocks.map((stock) => (
               <StockCard

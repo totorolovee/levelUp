@@ -19,9 +19,12 @@ export function StockCard({ stock, selected, onSelect }: StockCardProps) {
       <span className="stock-symbol">{stock.symbol}</span>
       <span className="stock-name">{stock.name}</span>
       <strong>{formatMoney(stock.price)}</strong>
-      <span className={changeClass}>
-        {stock.change >= 0 ? '+' : ''}
-        {stock.change}%
+      <span className="stock-day-change">
+        <span className={changeClass}>
+          {stock.change >= 0 ? '+' : ''}
+          {stock.change}%
+        </span>
+        <small>за сегодня</small>
       </span>
     </button>
   );

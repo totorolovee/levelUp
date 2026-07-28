@@ -1,4 +1,6 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { loadReadingProgress, saveReadingProgress } from './readingProgress';
+import { supabase } from './supabase';
 
 type ReadingContextValue = {
   selectedTitles: string[];
@@ -13,15 +15,49 @@ export function ReadingProvider({ children }: { children: ReactNode }) {
   const [selectedTitles, setSelectedTitles] = useState<string[]>([]);
   const [progress, setProgress] = useState<Record<string, number>>({});
 
+  useEffect(() => {
+    let isActive = true;
+
+    const load = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (!data.session) return;
+
+      try {
+        const rows = await loadReadingProgress();
+        if (!isActive) return;
+        setSelectedTitles(rows.map((row) => row.book_title));
+        setProgress(Object.fromEntries(rows.map((row) => [row.book_title, row.progress])));
+      } catch {
+        // Локальный прогресс продолжает работать, даже если сеть временно недоступна.
+      }
+    };
+
+    void load();
+    const { data: listener } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'SIGNED_IN') window.setTimeout(() => void load(), 0);
+      if (event === 'SIGNED_OUT') {
+        setSelectedTitles([]);
+        setProgress({});
+      }
+    });
+
+    return () => {
+      isActive = false;
+      listener.subscription.unsubscribe();
+    };
+  }, []);
+
   const chooseBook = (title: string) => {
     setSelectedTitles((current) =>
       current.includes(title) ? current : [...current, title],
     );
     setProgress((current) => ({ ...current, [title]: current[title] ?? 0 }));
+    void saveReadingProgress(title, progress[title] ?? 0);
   };
 
   const updateProgress = (title: string, value: number) => {
     setProgress((current) => ({ ...current, [title]: value }));
+    void saveReadingProgress(title, value);
   };
 
   return (

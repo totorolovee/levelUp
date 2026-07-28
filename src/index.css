@@ -432,6 +432,24 @@ button:disabled { opacity: .45; cursor: not-allowed; }
 .decision-review button { justify-self: start; padding: 9px 12px; border: 0; border-radius: 9px; color: #fff; background: #39764f; font-weight: 750; cursor: pointer; }
 .saved-lesson { margin-top: 18px; padding: 14px; border-radius: 11px; background: #e5eee7; }
 .saved-lesson span { color: #39764f; font-size: 10px; font-weight: 800; text-transform: uppercase; }
+
+/* Читаемый минимум для второстепенных подписей */
+.direction-option span, .specialty-option span, .region-option span,
+.ranking-source, .university-source, .readiness-item p,
+.essay-details .essay-specialty, .essay-details a, .admission-disclaimer,
+.book-details > span, .reading-experience p, .market-explainer p,
+.market-update-note, .coach-question span, .company-title span,
+.profile-stats dt, .profile-stats small, .auth-divider { font-size: 13px; }
+.university-option small, .selected-specialty, .requirement-grid span,
+.readiness-item strong, .essay-details ul, .admission-next-step span,
+.book-progress small, .stock-price small, .stock-day-change small,
+.change-examples, .field-count, .score-ring span, .company-facts span,
+.ai-answer span, .rank-panel span, .rank-panel small,
+.decision-facts dt, .saved-lesson span { font-size: 12px; }
+.requirement-grid p, .university-columns ul, .profile-check span,
+.genre-grid p, .book-actions button, .market-explainer strong,
+.score-copy, .investor-progress li, .company-facts p,
+.decision-facts dd { font-size: 13px; }
 .saved-lesson p { margin: 6px 0 0; font-size: 13px; }
 
 html[data-theme="dark"] { color-scheme: dark; }

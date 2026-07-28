@@ -1115,3 +1115,16 @@ html[data-theme="dark"] .book-author,
 html[data-theme="dark"] .journal-card p,
 html[data-theme="dark"] .company-profile > p { color: #afb4cf; }
 html[data-theme="dark"] ::selection { color: #fff; background: #7459df; }
+html[data-theme="dark"] .title-screen {
+  color: #f7f5ff;
+  border-color: rgba(151, 126, 255, .22);
+  background:
+    radial-gradient(circle at 76% 15%, rgba(186, 72, 255, .22), transparent 25%),
+    radial-gradient(circle at 20% 100%, rgba(37, 127, 255, .18), transparent 30%),
+    linear-gradient(145deg, #191c35 0%, #292d4d 52%, #171a31 100%);
+  box-shadow: 0 28px 90px rgba(8, 6, 25, .34);
+}
+html[data-theme="dark"] .title-screen::after { border-color: rgba(137, 91, 255, .1); }
+html[data-theme="dark"] .title-screen h1 { color: #fff; }
+html[data-theme="dark"] .title-screen h1 span,
+html[data-theme="dark"] .title-content .eyebrow { color: #a98fff; }

@@ -4,6 +4,7 @@ import { useLanguage } from '../lib/language';
 import { AchievementsGrid } from './AchievementsGrid';
 import { AccountSettings } from './AccountSettings';
 import { ProfileProgress } from './ProfileProgress';
+import { AdmissionPortfolio } from './AdmissionPortfolio';
 
 export function ProfileCard({
   profile,
@@ -15,7 +16,7 @@ export function ProfileCard({
   onNameChange: (name: string, nextChangeAt: string) => void;
 }) {
   const { language } = useLanguage();
-  const [tab, setTab] = useState<'settings' | 'progress' | 'achievements'>('settings');
+  const [tab, setTab] = useState<'settings' | 'progress' | 'achievements' | 'portfolio'>('settings');
   const isRussian = language === 'ru';
 
   return (
@@ -30,12 +31,16 @@ export function ProfileCard({
         <button className={tab === 'achievements' ? 'active' : ''} onClick={() => setTab('achievements')} type="button">
           {isRussian ? 'Достижения' : 'Achievements'}
         </button>
+        <button className={tab === 'portfolio' ? 'active' : ''} onClick={() => setTab('portfolio')} type="button">
+          {isRussian ? 'Портфолио' : 'Portfolio'}
+        </button>
       </div>
       {tab === 'settings' && (
         <AccountSettings profile={profile} onAvatarChange={onAvatarChange} onNameChange={onNameChange} />
       )}
       {tab === 'progress' && <ProfileProgress profile={profile} />}
       {tab === 'achievements' && <AchievementsGrid progress={profile.achievements} />}
+      {tab === 'portfolio' && <AdmissionPortfolio />}
     </section>
   );
 }

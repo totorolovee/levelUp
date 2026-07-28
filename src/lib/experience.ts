@@ -6,6 +6,7 @@ const ranks = [
   { name: 'Стратег', xp: 300 },
   { name: 'Мастер', xp: 600 },
   { name: 'Легенда', xp: 1000 },
+  { name: 'Божество', xp: 2000 },
 ];
 
 type ProgressRow = {

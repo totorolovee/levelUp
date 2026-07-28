@@ -22,7 +22,7 @@ export function StockCard({ stock, selected, onSelect }: StockCardProps) {
       <span className="stock-day-change">
         <span className={changeClass}>
           {stock.change >= 0 ? '+' : ''}
-          {stock.change}%
+          {stock.change.toFixed(2).replace('.', ',')}%
         </span>
         <small>за сегодня</small>
       </span>

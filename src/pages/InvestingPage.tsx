@@ -18,6 +18,8 @@ export function InvestingPage() {
   );
 
   const buyStock = (decision: BuyDecision) => {
+    const purchaseTotal = selected.price * decision.quantity;
+    const remainingBalance = balance - purchaseTotal;
     addDecision({
       symbol: selected.symbol,
       company: selected.name,
@@ -29,7 +31,10 @@ export function InvestingPage() {
       horizon: decision.horizon,
       confidence: decision.confidence,
     });
-    setNotice(`${decision.quantity} ${selected.symbol} куплено. Решение добавлено в журнал.`);
+    setNotice(
+      `${decision.quantity} ${selected.symbol} куплено за ${formatMoney(purchaseTotal)}. `
+      + `Осталось ${formatMoney(remainingBalance)}.`,
+    );
   };
 
   return (
@@ -38,7 +43,7 @@ export function InvestingPage() {
       <section className="page-intro">
         <div>
           <p className="eyebrow">Виртуальный портфель</p>
-          <h1>Твои $10,000. Твои решения. Ноль риска.</h1>
+          <h1>Твои {formatMoney(balance)}. Твои решения. Ноль риска.</h1>
           <p>Не угадывай цену — научись видеть бизнес за графиком.</p>
         </div>
         <div className="balance-card">

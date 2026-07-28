@@ -3,11 +3,12 @@ import { formatMoney } from '../lib/stocks';
 
 type StockCardProps = {
   stock: Stock;
+  ownedQuantity: number;
   selected: boolean;
   onSelect: (stock: Stock) => void;
 };
 
-export function StockCard({ stock, selected, onSelect }: StockCardProps) {
+export function StockCard({ stock, ownedQuantity, selected, onSelect }: StockCardProps) {
   const changeClass = stock.change >= 0 ? 'positive' : 'negative';
 
   return (
@@ -18,7 +19,10 @@ export function StockCard({ stock, selected, onSelect }: StockCardProps) {
     >
       <span className="stock-symbol">{stock.symbol}</span>
       <span className="stock-name">{stock.name}</span>
-      <strong>{formatMoney(stock.price)}</strong>
+      <span className="stock-price">
+        <strong>{formatMoney(stock.price)}</strong>
+        {ownedQuantity > 0 && <small>Куплено: {ownedQuantity} шт.</small>}
+      </span>
       <span className="stock-day-change">
         <span className={changeClass}>
           {stock.change >= 0 ? '+' : ''}

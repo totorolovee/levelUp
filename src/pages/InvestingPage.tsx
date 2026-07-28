@@ -23,6 +23,10 @@ export function InvestingPage() {
     100,
     decisions.length * 30 + decisions.filter((item) => item.lesson).length * 20,
   );
+  const ownedBySymbol = decisions.reduce<Record<string, number>>((totals, decision) => {
+    totals[decision.symbol] = (totals[decision.symbol] ?? 0) + decision.quantity;
+    return totals;
+  }, {});
 
   const buyStock = (decision: BuyDecision) => {
     if (!selected) return;
@@ -117,6 +121,7 @@ export function InvestingPage() {
               <StockCard
                 key={stock.symbol}
                 onSelect={setSelected}
+                ownedQuantity={ownedBySymbol[stock.symbol] ?? 0}
                 selected={selected?.symbol === stock.symbol}
                 stock={stock}
               />

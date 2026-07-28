@@ -833,7 +833,7 @@ html[data-theme="dark"] .nav-link.active { color: #c5baff; background: #332e52; 
 .title-screen h1 { color: #fff; font-size: clamp(54px, 7vw, 92px); text-shadow: 0 10px 40px rgba(0,0,0,.24); }
 .title-screen h1 span { color: #9173ff; }
 .title-copy { color: #bfc3dc; }
-.title-screen .scroll-link { padding: 13px 18px; border: 1px solid rgba(255,255,255,.12); border-radius: 11px; color: #fff; background: linear-gradient(135deg, #7857ff, #9a60ff); box-shadow: 0 10px 28px rgba(112, 75, 255, .3); }
+.title-screen .scroll-link { padding: 15px 22px; border: 1px solid rgba(255,255,255,.12); border-radius: 12px; color: #fff; background: linear-gradient(135deg, #7857ff, #9a60ff); box-shadow: 0 10px 28px rgba(112, 75, 255, .3); font-size: 17px; font-weight: 850; letter-spacing: .1px; }
 .title-screen .guest-login { background: linear-gradient(135deg, #7857ff, #9a60ff); box-shadow: 0 10px 28px rgba(112, 75, 255, .3); }
 .title-footer { color: #8f94af; }
 .title-footer strong { color: #c8c1ff; }
@@ -895,6 +895,7 @@ html[data-theme="dark"] .daily-note p { color: #c9cbe0; }
 @media (max-width: 560px) {
   .title-screen { min-height: auto; padding: 60px 20px 92px; }
   .title-screen h1 { font-size: 48px; }
+  .title-screen .scroll-link { padding: 14px 18px; font-size: 15px; }
   .hero-dashboard-preview { padding: 12px; border-radius: 18px; }
   .preview-highlight { grid-template-columns: 1fr 76px; min-height: 150px; padding: 18px; }
   .preview-highlight strong { font-size: 36px; }

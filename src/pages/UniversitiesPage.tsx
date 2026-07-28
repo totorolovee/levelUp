@@ -9,13 +9,13 @@ import { UniversityDetails } from '../components/UniversityDetails';
 import { UniversitySearch } from '../components/UniversitySearch';
 import {
   universityDirections,
-  universityRegions,
   type StudentProfile,
   type University,
   type UniversityDirection,
   type UniversityRegion,
 } from '../lib/universities';
 import {
+  filterRegionsForSpecialty,
   universitySpecialties,
   type UniversitySpecialty,
 } from '../lib/universitySpecialties';
@@ -30,47 +30,59 @@ const initialDirection = universityDirections[0];
 const initialSpecialty = universitySpecialties.find(
   ({ directionId }) => directionId === initialDirection.id,
 ) ?? universitySpecialties[0];
-const initialRegions = filterRegions(initialSpecialty, initialDirection);
+const initialRegions = filterRegionsForSpecialty(initialSpecialty, initialDirection);
 
 export function UniversitiesPage() {
   const [direction, setDirection] = useState<UniversityDirection>(initialDirection);
   const [specialty, setSpecialty] = useState<UniversitySpecialty>(initialSpecialty);
-  const [region, setRegion] = useState<UniversityRegion>(initialRegions[0]);
+  const [selectedRegions, setSelectedRegions] = useState<UniversityRegion[]>([initialRegions[0]]);
   const [query, setQuery] = useState('');
-  const [selected, setSelected] = useState<University>(region.universities[0]);
+  const [selected, setSelected] = useState<University>(initialRegions[0].universities[0]);
   const [profile, setProfile] = useState<StudentProfile>(initialProfile);
+  const selectedUniversities = useMemo(
+    () => selectedRegions.flatMap((region) => region.universities),
+    [selectedRegions],
+  );
   const filtered = useMemo(() => {
     const search = query.trim().toLocaleLowerCase('ru');
-    if (!search) return region.universities;
-    return region.universities.filter((university) =>
+    if (!search) return selectedUniversities;
+    return selectedUniversities.filter((university) =>
       `${university.name} ${university.shortName} ${university.location}`
         .toLocaleLowerCase('ru')
         .includes(search),
     );
-  }, [query, region, specialty]);
+  }, [query, selectedUniversities]);
 
   const selectRegion = (nextRegion: UniversityRegion) => {
-    setRegion(nextRegion);
+    const isSelected = selectedRegions.some(({ id }) => id === nextRegion.id);
+    if (isSelected && selectedRegions.length === 1) return;
+    const nextRegions = isSelected
+      ? selectedRegions.filter(({ id }) => id !== nextRegion.id)
+      : [...selectedRegions, nextRegion];
+    const nextUniversities = nextRegions.flatMap(({ universities }) => universities);
+    setSelectedRegions(nextRegions);
     setQuery('');
-    setSelected(nextRegion.universities[0]);
+    if (!nextUniversities.some(({ id }) => id === selected.id)) {
+      setSelected(nextUniversities[0]);
+    }
   };
 
   const selectDirection = (nextDirection: UniversityDirection) => {
     const nextSpecialty = universitySpecialties.find(
       ({ directionId }) => directionId === nextDirection.id,
     ) ?? universitySpecialties[0];
-    const nextRegions = filterRegions(nextSpecialty, nextDirection);
+    const nextRegions = filterRegionsForSpecialty(nextSpecialty, nextDirection);
     setDirection(nextDirection);
     setSpecialty(nextSpecialty);
-    setRegion(nextRegions[0]);
+    setSelectedRegions([nextRegions[0]]);
     setQuery('');
     setSelected(nextRegions[0].universities[0]);
   };
 
   const selectSpecialty = (nextSpecialty: UniversitySpecialty) => {
-    const nextRegions = filterRegions(nextSpecialty, direction);
+    const nextRegions = filterRegionsForSpecialty(nextSpecialty, direction);
     setSpecialty(nextSpecialty);
-    setRegion(nextRegions[0]);
+    setSelectedRegions([nextRegions[0]]);
     setQuery('');
     setSelected(nextRegions[0].universities[0]);
   };
@@ -80,7 +92,7 @@ export function UniversitiesPage() {
     [direction],
   );
   const regionsForSpecialty = useMemo(
-    () => filterRegions(specialty, direction),
+    () => filterRegionsForSpecialty(specialty, direction),
     [direction, specialty],
   );
 
@@ -104,7 +116,11 @@ export function UniversitiesPage() {
         selectedId={specialty.id}
         specialties={specialtiesForDirection}
       />
-      <RegionPicker onSelect={selectRegion} regions={regionsForSpecialty} selectedId={region.id} />
+      <RegionPicker
+        onSelect={selectRegion}
+        regions={regionsForSpecialty}
+        selectedIds={selectedRegions.map(({ id }) => id)}
+      />
       <div className="university-layout">
         <UniversitySearch
           onQueryChange={setQuery}
@@ -124,21 +140,4 @@ export function UniversitiesPage() {
       </p>
     </main>
   );
-}
-
-function filterRegions(
-  specialty: UniversitySpecialty,
-  direction: UniversityDirection,
-): UniversityRegion[] {
-  const specialtyIds = new Set(specialty.universityIds);
-  const directionIds = new Set(direction.universityIds);
-  return universityRegions
-    .map((region) => ({
-      ...region,
-      universities: region.universities.filter(
-        (university) =>
-          specialtyIds.has(university.id) && directionIds.has(university.id),
-      ),
-    }))
-    .filter((region) => region.universities.length > 0);
 }

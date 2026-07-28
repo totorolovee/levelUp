@@ -1,4 +1,9 @@
-import type { UniversityDirectionId } from './universities';
+import {
+  universityRegions,
+  type UniversityDirection,
+  type UniversityDirectionId,
+  type UniversityRegion,
+} from './universities';
 
 export type UniversitySpecialty = {
   id: string;
@@ -38,3 +43,20 @@ export const universitySpecialties: UniversitySpecialty[] = [
   { id: 'international-relations', directionId: 'humanities', name: 'Международные отношения', description: 'Политика и дипломатия', universityIds: ['stanford', 'harvard', 'berkeley', 'princeton', 'yale', 'oxford', 'cambridge', 'st-andrews', 'edinburgh', 'lse', 'kings', 'manchester', 'nus', 'ntu-singapore', 'tsinghua', 'tokyo', 'seoul-national', 'hku'] },
   { id: 'literature', directionId: 'humanities', name: 'Литература и языки', description: 'Тексты, язык и культура', universityIds: ['stanford', 'harvard', 'berkeley', 'princeton', 'yale', 'oxford', 'cambridge', 'st-andrews', 'edinburgh', 'kings', 'manchester', 'nus', 'ntu-singapore', 'tsinghua', 'tokyo', 'seoul-national', 'hku'] },
 ];
+
+export function filterRegionsForSpecialty(
+  specialty: UniversitySpecialty,
+  direction: UniversityDirection,
+): UniversityRegion[] {
+  const specialtyIds = new Set(specialty.universityIds);
+  const directionIds = new Set(direction.universityIds);
+  return universityRegions
+    .map((region) => ({
+      ...region,
+      universities: region.universities.filter(
+        (university) =>
+          specialtyIds.has(university.id) && directionIds.has(university.id),
+      ),
+    }))
+    .filter((region) => region.universities.length > 0);
+}

@@ -49,7 +49,15 @@ export function ProfilePage() {
           <SmoothLink className="primary-link" href="/login">Войти</SmoothLink>
         </section>
       )}
-      {state.status === 'ready' && <ProfileCard profile={state.profile} />}
+      {state.status === 'ready' && (
+        <ProfileCard
+          onAvatarChange={(avatarUrl) => setState({
+            status: 'ready',
+            profile: { ...state.profile, avatarUrl },
+          })}
+          profile={state.profile}
+        />
+      )}
     </main>
   );
 }

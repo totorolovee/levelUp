@@ -1,11 +1,13 @@
 import { supabase } from './supabase';
 import { recordAndLoadDailyStreak } from './dailyActivity';
 import { loadExperience } from './experience';
+import { getUserAvatarUrl } from './avatars';
 
 export type UserProfile = {
   email: string;
   displayName: string;
   avatarLetter: string;
+  avatarUrl: string | null;
   dailyStreak: number;
   xp: number;
   rankName: string;
@@ -35,6 +37,7 @@ export async function loadCurrentProfile(): Promise<UserProfile | null> {
     email,
     displayName,
     avatarLetter: displayName.charAt(0).toLocaleUpperCase('ru-RU') || '?',
+    avatarUrl: await getUserAvatarUrl(user),
     dailyStreak: activity.streak,
     ...experience,
     registeredAt: user.created_at,

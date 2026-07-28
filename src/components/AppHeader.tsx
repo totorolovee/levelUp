@@ -4,6 +4,7 @@ import { Link, useLocation } from 'wouter';
 import { supabase } from '../lib/supabase';
 import { useTheme } from '../lib/theme';
 import { useLanguage } from '../lib/language';
+import { getUserAvatarUrl } from '../lib/avatars';
 
 const links = [
   { href: '/goals', label: 'Цели' },
@@ -19,6 +20,7 @@ const links = [
 export function AppHeader() {
   const [location] = useLocation();
   const [user, setUser] = useState<User | null | undefined>(undefined);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const { theme, toggleTheme } = useTheme();
   const { language, setLanguage } = useLanguage();
 
@@ -32,6 +34,20 @@ export function AppHeader() {
 
     return () => data.subscription.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (!user) {
+      setAvatarUrl(null);
+      return;
+    }
+    let isActive = true;
+    void getUserAvatarUrl(user).then((url) => {
+      if (isActive) setAvatarUrl(url);
+    });
+    return () => {
+      isActive = false;
+    };
+  }, [user]);
 
   const metadataUsername = user?.user_metadata.display_name
     ?? user?.user_metadata.user_name
@@ -56,7 +72,11 @@ export function AppHeader() {
         )}
         {user && (
           <Link className="header-username" href="/profile">
-            <span aria-hidden="true">{username?.charAt(0).toLocaleUpperCase('ru-RU')}</span>
+            <span aria-hidden="true">
+              {avatarUrl
+                ? <img alt="" src={avatarUrl} />
+                : username?.charAt(0).toLocaleUpperCase('ru-RU')}
+            </span>
             {username}
           </Link>
         )}

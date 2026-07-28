@@ -1,7 +1,14 @@
 import type { UserProfile } from '../lib/profile';
 import { useLanguage } from '../lib/language';
+import { AvatarUploader } from './AvatarUploader';
 
-export function ProfileCard({ profile }: { profile: UserProfile }) {
+export function ProfileCard({
+  profile,
+  onAvatarChange,
+}: {
+  profile: UserProfile;
+  onAvatarChange: (url: string) => void;
+}) {
   const { language } = useLanguage();
   const registrationDate = new Intl.DateTimeFormat(language === 'ru' ? 'ru-RU' : 'en-US', {
     day: 'numeric',
@@ -13,12 +20,15 @@ export function ProfileCard({ profile }: { profile: UserProfile }) {
     <section className="profile-card">
       <div className="profile-identity">
         <div className="profile-avatar" aria-label={`Аватар ${profile.displayName}`}>
-          {profile.avatarLetter}
+          {profile.avatarUrl
+            ? <img alt="" src={profile.avatarUrl} />
+            : profile.avatarLetter}
         </div>
         <div>
           <p className="eyebrow">Профиль</p>
           <h2>{profile.displayName}</h2>
           <p>{profile.email}</p>
+          <AvatarUploader onUploaded={onAvatarChange} />
         </div>
       </div>
       <div className="rank-panel">

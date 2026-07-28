@@ -248,6 +248,13 @@ a.section-card:hover { transform: translateY(-3px); box-shadow: 0 14px 36px rgba
 .essay-details ul { margin: 0; padding-left: 18px; color: #526058; font-size: 12px; line-height: 1.55; }
 .essay-details li + li { margin-top: 6px; }
 .essay-details a { display: inline-block; margin-top: 12px; color: #39764f; font-size: 11px; font-weight: 750; }
+.sat-details { margin-top: 12px; padding: 20px; border: 1px solid #d9e3d8; border-radius: 14px; background: #f8faf6; }
+.sat-details h3 { margin-bottom: 10px; }
+.sat-details ol { margin: 0 0 16px; padding-left: 20px; color: #526058; line-height: 1.6; }
+.sat-resources { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.sat-resources a { display: grid; gap: 5px; padding: 12px; border: 1px solid #d5dfd6; border-radius: 11px; color: #255e3a; background: #fff; text-decoration: none; }
+.sat-resources span, .sat-details small { color: #69716c; font-size: 12px; line-height: 1.45; }
+.sat-details > small { display: block; margin-top: 12px; }
 .admission-next-step { margin-top: 13px; padding: 15px; border-radius: 13px; color: #fff; background: #255e3a; }
 .admission-next-step span { color: #bdd5c4; font-size: 10px; font-weight: 800; text-transform: uppercase; }
 .admission-next-step p { margin: 6px 0 0; font-weight: 700; }
@@ -509,6 +516,9 @@ html[data-theme="dark"] .student-profile,
 html[data-theme="dark"] .readiness-panel { border-color: #334138; background: #1b251f; box-shadow: none; }
 html[data-theme="dark"] .essay-details { border-color: #334138; background: #18221c; }
 html[data-theme="dark"] .essay-details ul { color: #aab6ad; }
+html[data-theme="dark"] .sat-details { border-color: #334138; background: #18221c; }
+html[data-theme="dark"] .sat-details ol { color: #aab6ad; }
+html[data-theme="dark"] .sat-resources a { border-color: #3c4b41; color: #d8eee0; background: #222f27; }
 html[data-theme="dark"] .section-card p,
 html[data-theme="dark"] .hero-card p,
 html[data-theme="dark"] .features p,
@@ -642,6 +652,7 @@ html[data-theme="dark"] ::selection { color: #101713; background: #83bd94; }
   .genre-grid button { min-height: 112px; padding: 17px; }
   .stock-card { min-height: 104px; }
   .requirement-grid, .university-columns, .readiness-items { grid-template-columns: 1fr; }
+  .sat-resources { grid-template-columns: 1fr; }
   .profile-stats { grid-template-columns: 1fr; }
   .university-title { align-items: start; }
   .university-title > span { width: 52px; height: 52px; border-radius: 14px; }

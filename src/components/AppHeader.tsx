@@ -64,6 +64,27 @@ export function AppHeader() {
         </Link>
         <span className="creator-name">Kassenov Alimzhan</span>
       </div>
+      <nav aria-label="Главная навигация">
+        <button className="nav-trigger" type="button">
+          Разделы <span>→</span>
+        </button>
+        <div className="nav-menu">
+          {links
+            .filter((link) =>
+              (!('authOnly' in link) || !link.authOnly || Boolean(user))
+              && (link.href !== '/login' || user === null),
+            )
+            .map((link) => (
+            <Link
+              className={location === link.href ? 'nav-link active' : 'nav-link'}
+              href={link.href}
+              key={link.href}
+            >
+              {link.label}
+            </Link>
+            ))}
+        </div>
+      </nav>
       <div className="header-actions">
         {user === null && (
           <Link className="header-login" href="/login">
@@ -99,27 +120,6 @@ export function AppHeader() {
           <span aria-hidden="true" className="theme-icon moon">☾</span>
           <span aria-hidden="true" className="theme-thumb" />
         </button>
-        <nav aria-label="Главная навигация">
-          <button className="nav-trigger" type="button">
-            Разделы <span>←</span>
-          </button>
-          <div className="nav-menu">
-            {links
-              .filter((link) =>
-                (!('authOnly' in link) || !link.authOnly || Boolean(user))
-                && (link.href !== '/login' || user === null),
-              )
-              .map((link) => (
-              <Link
-                className={location === link.href ? 'nav-link active' : 'nav-link'}
-                href={link.href}
-                key={link.href}
-              >
-                {link.label}
-              </Link>
-              ))}
-          </div>
-        </nav>
       </div>
     </header>
   );

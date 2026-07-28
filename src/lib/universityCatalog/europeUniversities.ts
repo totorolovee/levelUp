@@ -1,0 +1,58 @@
+import type { University } from '../universities';
+
+const checkedAt = '28 июля 2026';
+
+export const europeUniversities: University[] = [
+  {
+    id: 'eth-zurich', name: 'ETH Zurich', shortName: 'ETH',
+    location: 'Zurich, Швейцария',
+    summary: 'Ведущий технический университет Европы с сильными STEM-программами.',
+    testPolicy: 'course-dependent',
+    testNote: 'По аттестату может потребоваться сокращённый или полный вступительный экзамен.',
+    englishNote: 'Бакалавриат в основном на немецком; может требоваться сертификат немецкого C1.',
+    deadlines: 'Для иностранных аттестатов требования обновляются ежегодно; немецкий нужен к дедлайну.',
+    documents: ['Заявка eApply', 'Аттестат и оценки', 'CV', 'Языковой сертификат'],
+    opportunities: ['STEM-исследования', 'Лаборатории', 'Стартапы'],
+    sourceUrl: 'https://ethz.ch/en/studies/bachelor/application/non-swiss-matriculation-certificate/admission-prerequisites.html',
+    checkedAt,
+  },
+  {
+    id: 'epfl', name: 'EPFL', shortName: 'EPFL',
+    location: 'Lausanne, Швейцария',
+    summary: 'Технический университет с сильными программами в инженерии, вычислениях и науке.',
+    testPolicy: 'course-dependent',
+    testNote: 'Условия зависят от школьного аттестата; для некоторых квалификаций есть строгий набор предметов.',
+    englishNote: 'Большинство бакалаврских курсов ведётся на французском; проверь языковые требования.',
+    deadlines: 'Сроки и ограничения мест публикуются для каждого нового цикла.',
+    documents: ['Онлайн-заявка', 'Аттестат и оценки', 'Документ личности', 'Подтверждение языка'],
+    opportunities: ['Инженерия', 'Исследования', 'Инновационные лаборатории'],
+    sourceUrl: 'https://www.epfl.ch/education/admission/admission-2/bachelor-admission-criteria-and-application/',
+    checkedAt,
+  },
+  {
+    id: 'tum', name: 'Technical University of Munich', shortName: 'TUM',
+    location: 'Munich, Германия',
+    summary: 'Технический университет с программами в инженерии, науке, вычислениях и менеджменте.',
+    testPolicy: 'course-dependent',
+    testNote: 'Программа может использовать aptitude assessment; иностранным документам может понадобиться uni-assist.',
+    englishNote: 'Нужен немецкий и/или английский в зависимости от языка выбранной программы.',
+    deadlines: 'Сроки зависят от программы; для международных документов начинай проверку заранее.',
+    documents: ['TUMonline', 'Аттестат и оценки', 'Документ uni-assist при необходимости', 'Языковой сертификат'],
+    opportunities: ['Инженерия', 'Стартапы', 'Связи с индустрией'],
+    sourceUrl: 'https://www.tum.de/en/studies/application/bachelor/application-bachelor/',
+    checkedAt,
+  },
+  {
+    id: 'tu-delft', name: 'Delft University of Technology', shortName: 'TU Delft',
+    location: 'Delft, Нидерланды',
+    summary: 'Технический университет, известный инженерией, архитектурой и прикладными науками.',
+    testPolicy: 'course-dependent',
+    testNote: 'Требования, предметы и возможный отбор зависят от конкретной программы.',
+    englishNote: 'Язык и подтверждение владения им зависят от выбранной бакалаврской программы.',
+    deadlines: 'Для программ с numerus fixus дедлайн обычно раньше — проверь страницу программы.',
+    documents: ['Онлайн-заявка', 'Аттестат и оценки', 'Подтверждение языка', 'Документы программы'],
+    opportunities: ['Инженерные проекты', 'Design labs', 'Международная среда'],
+    sourceUrl: 'https://www.tudelft.nl/en/education/admission-and-application/bsc-international-diploma',
+    checkedAt,
+  },
+];

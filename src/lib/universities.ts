@@ -1,10 +1,11 @@
 import { asiaUniversities } from './universityCatalog/asiaUniversities';
-import { getIeltsReadiness, getIeltsTarget } from './ieltsTargets';
 import { ukUniversities } from './universityCatalog/ukUniversities';
 import { usUniversities } from './universityCatalog/usUniversities';
+import { australiaUniversities } from './universityCatalog/australiaUniversities';
+import { europeUniversities } from './universityCatalog/europeUniversities';
 
 export type TestPolicy = 'required' | 'not-considered' | 'course-dependent';
-export type UniversityRegionId = 'usa' | 'uk' | 'asia';
+export type UniversityRegionId = 'usa' | 'uk' | 'asia' | 'australia' | 'europe';
 export type UniversityDirectionId = 'technology' | 'business' | 'medicine' | 'humanities';
 
 export type UniversityDirection = {
@@ -52,12 +53,25 @@ export type ReadinessItem = {
   points: number;
 };
 
-export const universities: University[] = [...usUniversities, ...ukUniversities, ...asiaUniversities];
+export const universities: University[] = [
+  ...usUniversities,
+  ...ukUniversities,
+  ...asiaUniversities,
+  ...australiaUniversities,
+  ...europeUniversities,
+];
 
 export const universityRegions: UniversityRegion[] = [
   { id: 'usa', name: 'США', description: 'Stanford, MIT, Harvard', universities: usUniversities },
   { id: 'uk', name: 'Великобритания', description: 'Oxford, Cambridge, St Andrews', universities: ukUniversities },
   { id: 'asia', name: 'Азия', description: 'NUS, Tsinghua, UTokyo', universities: asiaUniversities },
+  { id: 'australia', name: 'Австралия', description: 'Melbourne, Sydney, ANU', universities: australiaUniversities },
+  { id: 'europe', name: 'Европа', description: 'ETH, EPFL, TUM, TU Delft', universities: europeUniversities },
+];
+
+export const newRegionUniversityIds = [
+  'melbourne', 'sydney', 'anu', 'unsw',
+  'eth-zurich', 'epfl', 'tum', 'tu-delft',
 ];
 
 export const universityDirections: UniversityDirection[] = [
@@ -69,6 +83,7 @@ export const universityDirections: UniversityDirection[] = [
       'stanford', 'mit', 'berkeley', 'princeton', 'yale', 'caltech',
       'oxford', 'cambridge', 'imperial', 'edinburgh', 'manchester',
       'nus', 'ntu-singapore', 'tsinghua', 'tokyo', 'seoul-national', 'hku', 'hkust', 'kaist',
+      ...newRegionUniversityIds,
     ],
   },
   {
@@ -79,6 +94,7 @@ export const universityDirections: UniversityDirection[] = [
       'stanford', 'mit', 'harvard', 'princeton', 'yale',
       'oxford', 'cambridge', 'imperial', 'st-andrews', 'edinburgh', 'lse', 'kings', 'manchester',
       'nus', 'ntu-singapore', 'tsinghua', 'tokyo', 'seoul-national', 'hku', 'hkust',
+      ...newRegionUniversityIds,
     ],
   },
   {
@@ -89,6 +105,7 @@ export const universityDirections: UniversityDirection[] = [
       'stanford', 'harvard', 'berkeley', 'yale',
       'oxford', 'cambridge', 'imperial', 'st-andrews', 'edinburgh', 'kings', 'manchester',
       'nus', 'ntu-singapore', 'tsinghua', 'tokyo', 'seoul-national', 'hku', 'hkust',
+      ...newRegionUniversityIds,
     ],
   },
   {
@@ -99,55 +116,7 @@ export const universityDirections: UniversityDirection[] = [
       'stanford', 'harvard', 'berkeley', 'princeton', 'yale',
       'oxford', 'cambridge', 'st-andrews', 'edinburgh', 'lse', 'kings', 'manchester',
       'nus', 'ntu-singapore', 'tsinghua', 'tokyo', 'seoul-national', 'hku', 'hkust',
+      ...newRegionUniversityIds,
     ],
   },
 ];
-
-export function assessReadiness(university: University, profile: StudentProfile): ReadinessItem[] {
-  const ielts = Number(profile.ielts);
-  const items: ReadinessItem[] = [];
-
-  if (university.testPolicy === 'required') {
-    items.push({
-      label: 'SAT или ACT',
-      detail: profile.hasSatOrAct ? 'Результат уже есть.' : 'Нужно запланировать подготовку и сдачу.',
-      status: profile.hasSatOrAct ? 'ready' : 'attention',
-      points: profile.hasSatOrAct ? 25 : 0,
-    });
-  } else if (university.testPolicy === 'not-considered') {
-    items.push({ label: 'SAT или ACT', detail: 'Не учитывается при поступлении.', status: 'optional', points: 0 });
-  } else {
-    items.push({
-      label: 'Вступительный тест',
-      detail: university.testNote ?? 'Зависит от выбранной программы — проверь страницу курса.',
-      status: 'optional',
-      points: 0,
-    });
-  }
-
-  const ieltsTarget = getIeltsTarget(university.id);
-  const ieltsReadiness = getIeltsReadiness(ielts, ieltsTarget);
-  items.push({
-    label: `IELTS: нужен ${ieltsTarget.toFixed(1)}`,
-    detail: profile.ielts
-      ? `Твой IELTS ${profile.ielts}: готовность к IELTS — ${ieltsReadiness}%.`
-      : `Введи результат. Ориентир для этого вуза — ${ieltsTarget.toFixed(1)}.`,
-    status: ieltsReadiness >= 90 ? 'ready' : 'attention',
-    points: ieltsReadiness * 0.25,
-  });
-
-  items.push({
-    label: 'Эссе',
-    detail: profile.hasEssayDraft ? 'Черновик уже начат.' : 'Начни с истории о себе и своей мотивации.',
-    status: profile.hasEssayDraft ? 'ready' : 'attention',
-    points: profile.hasEssayDraft ? 25 : 0,
-  });
-  items.push({
-    label: 'Рекомендации',
-    detail: profile.hasRecommendations ? 'Учителя выбраны.' : 'Выбери учителей и предупреди их заранее.',
-    status: profile.hasRecommendations ? 'ready' : 'attention',
-    points: profile.hasRecommendations ? 25 : 0,
-  });
-
-  return items;
-}

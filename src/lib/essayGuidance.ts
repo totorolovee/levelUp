@@ -12,7 +12,22 @@ const ucasQuestions = [
   'Что ты сделал вне школы и чему тебя научил этот опыт?',
 ];
 
-export function getEssayGuidance(university: University): EssayGuidance {
+export function getEssayGuidance(
+  university: University,
+  language: 'ru' | 'en' = 'ru',
+): EssayGuidance {
+  if (language === 'en') {
+    return {
+      title: `What to write for ${university.shortName}`,
+      items: [
+        'Use the exact essay or personal statement prompts in the official application.',
+        'Explain your subject choice with specific projects, reading, or independent work.',
+        'Check the current questions, word limits, and required language before submitting.',
+      ],
+      sourceUrl: university.sourceUrl,
+    };
+  }
+
   if (university.id === 'stanford') {
     return {
       title: 'Что написать для Stanford',

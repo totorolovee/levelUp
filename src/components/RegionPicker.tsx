@@ -1,4 +1,6 @@
 import type { UniversityRegion, UniversityRegionId } from '../lib/universities';
+import { useLanguage } from '../lib/language';
+import { getRegionName } from '../lib/universityTranslations';
 
 type Props = {
   regions: UniversityRegion[];
@@ -7,6 +9,7 @@ type Props = {
 };
 
 export function RegionPicker({ regions, selectedIds, onSelect }: Props) {
+  const { language } = useLanguage();
   return (
     <section className="region-picker" aria-labelledby="region-picker-title">
       <div>
@@ -24,8 +27,11 @@ export function RegionPicker({ regions, selectedIds, onSelect }: Props) {
               onClick={() => onSelect(region)}
               type="button"
             >
-              <strong>{isSelected ? '✓ ' : ''}{region.name}</strong>
-              <span>{region.universities.map(({ shortName }) => shortName).slice(0, 3).join(', ')}</span>
+              <strong>
+                {isSelected ? '✓ ' : ''}
+                {getRegionName(region.id, region.name, language)}
+              </strong>
+              <span>{region.universities.map(({ shortName }) => shortName).slice(0, 4).join(', ')}</span>
             </button>
           );
         })}

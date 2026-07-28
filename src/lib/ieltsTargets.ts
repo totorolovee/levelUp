@@ -22,6 +22,10 @@ const ieltsTargets: Record<string, number> = {
   hku: 6.5,
   hkust: 6.5,
   kaist: 6.5,
+  melbourne: 6.5,
+  sydney: 6.5,
+  anu: 6.5,
+  unsw: 6.5,
 };
 
 export function getIeltsTarget(universityId: string): number {

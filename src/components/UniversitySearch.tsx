@@ -1,5 +1,7 @@
 import type { University } from '../lib/universities';
 import { qsRankingSourceUrl, qsWorldRankings2027 } from '../lib/universityRankings';
+import { useLanguage } from '../lib/language';
+import { getUniversityContent } from '../lib/universityTranslations';
 
 type Props = {
   universities: University[];
@@ -16,6 +18,8 @@ export function UniversitySearch({
   onQueryChange,
   onSelect,
 }: Props) {
+  const { language } = useLanguage();
+
   return (
     <section className="university-browser">
       <p className="eyebrow">Шаг 4</p>
@@ -42,7 +46,7 @@ export function UniversitySearch({
                 <strong>{university.shortName}</strong>
                 <small className="university-rank">QS #{qsWorldRankings2027[university.id]}</small>
               </div>
-              <small>{university.location}</small>
+              <small>{getUniversityContent(university, language).location}</small>
             </div>
             <b>→</b>
           </button>

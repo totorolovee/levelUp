@@ -1,4 +1,6 @@
 import type { University } from '../lib/universities';
+import { useLanguage } from '../lib/language';
+import { getUniversityContent } from '../lib/universityTranslations';
 
 export function UniversityDetails({
   university,
@@ -7,36 +9,58 @@ export function UniversityDetails({
   university: University;
   specialty: string;
 }) {
+  const { language } = useLanguage();
+  const content = getUniversityContent(university, language);
+  const labels = language === 'ru'
+    ? {
+        tests: 'Тесты', english: 'Английский', deadlines: 'Дедлайны',
+        prepare: 'Что подготовить', offers: 'Что предлагает',
+        checked: 'Проверено', official: 'Официальные требования ↗',
+      }
+    : {
+        tests: 'Tests', english: 'Language', deadlines: 'Deadlines',
+        prepare: 'What to prepare', offers: 'What it offers',
+        checked: 'Checked', official: 'Official requirements ↗',
+      };
+
   return (
     <article className="university-details">
       <div className="university-title">
         <div>
-          <p className="eyebrow">{university.location}</p>
-          <h2>{university.name}</h2>
+          <p className="eyebrow">{content.location}</p>
+          <h2>{content.name}</h2>
           <span className="selected-specialty">{specialty}</span>
-          <p>{university.summary}</p>
+          <p>{content.summary}</p>
         </div>
-        <span>{university.shortName.slice(0, 2).toUpperCase()}</span>
+        <span>{content.shortName.slice(0, 2).toUpperCase()}</span>
       </div>
       <div className="requirement-grid">
-        <Requirement title="Тесты">
-          {university.testPolicy === 'required'
-            ? 'SAT или ACT обязательны. Проходного балла нет: заявку оценивают целиком.'
-            : university.testPolicy === 'not-considered'
-              ? 'SAT и ACT не учитываются при решении о поступлении.'
-              : university.testNote ?? 'Требования зависят от выбранной программы.'}
+        <Requirement title={labels.tests}>
+          {content.testPolicy === 'required'
+            ? language === 'ru'
+              ? 'SAT или ACT обязательны. Проходного балла нет: заявку оценивают целиком.'
+              : 'SAT or ACT is required. The application is reviewed as a whole.'
+            : content.testPolicy === 'not-considered'
+              ? language === 'ru'
+                ? 'SAT и ACT не учитываются при решении о поступлении.'
+                : 'SAT and ACT are not considered for admission.'
+              : content.testNote ?? (
+                language === 'ru'
+                  ? 'Требования зависят от выбранной программы.'
+                  : 'Requirements depend on the selected program.'
+              )}
         </Requirement>
-        <Requirement title="Английский">{university.englishNote}</Requirement>
-        <Requirement title="Дедлайны">{university.deadlines}</Requirement>
+        <Requirement title={labels.english}>{content.englishNote}</Requirement>
+        <Requirement title={labels.deadlines}>{content.deadlines}</Requirement>
       </div>
       <div className="university-columns">
-        <UniversityList items={university.documents} title="Что подготовить" />
-        <UniversityList items={university.opportunities} title="Что предлагает" />
+        <UniversityList items={content.documents} title={labels.prepare} />
+        <UniversityList items={content.opportunities} title={labels.offers} />
       </div>
       <footer className="university-source">
-        <span>Проверено: {university.checkedAt}</span>
-        <a href={university.sourceUrl} rel="noreferrer" target="_blank">
-          Официальные требования ↗
+        <span>{labels.checked}: {content.checkedAt}</span>
+        <a href={content.sourceUrl} rel="noreferrer" target="_blank">
+          {labels.official}
         </a>
       </footer>
     </article>

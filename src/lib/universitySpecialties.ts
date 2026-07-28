@@ -1,5 +1,6 @@
 import {
   universityRegions,
+  newRegionUniversityIds,
   type UniversityDirection,
   type UniversityDirectionId,
   type UniversityRegion,
@@ -19,7 +20,7 @@ const broad = [
   'nus', 'ntu-singapore', 'tsinghua', 'tokyo', 'seoul-national', 'hku', 'hkust',
 ];
 
-export const universitySpecialties: UniversitySpecialty[] = [
+const baseSpecialties: UniversitySpecialty[] = [
   {
     id: 'computer-science',
     directionId: 'technology',
@@ -43,6 +44,11 @@ export const universitySpecialties: UniversitySpecialty[] = [
   { id: 'international-relations', directionId: 'humanities', name: 'Международные отношения', description: 'Политика и дипломатия', universityIds: ['stanford', 'harvard', 'berkeley', 'princeton', 'yale', 'oxford', 'cambridge', 'st-andrews', 'edinburgh', 'lse', 'kings', 'manchester', 'nus', 'ntu-singapore', 'tsinghua', 'tokyo', 'seoul-national', 'hku'] },
   { id: 'literature', directionId: 'humanities', name: 'Литература и языки', description: 'Тексты, язык и культура', universityIds: ['stanford', 'harvard', 'berkeley', 'princeton', 'yale', 'oxford', 'cambridge', 'st-andrews', 'edinburgh', 'kings', 'manchester', 'nus', 'ntu-singapore', 'tsinghua', 'tokyo', 'seoul-national', 'hku'] },
 ];
+
+export const universitySpecialties = baseSpecialties.map((specialty) => ({
+  ...specialty,
+  universityIds: [...specialty.universityIds, ...newRegionUniversityIds],
+}));
 
 export function filterRegionsForSpecialty(
   specialty: UniversitySpecialty,

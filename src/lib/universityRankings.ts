@@ -22,6 +22,14 @@ export const qsWorldRankings2027: Record<string, string> = {
   hku: '11',
   hkust: '33',
   kaist: '65',
+  melbourne: '19',
+  sydney: '25',
+  anu: '32',
+  unsw: '20',
+  'eth-zurich': '7',
+  epfl: '22',
+  tum: '22',
+  'tu-delft': '47',
 };
 
 export const qsRankingSourceUrl = 'https://www.topuniversities.com/qs-top-uni-wur';

@@ -1,0 +1,68 @@
+import type { University } from '../universities';
+
+const checkedAt = '28 июля 2026';
+const commonDocuments = [
+  'Онлайн-заявка',
+  'Аттестат и транскрипт',
+  'Подтверждение английского',
+  'Паспорт',
+];
+
+export const australiaUniversities: University[] = [
+  {
+    id: 'melbourne', name: 'The University of Melbourne', shortName: 'Melbourne',
+    location: 'Melbourne, Австралия',
+    summary: 'Исследовательский университет с широким выбором наук, бизнеса и гуманитарных программ.',
+    testPolicy: 'course-dependent',
+    testNote: 'Нужна признанная школьная квалификация; предметы и баллы зависят от курса.',
+    englishNote: 'Нужно выполнить требование по английскому выбранного курса.',
+    englishMinimum: 6.5,
+    deadlines: 'Срок зависит от семестра и программы — проверь страницу курса перед подачей.',
+    documents: commonDocuments,
+    opportunities: ['Исследования', 'Melbourne curriculum', 'Международное сообщество'],
+    sourceUrl: 'https://study.unimelb.edu.au/how-to-apply/undergraduate-study/international-applications/entry-requirements',
+    checkedAt,
+  },
+  {
+    id: 'sydney', name: 'The University of Sydney', shortName: 'Sydney',
+    location: 'Sydney, Австралия',
+    summary: 'Крупный университет с программами в технологиях, бизнесе, медицине и гуманитарных науках.',
+    testPolicy: 'course-dependent',
+    testNote: 'Академические требования зависят от квалификации и выбранной программы.',
+    englishNote: 'Нужно подтвердить английский принятым тестом или подходящей квалификацией.',
+    englishMinimum: 6.5,
+    deadlines: 'Даты отличаются по программам и семестрам — проверь официальный календарь.',
+    documents: commonDocuments,
+    opportunities: ['Исследования', 'Обмены', 'Междисциплинарные программы'],
+    sourceUrl: 'https://www.sydney.edu.au/study/applying/how-to-apply/international-students.html',
+    checkedAt,
+  },
+  {
+    id: 'anu', name: 'Australian National University', shortName: 'ANU',
+    location: 'Canberra, Австралия',
+    summary: 'Национальный исследовательский университет с сильными науками и общественными дисциплинами.',
+    testPolicy: 'course-dependent',
+    testNote: 'Нужна признанная школьная квалификация и требования конкретной программы.',
+    englishNote: 'Все поступающие должны выполнить требования ANU по английскому языку.',
+    englishMinimum: 6.5,
+    deadlines: 'Раунды и сроки зависят от набора — проверь текущую международную кампанию.',
+    documents: commonDocuments,
+    opportunities: ['Исследования', 'Политика и международные отношения', 'Кампус в Canberra'],
+    sourceUrl: 'https://study.anu.edu.au/apply/international-applications',
+    checkedAt,
+  },
+  {
+    id: 'unsw', name: 'UNSW Sydney', shortName: 'UNSW',
+    location: 'Sydney, Австралия',
+    summary: 'Исследовательский университет, известный инженерией, технологиями и бизнесом.',
+    testPolicy: 'course-dependent',
+    testNote: 'Нужно выполнить академические требования для своей страны и программы.',
+    englishNote: 'Требуется английский на уровне выбранной программы.',
+    englishMinimum: 6.5,
+    deadlines: 'Проверь сроки текущего intake: они зависят от программы и учебного периода.',
+    documents: commonDocuments,
+    opportunities: ['Инженерные проекты', 'Предпринимательство', 'Индустриальные связи'],
+    sourceUrl: 'https://www.unsw.edu.au/study/how-to-apply/international/entry-requirements',
+    checkedAt,
+  },
+];

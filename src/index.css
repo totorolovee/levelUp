@@ -1157,3 +1157,81 @@ html[data-theme="dark"] .title-screen::after { border-color: rgba(137, 91, 255, 
 html[data-theme="dark"] .title-screen h1 { color: #fff; }
 html[data-theme="dark"] .title-screen h1 span,
 html[data-theme="dark"] .title-content .eyebrow { color: #a98fff; }
+
+/* Фиолетово-синие внутренние акценты ночной темы */
+html[data-theme="dark"] .level-badge,
+html[data-theme="dark"] .next-step,
+html[data-theme="dark"] .reading-experience,
+html[data-theme="dark"] .admission-next-step {
+  background: linear-gradient(135deg, #40356d, #28506c);
+  box-shadow: 0 18px 44px rgba(5, 7, 24, .22);
+}
+html[data-theme="dark"] .coach-avatar,
+html[data-theme="dark"] .goal-roadmap li span,
+html[data-theme="dark"] .admission-invite a,
+html[data-theme="dark"] .evening-checkin button,
+html[data-theme="dark"] .university-title > span {
+  color: #fff;
+  background: linear-gradient(135deg, #7154df, #547fd8);
+}
+html[data-theme="dark"] .next-step button {
+  color: #d9d2ff;
+  background: #292d4c;
+}
+html[data-theme="dark"] .coach-message span,
+html[data-theme="dark"] .admission-invite span,
+html[data-theme="dark"] .goal-why span,
+html[data-theme="dark"] .readiness-heading > strong,
+html[data-theme="dark"] .requirement-grid span,
+html[data-theme="dark"] .university-option b,
+html[data-theme="dark"] .ranking-source,
+html[data-theme="dark"] .university-source a,
+html[data-theme="dark"] .essay-details a,
+html[data-theme="dark"] .essay-details .essay-specialty { color: #a997ff; }
+html[data-theme="dark"] .university-option > span,
+html[data-theme="dark"] .university-option-title .university-rank,
+html[data-theme="dark"] .selected-specialty {
+  color: #cfc6ff;
+  background: #353154;
+}
+html[data-theme="dark"] .profile-check input,
+html[data-theme="dark"] .card-progress-slider { accent-color: #8870df; }
+html[data-theme="dark"] input:focus,
+html[data-theme="dark"] textarea:focus,
+html[data-theme="dark"] select:focus { outline-color: #6754aa; border-color: #8b73df; }
+
+html[data-theme="dark"] .genre-grid button,
+html[data-theme="dark"] .book-card,
+html[data-theme="dark"] .book-about {
+  color: #f0effb;
+  border-color: #414668;
+  background: linear-gradient(145deg, #272b49, #20243d);
+  box-shadow: 0 16px 38px rgba(4, 6, 18, .18);
+}
+html[data-theme="dark"] .genre-grid button:hover { border-color: #8b73df; }
+html[data-theme="dark"] .genre-grid button > span,
+html[data-theme="dark"] .book-actions button {
+  color: #cec5ff;
+  background: #343052;
+}
+html[data-theme="dark"] .genre-grid b,
+html[data-theme="dark"] .book-details > span,
+html[data-theme="dark"] .book-takeaway strong { color: #a997ff; }
+html[data-theme="dark"] .book-actions button:first-child,
+html[data-theme="dark"] .book-progress > div span {
+  color: #fff;
+  background: linear-gradient(90deg, #7357df, #587fd8);
+}
+html[data-theme="dark"] .book-actions button:disabled { color: #aaa0dd; background: #302d4c; }
+html[data-theme="dark"] .book-progress > div { background: #191d34; }
+html[data-theme="dark"] .book-about > button { color: #d5d2e7; background: #30344f; }
+html[data-theme="dark"] .level-badge span,
+html[data-theme="dark"] .level-badge p,
+html[data-theme="dark"] .reading-experience p,
+html[data-theme="dark"] .experience-heading span,
+html[data-theme="dark"] .experience-heading small { color: #c2c4de; }
+html[data-theme="dark"] .readiness-item.ready > span { color: #bcd7ff; background: #32466b; }
+html[data-theme="dark"] .readiness-item.optional > span { color: #d1c9f5; background: #3b365b; }
+
+.chance-disclaimer { display: block; margin-top: 12px; color: #73788f; line-height: 1.45; }
+html[data-theme="dark"] .chance-disclaimer { color: #aeb3ca; }

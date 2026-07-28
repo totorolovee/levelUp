@@ -40,14 +40,21 @@ export function PortfolioUniversityMatches({
         </p>
       ) : (
         <div className="portfolio-match-grid">
-          {matches.map(({ university, score, reasons }) => (
+          {matches.map(({ university, chanceLow, chanceHigh, reasons }) => (
             <button key={university.id} onClick={() => onSelect(university)} type="button">
-              <span>{score}% match</span>
+              <span>≈ {chanceLow}–{chanceHigh}%</span>
               <strong>{university.shortName}</strong>
               <small>{reasons.map((reason) => reason[language]).join(' · ')}</small>
             </button>
           ))}
         </div>
+      )}
+      {hasPortfolio && (
+        <small className="chance-disclaimer">
+          {isRussian
+            ? 'Ориентировочная оценка, не гарантия поступления: для точного расчёта нужны оценки, эссе и статистика конкретной программы.'
+            : 'An estimate, not an admission guarantee. Grades, essays, and program-level data are needed for a fuller assessment.'}
+        </small>
       )}
     </section>
   );

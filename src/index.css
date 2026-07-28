@@ -1020,3 +1020,98 @@ html[data-theme="dark"] .rank-panel,
 html[data-theme="dark"] .balance-card {
   background: linear-gradient(135deg, #37305f, #284761);
 }
+html[data-theme="dark"] .coach-input,
+html[data-theme="dark"] .coach-dialog,
+html[data-theme="dark"] .goal-why,
+html[data-theme="dark"] .goal-roadmap,
+html[data-theme="dark"] .evening-checkin,
+html[data-theme="dark"] .book-card,
+html[data-theme="dark"] .university-browser,
+html[data-theme="dark"] .choice-step,
+html[data-theme="dark"] .region-picker,
+html[data-theme="dark"] .university-details,
+html[data-theme="dark"] .student-profile,
+html[data-theme="dark"] .readiness-panel,
+html[data-theme="dark"] .essay-details,
+html[data-theme="dark"] .sat-details {
+  border-color: #414668;
+  background: linear-gradient(145deg, #262a49, #20243e);
+  box-shadow: 0 18px 42px rgba(4, 6, 18, .18);
+}
+html[data-theme="dark"] .daily-note,
+html[data-theme="dark"] .ai-data-note,
+html[data-theme="dark"] .coach-message,
+html[data-theme="dark"] .admission-invite,
+html[data-theme="dark"] .book-takeaway {
+  border-color: #49416d;
+  background: linear-gradient(120deg, #342e58, #273a57);
+}
+html[data-theme="dark"] .goal-roadmap li,
+html[data-theme="dark"] .requirement-grid > div,
+html[data-theme="dark"] .university-option,
+html[data-theme="dark"] .direction-option,
+html[data-theme="dark"] .specialty-option,
+html[data-theme="dark"] .region-option,
+html[data-theme="dark"] .profile-check,
+html[data-theme="dark"] .readiness-item,
+html[data-theme="dark"] .profile-stats div,
+html[data-theme="dark"] .achievement,
+html[data-theme="dark"] .ai-answer {
+  border-color: #3e4364;
+  background: linear-gradient(145deg, #242844, #20243d);
+}
+html[data-theme="dark"] .profile-tabs,
+html[data-theme="dark"] .auth-tabs { background: #1b1f37; }
+html[data-theme="dark"] .profile-tabs button.active,
+html[data-theme="dark"] .card .auth-tabs button.active {
+  color: #f4f2ff;
+  background: linear-gradient(135deg, #6550bd, #815acb);
+}
+html[data-theme="dark"] .university-option.selected,
+html[data-theme="dark"] .direction-option.selected,
+html[data-theme="dark"] .specialty-option.selected,
+html[data-theme="dark"] .region-option.selected {
+  border-color: #8870de;
+  background: linear-gradient(145deg, #37305d, #292b50);
+}
+html[data-theme="dark"] .stock-card:hover,
+html[data-theme="dark"] .stock-card.selected { border-color: #8d75e5; box-shadow: inset 0 0 0 1px #8d75e5; }
+html[data-theme="dark"] .demo-badge { color: #c4c7de; background: #303550; }
+html[data-theme="dark"] .avatar-uploader button,
+html[data-theme="dark"] .card .google-auth,
+html[data-theme="dark"] .sat-resources a,
+html[data-theme="dark"] .goal-controls > button,
+html[data-theme="dark"] .category-toolbar button {
+  color: #d8d3f5;
+  border-color: #484d70;
+  background: #292d4b;
+}
+html[data-theme="dark"] .achievement.bronze,
+html[data-theme="dark"] .achievement.silver,
+html[data-theme="dark"] .achievement.gold {
+  border-color: #554b7a;
+  background: linear-gradient(145deg, #302b50, #262944);
+}
+html[data-theme="dark"] .header-login,
+html[data-theme="dark"] .header-username span,
+html[data-theme="dark"] .market-info-icon,
+html[data-theme="dark"] .ticker-logo {
+  color: #fff;
+  background: linear-gradient(135deg, #7053e3, #9362f2);
+}
+html[data-theme="dark"] .scroll-link,
+html[data-theme="dark"] .section-arrow,
+html[data-theme="dark"] .market-explainer strong,
+html[data-theme="dark"] .coach-question span,
+html[data-theme="dark"] .profile-stats dd,
+html[data-theme="dark"] .decision-facts dt,
+html[data-theme="dark"] .saved-lesson span { color: #aa98ff; }
+html[data-theme="dark"] .title-copy,
+html[data-theme="dark"] .title-footer,
+html[data-theme="dark"] .hero-copy,
+html[data-theme="dark"] .page-intro p,
+html[data-theme="dark"] .dashboard-intro p,
+html[data-theme="dark"] .book-author,
+html[data-theme="dark"] .journal-card p,
+html[data-theme="dark"] .company-profile > p { color: #afb4cf; }
+html[data-theme="dark"] ::selection { color: #fff; background: #7459df; }

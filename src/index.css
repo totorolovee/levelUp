@@ -404,10 +404,12 @@ button:disabled { opacity: .45; cursor: not-allowed; }
 .profile-avatar { display: grid; width: 82px; height: 82px; flex: 0 0 auto; place-items: center; border-radius: 24px; color: #fff; background: #39764f; font-family: Unbounded, sans-serif; font-size: 34px; font-weight: 800; }
 .profile-identity h2 { margin: 0 0 5px; font-size: 27px; }
 .profile-identity p:last-child { margin: 0; color: #69716c; }
-.profile-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 28px 0 0; }
+.profile-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 28px 0 0; }
 .profile-stats div { padding: 18px; border-radius: 14px; background: #f0f3ef; }
 .profile-stats dt { color: #69716c; font-size: 11px; font-weight: 800; text-transform: uppercase; }
 .profile-stats dd { margin: 8px 0 0; color: #255e3a; font-size: 24px; font-weight: 850; }
+.profile-stats small { color: #69716c; font-size: 11px; }
+.profile-stats .streak-stat { background: #f5ead2; }
 .profile-status { color: #69716c; }
 .decision-facts { display: grid; gap: 10px; margin: 18px 0; }
 .decision-facts div { padding-left: 12px; border-left: 2px solid #dfe5dd; }

@@ -1,10 +1,12 @@
 import { supabase } from './supabase';
+import { recordAndLoadDailyStreak } from './dailyActivity';
 
 export type UserProfile = {
   email: string;
   displayName: string;
   avatarLetter: string;
   entriesCount: number;
+  dailyStreak: number;
   registeredAt: string;
 };
 
@@ -26,12 +28,14 @@ export async function loadCurrentProfile(): Promise<UserProfile | null> {
     .select('id', { count: 'exact', head: true });
 
   if (countError) throw countError;
+  const dailyStreak = await recordAndLoadDailyStreak(user.id);
 
   return {
     email,
     displayName,
     avatarLetter: displayName.charAt(0).toLocaleUpperCase('ru-RU') || '?',
     entriesCount: count ?? 0,
+    dailyStreak,
     registeredAt: user.created_at,
   };
 }

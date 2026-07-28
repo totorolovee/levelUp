@@ -20,6 +20,11 @@ export function ProfileCard({ profile }: { profile: UserProfile }) {
         </div>
       </div>
       <dl className="profile-stats">
+        <div className="streak-stat">
+          <dt>Daily streak</dt>
+          <dd>🔥 {profile.dailyStreak}</dd>
+          <small>дней подряд</small>
+        </div>
         <div>
           <dt>Записей создано</dt>
           <dd>{profile.entriesCount}</dd>

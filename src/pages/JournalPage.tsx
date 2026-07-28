@@ -51,6 +51,9 @@ export function JournalPage() {
               <small>
                 {decision.quantity} шт. · {formatMoney(decision.price)} за акцию
               </small>
+              <p className={decision.analysisApproved ? 'success' : 'coach-error'}>
+                AI: {decision.analysisFeedback}
+              </p>
               <DecisionReview
                 lesson={decision.lesson}
                 onSave={(lesson) => reviewDecision(decision.id, lesson)}

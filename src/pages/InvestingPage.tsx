@@ -6,6 +6,7 @@ import { CompanyProfile } from '../components/CompanyProfile';
 import { InvestorProgress } from '../components/InvestorProgress';
 import { StockCard } from '../components/StockCard';
 import { usePortfolio } from '../lib/portfolio';
+import { evaluateInvestment } from '../lib/investmentEvaluator';
 import { formatMoney, stocks } from '../lib/stocks';
 import { useLiveMarket } from '../lib/useLiveMarket';
 
@@ -21,15 +22,17 @@ export function InvestingPage() {
   const { addDecision, balance, decisions } = usePortfolio();
   const score = Math.min(
     100,
-    decisions.length * 30 + decisions.filter((item) => item.lesson).length * 20,
+    decisions.filter((item) => item.analysisApproved).length * 30
+      + decisions.filter((item) => item.lesson).length * 20,
   );
   const ownedBySymbol = decisions.reduce<Record<string, number>>((totals, decision) => {
     totals[decision.symbol] = (totals[decision.symbol] ?? 0) + decision.quantity;
     return totals;
   }, {});
 
-  const buyStock = (decision: BuyDecision) => {
+  const buyStock = async (decision: BuyDecision) => {
     if (!selected) return;
+    const evaluation = await evaluateInvestment(selected.name, decision);
     const purchaseTotal = selected.price * decision.quantity;
     const remainingBalance = balance - purchaseTotal;
     addDecision({
@@ -42,10 +45,12 @@ export function InvestingPage() {
       invalidation: decision.invalidation,
       horizon: decision.horizon,
       confidence: decision.confidence,
+      analysisApproved: evaluation.approved,
+      analysisFeedback: evaluation.feedback,
     });
     setNotice(
       `${decision.quantity} ${selected.symbol} куплено за ${formatMoney(purchaseTotal)}. `
-      + `Осталось ${formatMoney(remainingBalance)}.`,
+      + `Осталось ${formatMoney(remainingBalance)}. ${evaluation.feedback}`,
     );
   };
 

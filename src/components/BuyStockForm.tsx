@@ -7,7 +7,7 @@ const MIN_ANSWER_LENGTH = 5;
 type BuyStockFormProps = {
   stock: Stock;
   balance: number;
-  onBuy: (decision: BuyDecision) => void;
+  onBuy: (decision: BuyDecision) => Promise<void>;
 };
 
 export type BuyDecision = {
@@ -26,19 +26,25 @@ export function BuyStockForm({ stock, balance, onBuy }: BuyStockFormProps) {
   const [invalidation, setInvalidation] = useState('');
   const [horizon, setHorizon] = useState('1 год');
   const [confidence, setConfidence] = useState(5);
+  const [isChecking, setIsChecking] = useState(false);
   const total = stock.price * quantity;
   const answersReady = reason.trim().length >= MIN_ANSWER_LENGTH
     && risk.trim().length >= MIN_ANSWER_LENGTH;
   const canBuy = quantity > 0 && total <= balance
     && answersReady && invalidation.trim().length >= MIN_ANSWER_LENGTH;
 
-  const submit = (event: React.FormEvent) => {
+  const submit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (!canBuy) return;
-    onBuy({ quantity, reason: reason.trim(), risk: risk.trim(), invalidation: invalidation.trim(), horizon, confidence });
-    setReason('');
-    setRisk('');
-    setInvalidation('');
+    if (!canBuy || isChecking) return;
+    setIsChecking(true);
+    try {
+      await onBuy({ quantity, reason: reason.trim(), risk: risk.trim(), invalidation: invalidation.trim(), horizon, confidence });
+      setReason('');
+      setRisk('');
+      setInvalidation('');
+    } finally {
+      setIsChecking(false);
+    }
   };
 
   return (
@@ -106,8 +112,8 @@ export function BuyStockForm({ stock, balance, onBuy }: BuyStockFormProps) {
           ? `Почему именно ${stock.name}, а не просто популярная компания?`
           : 'Ты описал возможный рост. Какие факты могут доказать обратное?'}
       </p>
-      <button disabled={!canBuy} type="submit">
-        Добавить в портфель
+      <button disabled={!canBuy || isChecking} type="submit">
+        {isChecking ? 'AI проверяет ответы…' : 'Добавить в портфель'}
       </button>
       {total > balance && <p className="error">Недостаточно виртуальных денег.</p>}
     </form>

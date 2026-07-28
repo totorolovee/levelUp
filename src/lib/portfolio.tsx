@@ -11,6 +11,8 @@ export type Decision = {
   invalidation: string;
   horizon: string;
   confidence: number;
+  analysisApproved: boolean;
+  analysisFeedback: string;
   lesson?: string;
   createdAt: Date;
 };

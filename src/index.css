@@ -73,6 +73,7 @@ blockquote { margin: 32px 0 20px; font-size: 29px; font-weight: 750; line-height
 .title-content h1 { animation: intro-rise .65s .22s cubic-bezier(.22, 1, .36, 1) both; }
 .title-content .title-copy { animation: intro-rise .6s .36s ease both; }
 .title-content .scroll-link { animation: intro-rise .55s .48s ease both, gentle-nudge 2.4s 1.2s ease-in-out infinite; }
+.title-content .guest-login { animation: intro-rise .55s .48s ease both; }
 .title-footer { animation: intro-fade .7s .65s ease both; }
 .title-mark { animation: mark-arrive .8s .18s cubic-bezier(.22, 1, .36, 1) both, mark-float 5s 1s ease-in-out infinite; }
 .title-screen::after { animation: shape-drift 9s ease-in-out infinite alternate; }
@@ -113,6 +114,7 @@ blockquote { margin: 32px 0 20px; font-size: 29px; font-weight: 750; line-height
 .title-copy { max-width: 600px; color: #526058; font-size: 20px; line-height: 1.65; }
 .scroll-link { display: inline-block; margin-top: 18px; padding: 0 0 4px; border: 0; border-bottom: 1px solid transparent; border-radius: 0; color: #255e3a; background: transparent; font-weight: 800; cursor: pointer; transition: border-color .2s, transform .2s; }
 .scroll-link:hover { border-color: #39764f; transform: translateY(-2px); }
+.guest-login { min-width: 120px; justify-content: center; }
 .title-footer { position: absolute !important; left: 8%; bottom: 38px; display: flex; gap: 8px; color: #69716c; font-size: 12px; }
 .title-footer strong { color: #255e3a; }
 .dashboard-intro { display: flex; justify-content: space-between; align-items: end; gap: 40px; padding: 84px 0 48px; scroll-margin-top: 24px; }
@@ -625,6 +627,7 @@ html[data-theme="dark"] ::selection { color: #101713; background: #83bd94; }
 @media (prefers-reduced-motion: reduce) {
   .page-transition, .sections-reveal, .title-content .eyebrow,
   .title-content h1, .title-content .title-copy, .title-content .scroll-link,
+  .title-content .guest-login,
   .title-footer, .title-mark, .title-screen::after { animation: none; }
   .title-screen { transition: none; }
   button, a[href] { transition: none; }

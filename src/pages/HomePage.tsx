@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AppHeader } from '../components/AppHeader';
 import { SectionCard } from '../components/SectionCard';
+import { SmoothLink } from '../components/SmoothLink';
+import { supabase } from '../lib/supabase';
 
 export function HomePage() {
+  const [isSignedIn, setIsSignedIn] = useState<boolean | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [areSectionsVisible, setAreSectionsVisible] = useState(false);
   const today = new Intl.DateTimeFormat('ru-RU', {
@@ -10,6 +13,19 @@ export function HomePage() {
     day: 'numeric',
     month: 'long',
   }).format(new Date());
+
+  useEffect(() => {
+    void supabase.auth.getSession().then(({ data }) => {
+      setIsSignedIn(Boolean(data.session));
+    });
+    const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+      const hasSession = Boolean(session);
+      setIsSignedIn(hasSession);
+      if (!hasSession) setAreSectionsVisible(false);
+    });
+
+    return () => data.subscription.unsubscribe();
+  }, []);
 
   const revealSections = () => {
     setIsTransitioning(true);
@@ -36,9 +52,16 @@ export function HomePage() {
             Ставь цели, читай, учись принимать умные решения и каждый день
             становись немного лучше.
           </p>
-          <button className="scroll-link" onClick={revealSections} type="button">
-            Выбрать направление ↓
-          </button>
+          {isSignedIn && (
+            <button className="scroll-link" onClick={revealSections} type="button">
+              Выбрать направление ↓
+            </button>
+          )}
+          {isSignedIn === false && (
+            <SmoothLink className="primary-link guest-login" href="/login">
+              Войти
+            </SmoothLink>
+          )}
         </div>
         <div className="title-footer">
           <span>Создано</span>

@@ -37,7 +37,6 @@ export function ProfilePage() {
         <div>
           <p className="eyebrow">Мой LevelUp</p>
           <h1>Твой прогресс в одном месте.</h1>
-          <p>Данные профиля загружаются из твоего аккаунта Supabase.</p>
         </div>
       </section>
       {state.status === 'loading' && <p className="profile-status">Загружаю профиль…</p>}

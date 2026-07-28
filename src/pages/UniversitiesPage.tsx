@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { AppHeader } from '../components/AppHeader';
 import { DirectionPicker } from '../components/DirectionPicker';
 import { ReadinessPanel } from '../components/ReadinessPanel';
@@ -22,6 +22,12 @@ import {
 import { qsWorldRankings2027 } from '../lib/universityRankings';
 import { useLanguage } from '../lib/language';
 import { getSpecialtyTranslation } from '../lib/universityTranslations';
+import { PortfolioUniversityMatches } from '../components/PortfolioUniversityMatches';
+import {
+  emptyAdmissionPortfolio,
+  loadAdmissionPortfolio,
+  type AdmissionPortfolio,
+} from '../lib/admissionPortfolio';
 
 const initialProfile: StudentProfile = {
   ielts: '',
@@ -43,6 +49,20 @@ export function UniversitiesPage() {
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState<University>(initialRegions[0].universities[0]);
   const [profile, setProfile] = useState<StudentProfile>(initialProfile);
+  const [portfolio, setPortfolio] = useState<AdmissionPortfolio>(emptyAdmissionPortfolio);
+
+  useEffect(() => {
+    loadAdmissionPortfolio()
+      .then((saved) => {
+        setPortfolio(saved);
+        setProfile((current) => ({
+          ...current,
+          ielts: saved.ielts,
+          hasSatOrAct: Boolean(saved.satScore),
+        }));
+      })
+      .catch(() => undefined);
+  }, []);
   const selectedUniversities = useMemo(
     () => selectedRegions
       .flatMap((region) => region.universities)
@@ -128,6 +148,12 @@ export function UniversitiesPage() {
         onSelect={selectRegion}
         regions={regionsForSpecialty}
         selectedIds={selectedRegions.map(({ id }) => id)}
+      />
+      <PortfolioUniversityMatches
+        onSelect={setSelected}
+        portfolio={portfolio}
+        specialty={specialtyDisplayName}
+        universities={selectedUniversities}
       />
       <div className="university-layout">
         <UniversitySearch

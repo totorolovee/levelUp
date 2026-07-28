@@ -25,29 +25,35 @@ export async function evaluateInvestment(
     `Главный риск: ${decision.risk}`,
     `Пересмотрю решение, если: ${decision.invalidation}`,
   ].join('\n');
-  const { data, error } = await supabase.functions.invoke<AiResponse>('ai', {
-    body: {
-      prompt,
-      system: `${SYSTEM_PROMPT} ${
-        language === 'en' ? 'Write feedback only in English.' : 'Пиши feedback только по-русски.'
-      }`,
-    },
-  });
-  if (error || typeof data?.text !== 'string') {
-    return { approved: false, feedback: 'AI не смог проверить ответы — баллы не начислены.' };
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    const { data, error } = await supabase.functions.invoke<AiResponse>('ai', {
+      body: {
+        prompt,
+        system: `${SYSTEM_PROMPT} ${
+          language === 'en' ? 'Write feedback only in English.' : 'Пиши feedback только по-русски.'
+        }`,
+      },
+    });
+    if (error || typeof data?.text !== 'string') continue;
+    const json = data.text.match(/\{[\s\S]*\}/)?.[0];
+    if (!json) continue;
+    try {
+      const result = JSON.parse(json) as Partial<Evaluation>;
+      if (typeof result.approved !== 'boolean') continue;
+      return {
+        approved: result.approved,
+        feedback: typeof result.feedback === 'string'
+          ? result.feedback.slice(0, 240)
+          : result.approved ? 'Ответы приняты.' : 'Ответы нужно сделать конкретнее.',
+      };
+    } catch {
+      // Вторая попытка исправляет редкий невалидный JSON от модели.
+    }
   }
-
-  try {
-    const cleanText = data.text.replace(/^```json\s*|\s*```$/g, '').trim();
-    const result = JSON.parse(cleanText) as Partial<Evaluation>;
-    if (typeof result.approved !== 'boolean') throw new Error('Invalid AI response');
-    return {
-      approved: result.approved,
-      feedback: typeof result.feedback === 'string'
-        ? result.feedback.slice(0, 240)
-        : result.approved ? 'Ответы приняты.' : 'Ответы нужно сделать конкретнее.',
-    };
-  } catch {
-    return { approved: false, feedback: 'AI не смог распознать ответы — баллы не начислены.' };
-  }
+  return {
+    approved: false,
+    feedback: language === 'ru'
+      ? 'AI временно не смог проверить ответы — баллы не начислены.'
+      : 'AI could not review the answers right now, so no points were awarded.',
+  };
 }

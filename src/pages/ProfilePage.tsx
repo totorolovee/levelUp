@@ -55,11 +55,12 @@ export function ProfilePage() {
             status: 'ready',
             profile: { ...state.profile, avatarUrl },
           })}
-          onNameChange={(displayName) => setState({
+          onNameChange={(displayName, usernameChangeAvailableAt) => setState({
             status: 'ready',
             profile: {
               ...state.profile,
               displayName,
+              usernameChangeAvailableAt,
               avatarLetter: displayName.charAt(0).toLocaleUpperCase('ru-RU'),
             },
           })}

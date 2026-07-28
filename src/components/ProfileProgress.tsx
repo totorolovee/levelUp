@@ -24,7 +24,15 @@ export function ProfileProgress({ profile }: { profile: UserProfile }) {
       </div>
       <div className="progress-cards">
         <article><span>🔥</span><strong>{profile.dailyStreak}</strong><small>{isRussian ? 'дней подряд' : 'day streak'}</small></article>
-        <article><span>{league.icon}</span><strong>{isRussian ? league.ru : league.en}</strong><small>{isRussian ? 'текущая лига' : 'current league'}</small></article>
+        <article>
+          <span>{league.icon}</span>
+          <strong>{isRussian ? league.ru : league.en}</strong>
+          <small>
+            {profile.leaguePosition
+              ? `${isRussian ? 'место' : 'place'} #${profile.leaguePosition}`
+              : isRussian ? 'место пока не определено' : 'place not ranked yet'}
+          </small>
+        </article>
         <article><span>XP</span><strong>{profile.xp}</strong><small>{isRussian ? 'общий опыт' : 'total experience'}</small></article>
       </div>
     </section>

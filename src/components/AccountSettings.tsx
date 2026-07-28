@@ -7,7 +7,7 @@ import { AvatarUploader } from './AvatarUploader';
 type Props = {
   profile: UserProfile;
   onAvatarChange: (url: string) => void;
-  onNameChange: (name: string) => void;
+  onNameChange: (name: string, nextChangeAt: string) => void;
 };
 
 export function AccountSettings({ profile, onAvatarChange, onNameChange }: Props) {
@@ -16,6 +16,15 @@ export function AccountSettings({ profile, onAvatarChange, onNameChange }: Props
   const [message, setMessage] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const isRussian = language === 'ru';
+  const canChangeUsername = !profile.usernameChangeAvailableAt
+    || new Date(profile.usernameChangeAvailableAt) <= new Date();
+  const nextChangeDate = profile.usernameChangeAvailableAt
+    ? new Intl.DateTimeFormat(isRussian ? 'ru-RU' : 'en-US', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    }).format(new Date(profile.usernameChangeAvailableAt))
+    : null;
   const registrationDate = new Intl.DateTimeFormat(isRussian ? 'ru-RU' : 'en-US', {
     day: 'numeric',
     month: 'long',
@@ -26,11 +35,14 @@ export function AccountSettings({ profile, onAvatarChange, onNameChange }: Props
     setIsSaving(true);
     setMessage('');
     try {
-      const savedName = await updateCurrentUsername(username);
-      onNameChange(savedName);
+      const result = await updateCurrentUsername(username);
+      onNameChange(result.displayName, result.nextChangeAt);
       setMessage(isRussian ? 'Username сохранён.' : 'Username saved.');
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : 'Could not save username.');
+      const isCooldown = error instanceof Error && error.message.includes('once every 14 days');
+      setMessage(isCooldown
+        ? isRussian ? 'Username можно менять только раз в 2 недели.' : 'Username can only be changed once every 2 weeks.'
+        : error instanceof Error ? error.message : 'Could not save username.');
     } finally {
       setIsSaving(false);
     }
@@ -54,13 +66,19 @@ export function AccountSettings({ profile, onAvatarChange, onNameChange }: Props
             <input
               maxLength={30}
               minLength={2}
+              disabled={!canChangeUsername}
               onChange={(event) => setUsername(event.target.value)}
               value={username}
             />
-            <button disabled={isSaving || username.trim().length < 2} onClick={saveUsername} type="button">
+            <button disabled={!canChangeUsername || isSaving || username.trim().length < 2} onClick={saveUsername} type="button">
               {isSaving ? '…' : isRussian ? 'Сохранить' : 'Save'}
             </button>
           </div>
+          {!canChangeUsername && nextChangeDate && (
+            <small>
+              {isRussian ? `Следующее изменение: ${nextChangeDate}` : `Next change: ${nextChangeDate}`}
+            </small>
+          )}
         </label>
         <label>
           Email

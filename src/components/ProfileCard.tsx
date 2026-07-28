@@ -12,7 +12,7 @@ export function ProfileCard({
 }: {
   profile: UserProfile;
   onAvatarChange: (url: string) => void;
-  onNameChange: (name: string) => void;
+  onNameChange: (name: string, nextChangeAt: string) => void;
 }) {
   const { language } = useLanguage();
   const [tab, setTab] = useState<'settings' | 'progress' | 'achievements'>('settings');

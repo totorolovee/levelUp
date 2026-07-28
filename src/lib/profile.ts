@@ -1,12 +1,17 @@
 import { supabase } from './supabase';
 import { recordAndLoadDailyStreak } from './dailyActivity';
+import { loadExperience } from './experience';
 
 export type UserProfile = {
   email: string;
   displayName: string;
   avatarLetter: string;
-  entriesCount: number;
   dailyStreak: number;
+  xp: number;
+  rankName: string;
+  nextRankName: string | null;
+  xpToNextRank: number;
+  rankProgress: number;
   registeredAt: string;
 };
 
@@ -23,19 +28,15 @@ export async function loadCurrentProfile(): Promise<UserProfile | null> {
   const displayName = typeof metadataName === 'string' && metadataName.trim()
     ? metadataName.trim()
     : email.split('@')[0];
-  const { count, error: countError } = await supabase
-    .from('entries')
-    .select('id', { count: 'exact', head: true });
-
-  if (countError) throw countError;
-  const dailyStreak = await recordAndLoadDailyStreak(user.id);
+  const activity = await recordAndLoadDailyStreak(user.id);
+  const experience = await loadExperience(activity.totalActiveDays);
 
   return {
     email,
     displayName,
     avatarLetter: displayName.charAt(0).toLocaleUpperCase('ru-RU') || '?',
-    entriesCount: count ?? 0,
-    dailyStreak,
+    dailyStreak: activity.streak,
+    ...experience,
     registeredAt: user.created_at,
   };
 }

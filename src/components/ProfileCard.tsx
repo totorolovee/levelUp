@@ -19,6 +19,28 @@ export function ProfileCard({ profile }: { profile: UserProfile }) {
           <p>{profile.email}</p>
         </div>
       </div>
+      <div className="rank-panel">
+        <div>
+          <span>Текущий ранг</span>
+          <strong>{profile.rankName}</strong>
+        </div>
+        <p>{profile.xp} XP</p>
+        <div
+          aria-label={`Прогресс ранга: ${profile.rankProgress}%`}
+          className="rank-progress"
+          role="progressbar"
+          aria-valuemax={100}
+          aria-valuemin={0}
+          aria-valuenow={profile.rankProgress}
+        >
+          <span style={{ width: `${profile.rankProgress}%` }} />
+        </div>
+        <small>
+          {profile.nextRankName
+            ? `${profile.xpToNextRank} XP до ранга «${profile.nextRankName}»`
+            : 'Достигнут высший ранг'}
+        </small>
+      </div>
       <dl className="profile-stats">
         <div className="streak-stat">
           <dt>Daily streak</dt>
@@ -26,8 +48,9 @@ export function ProfileCard({ profile }: { profile: UserProfile }) {
           <small>дней подряд</small>
         </div>
         <div>
-          <dt>Записей создано</dt>
-          <dd>{profile.entriesCount}</dd>
+          <dt>Опыт</dt>
+          <dd>{profile.xp} XP</dd>
+          <small>чтение и активность</small>
         </div>
         <div>
           <dt>Дата регистрации</dt>

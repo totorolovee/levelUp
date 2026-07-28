@@ -37,5 +37,5 @@ export async function recordAndLoadDailyStreak(userId: string) {
     checkedDate.setDate(checkedDate.getDate() - 1);
   }
 
-  return streak;
+  return { streak, totalActiveDays: activeDates.size };
 }

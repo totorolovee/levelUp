@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { AppHeader } from '../components/AppHeader';
 import { SectionCard } from '../components/SectionCard';
 import { SmoothLink } from '../components/SmoothLink';
+import { HeroDashboardPreview } from '../components/HeroDashboardPreview';
 import { supabase } from '../lib/supabase';
 
 export function HomePage() {
@@ -42,7 +43,6 @@ export function HomePage() {
     <main className="shell">
       <AppHeader />
       <section className={isTransitioning ? 'title-screen leaving' : 'title-screen'}>
-        <div className="title-mark">L</div>
         <div className="title-content">
           <p className="eyebrow">Твоя жизнь. Только на уровень выше.</p>
           <h1>
@@ -63,6 +63,7 @@ export function HomePage() {
             </SmoothLink>
           )}
         </div>
+        <HeroDashboardPreview />
         <div className="title-footer">
           <span>Создано</span>
           <strong>Kassenov Alimzhan</strong>
@@ -84,35 +85,35 @@ export function HomePage() {
           </section>
           <section className="section-grid" aria-label="Разделы приложения">
             <SectionCard
-              accent="#dfeee4"
+              accent="#7559ff"
               description="Большие цели и маленькие ежедневные шаги"
               href="/goals"
               icon="◎"
               title="Goals"
             />
             <SectionCard
-              accent="#eee8d8"
+              accent="#a45cff"
               description="Запоминай главные идеи из прочитанного"
               href="/reading"
               icon="▤"
               title="Reading"
             />
             <SectionCard
-              accent="#e4e4f1"
+              accent="#2d8cff"
               description="Выбирай направление, страну и подходящий университет"
               href="/universities"
               icon="◇"
               title="Universities"
             />
             <SectionCard
-              accent="#dce8ed"
+              accent="#27c2f3"
               description="Виртуальный портфель и журнал решений"
               href="/investing"
               icon="↗"
               title="Investing"
             />
             <SectionCard
-              accent="#eee1e1"
+              accent="#e65fb7"
               description="Понимай свои эмоции, энергию и привычки"
               icon="♡"
               title="Reflection"

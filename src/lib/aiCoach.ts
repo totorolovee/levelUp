@@ -14,9 +14,12 @@ type CoachData = {
   error?: unknown;
 };
 
-export async function askAiCoach(prompt: string) {
+export async function askAiCoach(prompt: string, language: 'ru' | 'en' = 'ru') {
+  const languageRule = language === 'en'
+    ? 'Respond only in clear English.'
+    : 'Отвечай только по-русски.';
   const { data, error } = await supabase.functions.invoke<CoachData>('ai', {
-    body: { prompt, system: COACH_SYSTEM_PROMPT },
+    body: { prompt, system: `${COACH_SYSTEM_PROMPT} ${languageRule}` },
   });
 
   if (error) throw new Error('Не удалось связаться с AI. Попробуй ещё раз.');

@@ -17,6 +17,7 @@ type Evaluation = { approved: boolean; feedback: string };
 export async function evaluateInvestment(
   company: string,
   decision: BuyDecision,
+  language: 'ru' | 'en' = 'ru',
 ): Promise<Evaluation> {
   const prompt = [
     `Компания: ${company}`,
@@ -25,7 +26,12 @@ export async function evaluateInvestment(
     `Пересмотрю решение, если: ${decision.invalidation}`,
   ].join('\n');
   const { data, error } = await supabase.functions.invoke<AiResponse>('ai', {
-    body: { prompt, system: SYSTEM_PROMPT },
+    body: {
+      prompt,
+      system: `${SYSTEM_PROMPT} ${
+        language === 'en' ? 'Write feedback only in English.' : 'Пиши feedback только по-русски.'
+      }`,
+    },
   });
   if (error || typeof data?.text !== 'string') {
     return { approved: false, feedback: 'AI не смог проверить ответы — баллы не начислены.' };

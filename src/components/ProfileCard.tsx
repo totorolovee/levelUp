@@ -1,7 +1,9 @@
 import type { UserProfile } from '../lib/profile';
+import { useLanguage } from '../lib/language';
 
 export function ProfileCard({ profile }: { profile: UserProfile }) {
-  const registrationDate = new Intl.DateTimeFormat('ru-RU', {
+  const { language } = useLanguage();
+  const registrationDate = new Intl.DateTimeFormat(language === 'ru' ? 'ru-RU' : 'en-US', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',

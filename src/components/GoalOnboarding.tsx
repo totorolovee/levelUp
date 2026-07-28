@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { createPersonalPlan, getCoachQuestions } from '../lib/goalCoach';
 import type { GoalPlan } from '../lib/goals';
+import { useLanguage } from '../lib/language';
 
 export function GoalOnboarding({ onComplete }: { onComplete: (plan: GoalPlan) => void }) {
+  const { language } = useLanguage();
   const [goal, setGoal] = useState('');
   const [questions, setQuestions] = useState<string[]>([]);
   const [answers, setAnswers] = useState<string[]>([]);
@@ -17,7 +19,7 @@ export function GoalOnboarding({ onComplete }: { onComplete: (plan: GoalPlan) =>
     setIsLoading(true);
     setErrorMessage('');
     try {
-      setQuestions(await getCoachQuestions(goal.trim()));
+      setQuestions(await getCoachQuestions(goal.trim(), language));
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : 'AI Coach не ответил.');
     } finally {
@@ -35,7 +37,7 @@ export function GoalOnboarding({ onComplete }: { onComplete: (plan: GoalPlan) =>
     }
     setIsLoading(true);
     try {
-      const draft = await createPersonalPlan(goal.trim(), questions, nextAnswers);
+      const draft = await createPersonalPlan(goal.trim(), questions, nextAnswers, language);
       onComplete({
         id: crypto.randomUUID(),
         title: goal.trim(),

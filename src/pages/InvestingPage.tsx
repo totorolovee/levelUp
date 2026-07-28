@@ -9,8 +9,10 @@ import { usePortfolio } from '../lib/portfolio';
 import { evaluateInvestment } from '../lib/investmentEvaluator';
 import { formatMoney, stocks } from '../lib/stocks';
 import { useLiveMarket } from '../lib/useLiveMarket';
+import { useLanguage } from '../lib/language';
 
 export function InvestingPage() {
+  const { language } = useLanguage();
   const [notice, setNotice] = useState('');
   const {
     marketStocks,
@@ -32,7 +34,7 @@ export function InvestingPage() {
 
   const buyStock = async (decision: BuyDecision) => {
     if (!selected) return;
-    const evaluation = await evaluateInvestment(selected.name, decision);
+    const evaluation = await evaluateInvestment(selected.name, decision, language);
     const purchaseTotal = selected.price * decision.quantity;
     const remainingBalance = balance - purchaseTotal;
     addDecision({
@@ -101,7 +103,7 @@ export function InvestingPage() {
           </aside>
           {marketUpdatedAt && (
             <p className="market-update-note">
-              Обновлено {marketUpdatedAt.toLocaleTimeString('ru-RU', {
+              Обновлено {marketUpdatedAt.toLocaleTimeString(language === 'ru' ? 'ru-RU' : 'en-US', {
                 hour: '2-digit',
                 minute: '2-digit',
               })} · автоматически каждые 12 часов

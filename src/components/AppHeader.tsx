@@ -3,6 +3,7 @@ import type { User } from '@supabase/supabase-js';
 import { Link, useLocation } from 'wouter';
 import { supabase } from '../lib/supabase';
 import { useTheme } from '../lib/theme';
+import { useLanguage } from '../lib/language';
 
 const links = [
   { href: '/goals', label: 'Цели' },
@@ -18,6 +19,7 @@ export function AppHeader() {
   const [location] = useLocation();
   const [user, setUser] = useState<User | null | undefined>(undefined);
   const { theme, toggleTheme } = useTheme();
+  const { language, setLanguage } = useLanguage();
 
   useEffect(() => {
     void supabase.auth.getSession().then(({ data }) => {
@@ -57,6 +59,14 @@ export function AppHeader() {
             {username}
           </Link>
         )}
+        <button
+          aria-label={language === 'ru' ? 'Switch to English' : 'Переключить на русский'}
+          className="language-toggle"
+          onClick={() => setLanguage(language === 'ru' ? 'en' : 'ru')}
+          type="button"
+        >
+          {language === 'ru' ? 'EN' : 'RU'}
+        </button>
         <button
           aria-label={theme === 'light' ? 'Включить тёмную тему' : 'Включить светлую тему'}
           className="theme-toggle"

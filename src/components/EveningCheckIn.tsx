@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { adjustAfterCheckIn } from '../lib/goalCoach';
+import { useLanguage } from '../lib/language';
 
 type EveningCheckInProps = {
   goal: string;
@@ -9,6 +10,7 @@ type EveningCheckInProps = {
 };
 
 export function EveningCheckIn({ goal, currentAction, availableTime, onSave }: EveningCheckInProps) {
+  const { language } = useLanguage();
   const [note, setNote] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -23,6 +25,7 @@ export function EveningCheckIn({ goal, currentAction, availableTime, onSave }: E
         note.trim(),
         currentAction,
         availableTime,
+        language,
       );
       onSave(note.trim(), adjustment.message, adjustment.nextAction);
       setNote('');

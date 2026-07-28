@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { askAiCoach } from '../lib/aiCoach';
+import { useLanguage } from '../lib/language';
 
 type AiCoachFormProps = {
   appContext: string;
@@ -7,6 +8,7 @@ type AiCoachFormProps = {
 };
 
 export function AiCoachForm({ appContext, hasAppData }: AiCoachFormProps) {
+  const { language } = useLanguage();
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
   const [error, setError] = useState('');
@@ -28,7 +30,7 @@ export function AiCoachForm({ appContext, hasAppData }: AiCoachFormProps) {
         `Запрос пользователя: ${details}`,
         'Дай персональный, выполнимый совет на ближайший день.',
       ].join('\n\n');
-      setAnswer(await askAiCoach(prompt));
+      setAnswer(await askAiCoach(prompt, language));
     } catch (requestError) {
       setError(
         requestError instanceof Error

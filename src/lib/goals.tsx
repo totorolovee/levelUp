@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
 import { createNextAction } from './goalCoach';
+import { useLanguage } from './language';
 
 export type GoalPlan = {
   id: string;
@@ -26,13 +27,14 @@ type GoalsContextValue = {
 const GoalsContext = createContext<GoalsContextValue | null>(null);
 
 export function GoalsProvider({ children }: { children: ReactNode }) {
+  const { language } = useLanguage();
   const [goal, setGoal] = useState<GoalPlan | null>(null);
 
   const completeStep = async () => {
     if (!goal) return;
     const completedAction = goal.actions[0];
     const history = [...goal.completedActions, completedAction];
-    const nextAction = await createNextAction(goal.title, goal.availableTime, history);
+    const nextAction = await createNextAction(goal.title, goal.availableTime, history, language);
     setGoal((current) => current && {
       ...current,
       actions: [...current.actions.slice(1), nextAction],

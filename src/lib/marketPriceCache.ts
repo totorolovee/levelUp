@@ -19,7 +19,7 @@ export async function loadCachedQuotes(symbols: string[]) {
     .in('symbol', symbols)
     .gte('updated_at', freshSince);
 
-  if (error || !data || data.length !== symbols.length) return null;
+  if (error || !data?.length) return null;
   return {
     quotes: data.map(({ symbol, price, change }) => ({
       symbol,

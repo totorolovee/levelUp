@@ -331,7 +331,10 @@ a.section-card:hover { transform: translateY(-3px); box-shadow: 0 14px 36px rgba
 .stock-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .stock-card { display: grid; gap: 5px; min-height: 112px; padding: 17px; text-align: left; border: 1px solid #ded9e9; border-radius: 15px; color: inherit; background: #fff; cursor: pointer; }
 .stock-card:hover, .stock-card.selected { border-color: #7059c7; box-shadow: inset 0 0 0 1px #7059c7; }
+.stock-card.unavailable { opacity: .72; cursor: not-allowed; }
+.stock-card.unavailable .stock-price strong { color: #969ab0; font-size: 12px; }
 .stock-symbol { font-size: 12px; font-weight: 850; letter-spacing: .7px; }
+.stock-exchange { color: #858aa2; font-size: 9px; font-weight: 750; text-transform: uppercase; }
 .stock-name { min-height: 28px; color: #747990; font-size: 13px; }
 .stock-price { display: flex; align-items: baseline; gap: 8px; }
 .stock-price small { color: #747990; font-size: 10px; font-weight: 700; }

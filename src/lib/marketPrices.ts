@@ -12,7 +12,7 @@ type MarketResponse = {
 };
 
 export async function loadMarketPrices(stocks: Stock[]) {
-  const symbols = stocks.map(({ symbol }) => symbol);
+  const symbols = stocks.map(({ quoteSymbol, symbol }) => quoteSymbol ?? symbol);
   const cached = await loadCachedQuotes(symbols);
   if (cached) return mergeQuotes(stocks, cached.quotes, cached.updatedAt);
 
@@ -38,8 +38,11 @@ function mergeQuotes(stocks: Stock[], quotes: MarketQuote[], updatedAt: string |
   const quoteBySymbol = new Map(quotes.map((quote) => [quote.symbol, quote]));
   return {
     stocks: stocks.flatMap((stock) => {
-      const quote = quoteBySymbol.get(stock.symbol);
-      return quote ? [{ ...stock, price: quote.price, change: quote.change }] : [];
+      const quote = quoteBySymbol.get(stock.quoteSymbol ?? stock.symbol);
+      if (quote) {
+        return [{ ...stock, price: quote.price, change: quote.change, quoteAvailable: true }];
+      }
+      return stock.displayWithoutQuote ? [{ ...stock, quoteAvailable: false }] : [];
     }),
     updatedAt,
   };

@@ -2,6 +2,8 @@ import { useState } from 'react';
 import type { Stock } from '../lib/stocks';
 import { formatMoney } from '../lib/stocks';
 
+const MIN_ANSWER_LENGTH = 5;
+
 type BuyStockFormProps = {
   stock: Stock;
   balance: number;
@@ -25,8 +27,10 @@ export function BuyStockForm({ stock, balance, onBuy }: BuyStockFormProps) {
   const [horizon, setHorizon] = useState('1 год');
   const [confidence, setConfidence] = useState(5);
   const total = stock.price * quantity;
-  const answersReady = reason.trim().length >= 10 && risk.trim().length >= 10;
-  const canBuy = quantity > 0 && total <= balance && answersReady && invalidation.trim().length >= 10;
+  const answersReady = reason.trim().length >= MIN_ANSWER_LENGTH
+    && risk.trim().length >= MIN_ANSWER_LENGTH;
+  const canBuy = quantity > 0 && total <= balance
+    && answersReady && invalidation.trim().length >= MIN_ANSWER_LENGTH;
 
   const submit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -58,28 +62,28 @@ export function BuyStockForm({ stock, balance, onBuy }: BuyStockFormProps) {
       <label>
         Почему ты хочешь купить эту компанию?
         <textarea
-          minLength={10}
+          minLength={MIN_ANSWER_LENGTH}
           onChange={(event) => setReason(event.target.value)}
           placeholder="Например: я верю, что..."
           rows={4}
           value={reason}
         />
-        <small className={reason.length >= 10 ? 'field-count ready' : 'field-count'}>
-          {reason.length}/10 символов
+        <small className={reason.length >= MIN_ANSWER_LENGTH ? 'field-count ready' : 'field-count'}>
+          {reason.length}/{MIN_ANSWER_LENGTH} символов
         </small>
       </label>
       <label>
         Какой здесь главный риск?
-        <textarea minLength={10} onChange={(event) => setRisk(event.target.value)} placeholder="Что может пойти не так?" rows={3} value={risk} />
-        <small className={risk.length >= 10 ? 'field-count ready' : 'field-count'}>
-          {risk.length}/10 символов
+        <textarea minLength={MIN_ANSWER_LENGTH} onChange={(event) => setRisk(event.target.value)} placeholder="Что может пойти не так?" rows={3} value={risk} />
+        <small className={risk.length >= MIN_ANSWER_LENGTH ? 'field-count ready' : 'field-count'}>
+          {risk.length}/{MIN_ANSWER_LENGTH} символов
         </small>
       </label>
       <label>
         Когда ты признаешь решение ошибочным?
-        <textarea minLength={10} onChange={(event) => setInvalidation(event.target.value)} placeholder="Я изменю мнение, если..." rows={3} value={invalidation} />
-        <small className={invalidation.length >= 10 ? 'field-count ready' : 'field-count'}>
-          {invalidation.length}/10 символов
+        <textarea minLength={MIN_ANSWER_LENGTH} onChange={(event) => setInvalidation(event.target.value)} placeholder="Я изменю мнение, если..." rows={3} value={invalidation} />
+        <small className={invalidation.length >= MIN_ANSWER_LENGTH ? 'field-count ready' : 'field-count'}>
+          {invalidation.length}/{MIN_ANSWER_LENGTH} символов
         </small>
       </label>
       <div className="decision-row">
@@ -98,7 +102,7 @@ export function BuyStockForm({ stock, balance, onBuy }: BuyStockFormProps) {
       </div>
       <p className="coach-question">
         <span>AI Coach</span>
-        {reason.length < 10
+        {reason.length < MIN_ANSWER_LENGTH
           ? `Почему именно ${stock.name}, а не просто популярная компания?`
           : 'Ты описал возможный рост. Какие факты могут доказать обратное?'}
       </p>

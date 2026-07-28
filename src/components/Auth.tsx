@@ -16,10 +16,6 @@ export function Auth() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (mode === 'signup' && username.trim().length < 5) {
-      setMessage('Username должен содержать минимум 5 символов.');
-      return;
-    }
     setBusy(true);
     setMessage('');
     try {
@@ -97,9 +93,9 @@ export function Auth() {
           <input
             autoComplete="username"
             maxLength={30}
-            minLength={5}
+            minLength={2}
             onChange={(e) => setUsername(e.target.value)}
-            placeholder="username (минимум 5 символов)"
+            placeholder="username"
             required
             type="text"
             value={username}

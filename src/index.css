@@ -959,3 +959,64 @@ html[data-theme="light"] .level-pill { border-color: #dcd6e8; background: #faf8f
 html[data-theme="light"] .level-pill span { color: #81849a; }
 html[data-theme="light"] .daily-note { background: linear-gradient(120deg, #e9e2f7, #dfeef5); }
 html[data-theme="light"] .daily-note p { color: #555b76; }
+
+/* Ночная тема наследует прежний тёмный dashboard-дизайн */
+html[data-theme="dark"] body {
+  color: #eef0ff;
+  background:
+    radial-gradient(circle at 12% 30%, rgba(91, 67, 180, .13), transparent 30%),
+    linear-gradient(180deg, #15182d, #1b1f37 58%, #15182b);
+}
+html[data-theme="dark"] .app-header { background: rgba(21, 24, 45, .88); }
+html[data-theme="dark"] .nav-menu,
+html[data-theme="dark"] nav { border-color: #3d4161; background: rgba(37, 41, 68, .97); }
+html[data-theme="dark"] .language-toggle,
+html[data-theme="dark"] .header-username,
+html[data-theme="dark"] .theme-toggle { border-color: #3d4161; background: #252944; }
+html[data-theme="dark"] .eyebrow,
+html[data-theme="dark"] .card-label,
+html[data-theme="dark"] .company-title span { color: #a896ff; }
+html[data-theme="dark"] .hero-card,
+html[data-theme="dark"] .buy-form,
+html[data-theme="dark"] .empty-state,
+html[data-theme="dark"] .book-about,
+html[data-theme="dark"] .stock-card,
+html[data-theme="dark"] .investor-progress,
+html[data-theme="dark"] .company-profile,
+html[data-theme="dark"] .journal-card,
+html[data-theme="dark"] .ai-coach-card,
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .profile-card,
+html[data-theme="dark"] .league-hero,
+html[data-theme="dark"] .league-table {
+  border-color: #3b4061;
+  background: #252944;
+  box-shadow: 0 18px 46px rgba(4, 6, 18, .2);
+}
+html[data-theme="dark"] input,
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] select {
+  color: #eef0ff;
+  border-color: #424766;
+  background: #1d213a;
+}
+html[data-theme="dark"] .market-explainer,
+html[data-theme="dark"] .market-status,
+html[data-theme="dark"] .coach-question,
+html[data-theme="dark"] .saved-lesson,
+html[data-theme="dark"] .book-takeaway,
+html[data-theme="dark"] .company-facts article,
+html[data-theme="dark"] .progress-cards article {
+  border-color: #3d4261;
+  color: #c8cbe0;
+  background: #202540;
+}
+html[data-theme="dark"] button[type="submit"],
+html[data-theme="dark"] .primary-link,
+html[data-theme="dark"] .settings-fields button {
+  background: linear-gradient(135deg, #7053e3, #9362f2);
+}
+html[data-theme="dark"] .rank-panel,
+html[data-theme="dark"] .balance-card {
+  background: linear-gradient(135deg, #37305f, #284761);
+}

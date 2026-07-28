@@ -52,3 +52,15 @@ export async function loadCurrentProfile(): Promise<UserProfile | null> {
     achievements,
   };
 }
+
+export async function updateCurrentUsername(value: string) {
+  const displayName = value.trim();
+  if (displayName.length < 2 || displayName.length > 30) {
+    throw new Error('Username должен содержать от 2 до 30 символов.');
+  }
+  const { error } = await supabase.auth.updateUser({
+    data: { display_name: displayName },
+  });
+  if (error) throw error;
+  return displayName;
+}

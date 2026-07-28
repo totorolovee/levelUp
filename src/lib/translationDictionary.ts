@@ -80,6 +80,7 @@ export const extraEnglish: Record<string, string> = {
   'Coach готовит новый шаг…': 'Coach is preparing a new step…',
   'Проверь дедлайн и начни собирать финальный пакет документов.': 'Check the deadline and start assembling the final application package.',
   'Не удалось сохранить покупку. Проверь вход и попробуй ещё раз.': 'Could not save the purchase. Check your sign-in and try again.',
+  'Username должен содержать от 2 до 30 символов.': 'Username must contain 2 to 30 characters.',
 };
 
 export const englishPlaceholders: Record<string, string> = {

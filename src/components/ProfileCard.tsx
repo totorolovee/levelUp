@@ -1,76 +1,41 @@
 import type { UserProfile } from '../lib/profile';
+import { useState } from 'react';
 import { useLanguage } from '../lib/language';
-import { AvatarUploader } from './AvatarUploader';
 import { AchievementsGrid } from './AchievementsGrid';
+import { AccountSettings } from './AccountSettings';
+import { ProfileProgress } from './ProfileProgress';
 
 export function ProfileCard({
   profile,
   onAvatarChange,
+  onNameChange,
 }: {
   profile: UserProfile;
   onAvatarChange: (url: string) => void;
+  onNameChange: (name: string) => void;
 }) {
   const { language } = useLanguage();
-  const registrationDate = new Intl.DateTimeFormat(language === 'ru' ? 'ru-RU' : 'en-US', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  }).format(new Date(profile.registeredAt));
+  const [tab, setTab] = useState<'settings' | 'progress' | 'achievements'>('settings');
+  const isRussian = language === 'ru';
 
   return (
     <section className="profile-card">
-      <div className="profile-identity">
-        <div className="profile-avatar" aria-label={`Аватар ${profile.displayName}`}>
-          {profile.avatarUrl
-            ? <img alt="" src={profile.avatarUrl} />
-            : profile.avatarLetter}
-        </div>
-        <div>
-          <p className="eyebrow">Профиль</p>
-          <h2>{profile.displayName}</h2>
-          <p>{profile.email}</p>
-          <AvatarUploader onUploaded={onAvatarChange} />
-        </div>
+      <div className="profile-tabs">
+        <button className={tab === 'settings' ? 'active' : ''} onClick={() => setTab('settings')} type="button">
+          {isRussian ? 'Настройки' : 'Settings'}
+        </button>
+        <button className={tab === 'progress' ? 'active' : ''} onClick={() => setTab('progress')} type="button">
+          {isRussian ? 'Прогресс' : 'Progress'}
+        </button>
+        <button className={tab === 'achievements' ? 'active' : ''} onClick={() => setTab('achievements')} type="button">
+          {isRussian ? 'Достижения' : 'Achievements'}
+        </button>
       </div>
-      <div className="rank-panel">
-        <div>
-          <span>Текущий ранг</span>
-          <strong>{profile.rankName}</strong>
-        </div>
-        <p>{profile.xp} XP</p>
-        <div
-          aria-label={`Прогресс ранга: ${profile.rankProgress}%`}
-          className="rank-progress"
-          role="progressbar"
-          aria-valuemax={100}
-          aria-valuemin={0}
-          aria-valuenow={profile.rankProgress}
-        >
-          <span style={{ width: `${profile.rankProgress}%` }} />
-        </div>
-        <small>
-          {profile.nextRankName
-            ? `${profile.xpToNextRank} XP до ранга «${profile.nextRankName}»`
-            : 'Достигнут высший ранг'}
-        </small>
-      </div>
-      <dl className="profile-stats">
-        <div className="streak-stat">
-          <dt>Daily streak</dt>
-          <dd>🔥 {profile.dailyStreak}</dd>
-          <small>дней подряд</small>
-        </div>
-        <div>
-          <dt>Опыт</dt>
-          <dd>{profile.xp} XP</dd>
-          <small>чтение и активность</small>
-        </div>
-        <div>
-          <dt>Дата регистрации</dt>
-          <dd>{registrationDate}</dd>
-        </div>
-      </dl>
-      <AchievementsGrid unlocked={profile.achievements} />
+      {tab === 'settings' && (
+        <AccountSettings profile={profile} onAvatarChange={onAvatarChange} onNameChange={onNameChange} />
+      )}
+      {tab === 'progress' && <ProfileProgress profile={profile} />}
+      {tab === 'achievements' && <AchievementsGrid unlocked={profile.achievements} />}
     </section>
   );
 }

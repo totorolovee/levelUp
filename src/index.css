@@ -413,6 +413,20 @@ button:disabled { opacity: .45; cursor: not-allowed; }
 .auth-divider { display: flex; align-items: center; gap: 12px; margin: 16px 0; color: #8a918c; font-size: 11px; }
 .auth-divider::before, .auth-divider::after { content: ""; height: 1px; flex: 1; background: #dfe5dd; }
 .profile-card { max-width: 780px; padding: 30px; border: 1px solid #dfe5dd; border-radius: 24px; background: #fff; box-shadow: 0 18px 50px rgba(37, 67, 47, .07); }
+.profile-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 24px; padding: 5px; border-radius: 13px; background: #edf1eb; }
+.profile-tabs button { padding: 10px; border: 0; border-radius: 9px; color: #69716c; background: transparent; font-weight: 750; cursor: pointer; }
+.profile-tabs button.active { color: #255e3a; background: #fff; box-shadow: 0 3px 12px rgba(37, 67, 47, .08); }
+.account-settings { display: grid; gap: 24px; }
+.settings-fields { display: grid; grid-template-columns: repeat(2, 1fr); gap: 13px; }
+.settings-fields label { display: grid; gap: 7px; color: #526058; font-size: 13px; font-weight: 750; }
+.settings-fields label > div { display: flex; gap: 7px; }
+.settings-fields input { width: 100%; min-width: 0; padding: 11px; border: 1px solid #d5ddd3; border-radius: 10px; background: #fff; }
+.settings-fields button { padding: 0 14px; border: 0; border-radius: 10px; color: #fff; background: #39764f; font-weight: 750; cursor: pointer; }
+.settings-message { grid-column: 1 / -1; margin: 0; color: #39764f; }
+.progress-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin-top: 12px; }
+.progress-cards article { display: grid; justify-items: center; gap: 4px; padding: 17px; border: 1px solid #dfe5dd; border-radius: 13px; background: #f8faf7; text-align: center; }
+.progress-cards article > span { font-size: 22px; }
+.progress-cards article > small { color: #69716c; font-size: 12px; }
 .profile-identity { display: flex; align-items: center; gap: 20px; }
 .profile-avatar { display: grid; width: 82px; height: 82px; flex: 0 0 auto; place-items: center; border-radius: 24px; color: #fff; background: #39764f; font-family: Unbounded, sans-serif; font-size: 34px; font-weight: 800; }
 .avatar-uploader { display: grid; justify-items: start; gap: 5px; margin-top: 9px; }
@@ -590,6 +604,10 @@ html[data-theme="dark"] .region-option,
 html[data-theme="dark"] .profile-check,
 html[data-theme="dark"] .readiness-item { background: #222f27; }
 html[data-theme="dark"] .profile-stats div { background: #222f27; }
+html[data-theme="dark"] .profile-tabs { background: #18221c; }
+html[data-theme="dark"] .profile-tabs button.active,
+html[data-theme="dark"] .settings-fields input,
+html[data-theme="dark"] .progress-cards article { color: #edf3ee; border-color: #334138; background: #222f27; }
 html[data-theme="dark"] .profile-identity p:last-child { color: #aab6ad; }
 html[data-theme="dark"] .card .google-auth { color: #edf3ee; border-color: #3c4b41; background: #222f27; }
 html[data-theme="dark"] .auth-tabs { background: #151d18; }
@@ -689,6 +707,7 @@ html[data-theme="dark"] ::selection { color: #101713; background: #83bd94; }
   .sat-resources { grid-template-columns: 1fr; }
   .profile-stats { grid-template-columns: 1fr; }
   .achievements-grid { grid-template-columns: 1fr; }
+  .settings-fields, .progress-cards { grid-template-columns: 1fr; }
   .university-title { align-items: start; }
   .university-title > span { width: 52px; height: 52px; border-radius: 14px; }
   .university-source, .admission-invite { align-items: flex-start; flex-direction: column; }

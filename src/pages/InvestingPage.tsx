@@ -95,7 +95,7 @@ export function InvestingPage() {
               Обновлено {marketUpdatedAt.toLocaleTimeString('ru-RU', {
                 hour: '2-digit',
                 minute: '2-digit',
-              })} · автоматически каждые 5 минут
+              })} · автоматически каждые 12 часов
             </p>
           )}
           {marketStatus === 'loading' && (

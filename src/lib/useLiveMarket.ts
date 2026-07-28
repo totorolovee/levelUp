@@ -23,17 +23,11 @@ export function useLiveMarket(catalog: Stock[]) {
         setStatus('live');
       }).catch(() => setStatus('error'));
     };
-    const refreshWhenVisible = () => {
-      if (document.visibilityState === 'visible') refresh();
-    };
-
     refresh();
-    const intervalId = window.setInterval(refreshWhenVisible, 5 * 60 * 1000);
-    document.addEventListener('visibilitychange', refreshWhenVisible);
+    const intervalId = window.setInterval(refresh, 12 * 60 * 60 * 1000);
     return () => {
       isActive = false;
       window.clearInterval(intervalId);
-      document.removeEventListener('visibilitychange', refreshWhenVisible);
     };
   }, [catalog]);
 

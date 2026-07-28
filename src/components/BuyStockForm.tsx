@@ -27,6 +27,7 @@ export function BuyStockForm({ stock, balance, onBuy }: BuyStockFormProps) {
   const [horizon, setHorizon] = useState('1 год');
   const [confidence, setConfidence] = useState(5);
   const [isChecking, setIsChecking] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const total = stock.price * quantity;
   const answersReady = reason.trim().length >= MIN_ANSWER_LENGTH
     && risk.trim().length >= MIN_ANSWER_LENGTH;
@@ -37,11 +38,14 @@ export function BuyStockForm({ stock, balance, onBuy }: BuyStockFormProps) {
     event.preventDefault();
     if (!canBuy || isChecking) return;
     setIsChecking(true);
+    setSubmitError('');
     try {
       await onBuy({ quantity, reason: reason.trim(), risk: risk.trim(), invalidation: invalidation.trim(), horizon, confidence });
       setReason('');
       setRisk('');
       setInvalidation('');
+    } catch {
+      setSubmitError('Не удалось сохранить покупку. Проверь вход и попробуй ещё раз.');
     } finally {
       setIsChecking(false);
     }
@@ -116,6 +120,7 @@ export function BuyStockForm({ stock, balance, onBuy }: BuyStockFormProps) {
         {isChecking ? 'AI проверяет ответы…' : 'Добавить в портфель'}
       </button>
       {total > balance && <p className="error">Недостаточно виртуальных денег.</p>}
+      {submitError && <p className="error">{submitError}</p>}
     </form>
   );
 }

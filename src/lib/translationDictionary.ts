@@ -79,6 +79,7 @@ export const extraEnglish: Record<string, string> = {
   'Coach анализирует…': 'Coach is analyzing…',
   'Coach готовит новый шаг…': 'Coach is preparing a new step…',
   'Проверь дедлайн и начни собирать финальный пакет документов.': 'Check the deadline and start assembling the final application package.',
+  'Не удалось сохранить покупку. Проверь вход и попробуй ещё раз.': 'Could not save the purchase. Check your sign-in and try again.',
 };
 
 export const englishPlaceholders: Record<string, string> = {

@@ -37,7 +37,7 @@ export function InvestingPage() {
     const evaluation = await evaluateInvestment(selected.name, decision, language);
     const purchaseTotal = selected.price * decision.quantity;
     const remainingBalance = balance - purchaseTotal;
-    addDecision({
+    await addDecision({
       symbol: selected.symbol,
       company: selected.name,
       quantity: decision.quantity,

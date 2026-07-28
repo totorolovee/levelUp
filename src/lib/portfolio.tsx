@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import {
+  loadInvestmentDecisions,
+  saveDecisionLesson,
+  saveInvestmentDecision,
+} from './investmentDecisions';
+import { supabase } from './supabase';
 
 export type Decision = {
   id: string;
@@ -20,8 +26,9 @@ export type Decision = {
 type PortfolioContextValue = {
   balance: number;
   decisions: Decision[];
-  addDecision: (decision: Omit<Decision, 'id' | 'createdAt'>) => void;
-  reviewDecision: (id: string, lesson: string) => void;
+  status: 'loading' | 'guest' | 'ready';
+  addDecision: (decision: Omit<Decision, 'id' | 'createdAt'>) => Promise<void>;
+  reviewDecision: (id: string, lesson: string) => Promise<void>;
 };
 
 const PortfolioContext = createContext<PortfolioContextValue | null>(null);
@@ -29,20 +36,47 @@ const PortfolioContext = createContext<PortfolioContextValue | null>(null);
 export function PortfolioProvider({ children }: { children: ReactNode }) {
   const [balance, setBalance] = useState(10_000);
   const [decisions, setDecisions] = useState<Decision[]>([]);
+  const [status, setStatus] = useState<PortfolioContextValue['status']>('loading');
 
-  const addDecision = (decision: Omit<Decision, 'id' | 'createdAt'>) => {
-    setBalance((current) => current - decision.price * decision.quantity);
-    setDecisions((current) => [
-      {
-        ...decision,
-        id: crypto.randomUUID(),
-        createdAt: new Date(),
-      },
-      ...current,
-    ]);
+  useEffect(() => {
+    let isActive = true;
+    const load = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (!data.session) {
+        if (isActive) {
+          setDecisions([]);
+          setBalance(10_000);
+          setStatus('guest');
+        }
+        return;
+      }
+      const saved = await loadInvestmentDecisions();
+      if (!isActive) return;
+      setDecisions(saved);
+      setBalance(10_000 - saved.reduce(
+        (spent, decision) => spent + decision.price * decision.quantity,
+        0,
+      ));
+      setStatus('ready');
+    };
+    void load().catch(() => isActive && setStatus('guest'));
+    const { data: listener } = supabase.auth.onAuthStateChange(() => {
+      window.setTimeout(() => void load(), 0);
+    });
+    return () => {
+      isActive = false;
+      listener.subscription.unsubscribe();
+    };
+  }, []);
+
+  const addDecision = async (decision: Omit<Decision, 'id' | 'createdAt'>) => {
+    const saved = await saveInvestmentDecision(decision);
+    setBalance((current) => current - saved.price * saved.quantity);
+    setDecisions((current) => [saved, ...current]);
   };
 
-  const reviewDecision = (id: string, lesson: string) => {
+  const reviewDecision = async (id: string, lesson: string) => {
+    await saveDecisionLesson(id, lesson);
     setDecisions((current) =>
       current.map((decision) =>
         decision.id === id ? { ...decision, lesson } : decision,
@@ -51,7 +85,7 @@ export function PortfolioProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <PortfolioContext.Provider value={{ balance, decisions, addDecision, reviewDecision }}>
+    <PortfolioContext.Provider value={{ balance, decisions, status, addDecision, reviewDecision }}>
       {children}
     </PortfolioContext.Provider>
   );

@@ -1,5 +1,7 @@
 import type { StudentProfile } from '../lib/universities';
 
+const ieltsScores = Array.from({ length: 19 }, (_, index) => (index / 2).toFixed(1));
+
 type Props = {
   profile: StudentProfile;
   onChange: (profile: StudentProfile) => void;
@@ -16,16 +18,15 @@ export function StudentProfileForm({ profile, onChange }: Props) {
       <h2>Что уже готово?</h2>
       <label>
         Текущий IELTS
-        <input
-          inputMode="decimal"
-          max="9"
-          min="0"
+        <select
           onChange={(event) => update('ielts', event.target.value)}
-          placeholder="Например: 6.5"
-          step="0.5"
-          type="number"
           value={profile.ielts}
-        />
+        >
+          <option value="">Выбери результат</option>
+          {ieltsScores.map((score) => (
+            <option key={score} value={score}>{score}</option>
+          ))}
+        </select>
       </label>
       <ProfileCheck
         checked={profile.hasSatOrAct}

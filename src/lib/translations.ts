@@ -9,6 +9,7 @@ export const english: Record<string, string> = {
   'Инвестиции': 'Investing',
   'Журнал': 'Journal',
   'AI совет': 'AI advice',
+  'Лиги': 'Leagues',
   'Вход': 'Sign in',
   'Войти': 'Sign in',
   'Разделы': 'Sections',

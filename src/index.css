@@ -439,6 +439,19 @@ button:disabled { opacity: .45; cursor: not-allowed; }
 .decision-review button { justify-self: start; padding: 9px 12px; border: 0; border-radius: 9px; color: #fff; background: #39764f; font-weight: 750; cursor: pointer; }
 .saved-lesson { margin-top: 18px; padding: 14px; border-radius: 11px; background: #e5eee7; }
 .saved-lesson span { color: #39764f; font-size: 10px; font-weight: 800; text-transform: uppercase; }
+.league-hero { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 18px; padding: 24px; border: 1px solid #d8e1d7; border-radius: 22px; background: #fff; }
+.league-hero > span { display: grid; width: 58px; height: 58px; place-items: center; border-radius: 18px; color: #fff; background: #39764f; font-size: 28px; }
+.league-hero p, .league-hero h2 { margin: 0; }
+.league-hero p { color: #69716c; font-size: 13px; }
+.league-hero > strong { font-size: 28px; }
+.league-table { margin-top: 18px; padding: 24px; border: 1px solid #dfe5dd; border-radius: 20px; background: #fff; }
+.league-table article { display: grid; grid-template-columns: 50px 1fr auto; gap: 12px; padding: 14px 10px; border-top: 1px solid #e5eae3; }
+.league-table article.current { border-radius: 10px; color: #255e3a; background: #e5eee7; }
+.league-table article > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.league-silver > span { background: #7d8b85; }
+.league-gold > span { color: #3f3217; background: #e1b866; }
+.league-diamond > span { background: #4e8290; }
+.league-master > span { background: #76598d; }
 
 /* Читаемый минимум для второстепенных подписей */
 .direction-option span, .specialty-option span, .region-option span,
@@ -519,6 +532,10 @@ html[data-theme="dark"] .essay-details ul { color: #aab6ad; }
 html[data-theme="dark"] .sat-details { border-color: #334138; background: #18221c; }
 html[data-theme="dark"] .sat-details ol { color: #aab6ad; }
 html[data-theme="dark"] .sat-resources a { border-color: #3c4b41; color: #d8eee0; background: #222f27; }
+html[data-theme="dark"] .league-hero,
+html[data-theme="dark"] .league-table { border-color: #334138; background: #1b251f; }
+html[data-theme="dark"] .league-table article { border-color: #334138; }
+html[data-theme="dark"] .league-table article.current { color: #d8eee0; background: #2d4735; }
 html[data-theme="dark"] .section-card p,
 html[data-theme="dark"] .hero-card p,
 html[data-theme="dark"] .features p,

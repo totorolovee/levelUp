@@ -12,6 +12,7 @@ const links = [
   { href: '/investing', label: 'Инвестиции' },
   { href: '/journal', label: 'Журнал' },
   { href: '/coach', label: 'AI совет' },
+  { href: '/leagues', label: 'Лиги', authOnly: true },
   { href: '/login', label: 'Вход' },
 ];
 
@@ -84,7 +85,10 @@ export function AppHeader() {
           </button>
           <div className="nav-menu">
             {links
-              .filter((link) => link.href !== '/login' || user === null)
+              .filter((link) =>
+                (!('authOnly' in link) || !link.authOnly || Boolean(user))
+                && (link.href !== '/login' || user === null),
+              )
               .map((link) => (
               <Link
                 className={location === link.href ? 'nav-link active' : 'nav-link'}

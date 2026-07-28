@@ -14,6 +14,7 @@ import { NotFoundPage } from './pages/NotFoundPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { ReadingPage } from './pages/ReadingPage';
 import { UniversitiesPage } from './pages/UniversitiesPage';
+import { LeaguesPage } from './pages/LeaguesPage';
 
 // Здесь живут только маршруты. Сами экраны складывай в src/pages/.
 export default function App() {
@@ -34,6 +35,7 @@ export default function App() {
                   <Route path="/investing" component={InvestingPage} />
                   <Route path="/journal" component={JournalPage} />
                   <Route path="/coach" component={CoachPage} />
+                  <Route path="/leagues" component={LeaguesPage} />
                   <Route path="/login" component={LoginPage} />
                   <Route path="/profile" component={ProfilePage} />
                   <Route component={NotFoundPage} />

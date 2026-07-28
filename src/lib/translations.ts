@@ -1,4 +1,5 @@
 import { contentEnglish } from './contentTranslations';
+import { bookEnglish } from './bookTranslations';
 import { extraEnglish } from './translationDictionary';
 
 export const english: Record<string, string> = {
@@ -91,4 +92,5 @@ export const english: Record<string, string> = {
   'Выбери направление, специальность, регион и университет — затем сравни требования.': 'Choose a field, major, region, and university, then compare requirements.',
   ...extraEnglish,
   ...contentEnglish,
+  ...bookEnglish,
 };

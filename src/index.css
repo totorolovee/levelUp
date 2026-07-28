@@ -454,8 +454,17 @@ button:disabled { opacity: .45; cursor: not-allowed; }
 .achievement > span { display: grid; width: 34px; height: 34px; flex: 0 0 auto; place-items: center; border-radius: 10px; color: #69716c; background: #e5e9e3; font-size: 18px; }
 .achievement strong { font-size: 13px; }
 .achievement p { margin: 3px 0 0; color: #69716c; font-size: 12px; line-height: 1.35; }
-.achievement.unlocked { opacity: 1; border-color: #bad0bf; background: #eef5ee; }
-.achievement.unlocked > span { color: #fff; background: #39764f; }
+.achievement.bronze, .achievement.silver, .achievement.gold { opacity: 1; }
+.achievement.bronze { border-color: #c99870; background: #fbf2eb; }
+.achievement.silver { border-color: #aeb8bd; background: #f1f4f5; }
+.achievement.gold { border-color: #d8b64c; background: #fff8dc; }
+.achievement.bronze > span { color: #fff; background: #a96636; }
+.achievement.silver > span { color: #fff; background: #7d8a91; }
+.achievement.gold > span { color: #fff; background: #bf9417; }
+.achievement-tiers { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 7px; }
+.achievement-tiers span { padding: 3px 6px; border-radius: 6px; color: #7b827d; background: #e5e9e3; font-size: 10px; }
+.achievement-tiers span.earned { color: #fff; background: #39764f; }
+.achievement small { display: block; margin-top: 5px; color: #69716c; font-size: 11px; }
 .profile-stats .streak-stat { background: #f5ead2; }
 .profile-status { color: #69716c; }
 .decision-facts { display: grid; gap: 10px; margin: 18px 0; }
@@ -566,7 +575,9 @@ html[data-theme="dark"] .league-table article.current { color: #d8eee0; backgrou
 html[data-theme="dark"] .avatar-uploader button { color: #d8eee0; border-color: #3c4b41; background: #222f27; }
 html[data-theme="dark"] .achievements-section { border-color: #334138; }
 html[data-theme="dark"] .achievement { border-color: #334138; background: #18221c; }
-html[data-theme="dark"] .achievement.unlocked { border-color: #4f6b58; background: #23362a; }
+html[data-theme="dark"] .achievement.bronze,
+html[data-theme="dark"] .achievement.silver,
+html[data-theme="dark"] .achievement.gold { border-color: #4f6b58; background: #23362a; }
 html[data-theme="dark"] .section-card p,
 html[data-theme="dark"] .hero-card p,
 html[data-theme="dark"] .features p,

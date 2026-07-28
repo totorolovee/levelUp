@@ -35,7 +35,7 @@ export function ProfileCard({
         <AccountSettings profile={profile} onAvatarChange={onAvatarChange} onNameChange={onNameChange} />
       )}
       {tab === 'progress' && <ProfileProgress profile={profile} />}
-      {tab === 'achievements' && <AchievementsGrid unlocked={profile.achievements} />}
+      {tab === 'achievements' && <AchievementsGrid progress={profile.achievements} />}
     </section>
   );
 }

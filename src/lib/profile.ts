@@ -3,9 +3,8 @@ import { recordAndLoadDailyStreak } from './dailyActivity';
 import { loadExperience } from './experience';
 import { getUserAvatarUrl } from './avatars';
 import {
-  loadAchievements,
-  syncEarnedAchievements,
-  type AchievementKey,
+  loadAchievementProgress,
+  type AchievementProgress,
 } from './achievements';
 
 export type UserProfile = {
@@ -22,7 +21,7 @@ export type UserProfile = {
   leaguePosition: number | null;
   usernameChangeAvailableAt: string | null;
   registeredAt: string;
-  achievements: AchievementKey[];
+  achievements: AchievementProgress[];
 };
 
 type LeagueStanding = {
@@ -73,8 +72,7 @@ export async function loadCurrentProfile(): Promise<UserProfile | null> {
     loadLeaguePosition(displayName),
     loadUsernameChangeAvailability(user.id),
   ]);
-  await syncEarnedAchievements(activity.streak);
-  const achievements = await loadAchievements();
+  const achievements = await loadAchievementProgress(activity.streak);
 
   return {
     email,

@@ -24,9 +24,9 @@ try {
   fail('.env is missing');
 }
 
-const apiKey = readValue(source, 'ALPHA_VANTAGE_API_KEY')
-  || readValue(source, 'FINNHUB_API_KEY');
-if (!apiKey) fail('ALPHA_VANTAGE_API_KEY is missing in .env');
+const apiKey = readValue(source, 'FINNHUB_API_KEY')
+  || readValue(source, 'AFINNHUB_API_KEY');
+if (!apiKey) fail('FINNHUB_API_KEY is missing in .env');
 
 const tempDirectory = await mkdtemp(join(tmpdir(), 'nfact-market-secret-'));
 const secretFile = join(tempDirectory, 'finnhub.env');
@@ -36,7 +36,7 @@ const supabaseCli = fileURLToPath(
 
 let uploadError = '';
 try {
-  await writeFile(secretFile, `ALPHA_VANTAGE_API_KEY=${apiKey}\n`, { mode: 0o600 });
+  await writeFile(secretFile, `FINNHUB_API_KEY=${apiKey}\n`, { mode: 0o600 });
   const result = spawnSync(
     process.execPath,
     [supabaseCli, 'secrets', 'set', '--env-file', secretFile],
@@ -51,4 +51,4 @@ try {
 }
 
 if (uploadError) fail(uploadError);
-console.log('ALPHA_VANTAGE_API_KEY uploaded to Supabase.');
+console.log('FINNHUB_API_KEY uploaded to Supabase.');

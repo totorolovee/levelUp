@@ -87,7 +87,7 @@ export function InvestingPage() {
             </div>
             <span className="demo-badge">
               {marketStatus === 'live'
-                ? `Alpha Vantage · ${marketStocks.length}/${stocks.length}`
+                ? `Finnhub · ${marketStocks.length}/${stocks.length}`
                 : 'Загрузка биржи'}
             </span>
           </div>

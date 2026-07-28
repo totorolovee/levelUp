@@ -5,6 +5,8 @@ export type AdmissionPortfolio = {
   satScore: string;
   honors: string;
   major: string;
+  extracurriculars: string;
+  extracurricularFeedback: string;
 };
 
 export const emptyAdmissionPortfolio: AdmissionPortfolio = {
@@ -12,12 +14,14 @@ export const emptyAdmissionPortfolio: AdmissionPortfolio = {
   satScore: '',
   honors: '',
   major: '',
+  extracurriculars: '',
+  extracurricularFeedback: '',
 };
 
 export async function loadAdmissionPortfolio() {
   const { data, error } = await supabase
     .from('admission_portfolios')
-    .select('ielts,sat_score,honors,major')
+    .select('ielts,sat_score,honors,major,extracurriculars,extracurricular_feedback')
     .maybeSingle();
   if (error) throw error;
   if (!data) return emptyAdmissionPortfolio;
@@ -26,6 +30,8 @@ export async function loadAdmissionPortfolio() {
     satScore: data.sat_score === null ? '' : String(data.sat_score),
     honors: data.honors,
     major: data.major,
+    extracurriculars: data.extracurriculars,
+    extracurricularFeedback: data.extracurricular_feedback,
   };
 }
 
@@ -39,6 +45,8 @@ export async function saveAdmissionPortfolio(portfolio: AdmissionPortfolio) {
     sat_score: portfolio.satScore ? Number(portfolio.satScore) : null,
     honors: portfolio.honors.trim(),
     major: portfolio.major.trim(),
+    extracurriculars: portfolio.extracurriculars.trim(),
+    extracurricular_feedback: portfolio.extracurricularFeedback.trim(),
     updated_at: new Date().toISOString(),
   });
   if (error) throw error;

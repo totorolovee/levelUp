@@ -6,8 +6,10 @@
 }
 
 * { box-sizing: border-box; }
-html { color-scheme: light; }
-body { margin: 0; min-width: 320px; overflow-x: hidden; background: linear-gradient(180deg, #f8f6fb 0, #f3f0f8 100%); line-height: 1.45; }
+html { width: 100%; max-width: 100%; overflow-x: clip; color-scheme: light; overscroll-behavior-x: none; }
+body { width: 100%; max-width: 100%; margin: 0; min-width: 320px; overflow-x: clip; background: linear-gradient(180deg, #f8f6fb 0, #f3f0f8 100%); line-height: 1.45; overscroll-behavior-x: none; }
+#root, .page-transition { width: 100%; max-width: 100%; overflow-x: clip; }
+.page-transition { touch-action: pan-y; }
 button, input, textarea { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button, a, input, textarea, select { transition: border-color .2s, background-color .2s, box-shadow .2s, transform .2s; }
@@ -22,7 +24,7 @@ button, a, input, textarea, select { transition: border-color .2s, background-co
 }
 
 .shell { width: min(1160px, calc(100% - 40px)); margin: 0 auto; padding-bottom: 72px; }
-.app-header { position: sticky; top: 0; z-index: 20; min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; background: rgba(247, 248, 244, .88); backdrop-filter: blur(14px); }
+.app-header { position: sticky; top: 0; z-index: 20; width: 100vw; min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-left: calc(50% - 50vw); padding-inline: 20px; background: rgba(247, 248, 244, .88); backdrop-filter: blur(14px); }
 .header-actions { display: flex; min-width: 0; align-items: center; justify-content: flex-end; gap: 6px; }
 .language-toggle { width: 38px; height: 34px; flex: 0 0 auto; padding: 0; border: 1px solid #d8d2e6; border-radius: 10px; color: #7059c7; background: #fff; font-size: 11px; font-weight: 850; cursor: pointer; }
 .header-login { padding: 8px 13px; border-radius: 10px; color: #fff; background: #7059c7; font-size: 12px; font-weight: 800; text-decoration: none; }
@@ -1263,3 +1265,11 @@ html[data-theme="dark"] .settings-fields input:disabled {
   -webkit-text-fill-color: #d7d9e8;
 }
 .field-hint { font-size: 11px; font-weight: 650; }
+.extracurricular-editor { display: grid; gap: 10px; padding-top: 4px; }
+.extracurricular-editor > button { justify-self: start; padding: 10px 14px; border: 0; border-radius: 9px; color: #fff; background: linear-gradient(135deg, #7053e3, #9362f2); font-weight: 800; cursor: pointer; }
+.extracurricular-feedback { padding: 15px; border-left: 3px solid #8870df; border-radius: 0 12px 12px 0; background: #efebf7; }
+.extracurricular-feedback span { color: #7059c7; font-size: 11px; font-weight: 850; text-transform: uppercase; }
+.extracurricular-feedback p { margin: 7px 0 0; color: #555b76; line-height: 1.6; white-space: pre-wrap; }
+html[data-theme="dark"] .extracurricular-feedback { background: #292d4b; }
+html[data-theme="dark"] .extracurricular-feedback span { color: #b29fff; }
+html[data-theme="dark"] .extracurricular-feedback p { color: #d5d7e7; }

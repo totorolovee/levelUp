@@ -6,6 +6,7 @@ import {
   type AdmissionPortfolio as Portfolio,
 } from '../lib/admissionPortfolio';
 import { useLanguage } from '../lib/language';
+import { ExtracurricularEvaluator } from './ExtracurricularEvaluator';
 
 export function AdmissionPortfolio() {
   const { language } = useLanguage();
@@ -110,6 +111,13 @@ export function AdmissionPortfolio() {
             value={portfolio.major}
           />
         </label>
+        <ExtracurricularEvaluator
+          feedback={portfolio.extracurricularFeedback}
+          major={portfolio.major}
+          onChange={(value) => update('extracurriculars', value)}
+          onFeedback={(value) => update('extracurricularFeedback', value)}
+          value={portfolio.extracurriculars}
+        />
       </div>
       <button
         disabled={!ieltsIsValid || !satIsValid || status === 'loading' || status === 'saving'}

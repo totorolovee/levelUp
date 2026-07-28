@@ -30,7 +30,7 @@ const initialDirection = universityDirections[0];
 const initialSpecialty = universitySpecialties.find(
   ({ directionId }) => directionId === initialDirection.id,
 ) ?? universitySpecialties[0];
-const initialRegions = filterRegions(initialSpecialty);
+const initialRegions = filterRegions(initialSpecialty, initialDirection);
 
 export function UniversitiesPage() {
   const [direction, setDirection] = useState<UniversityDirection>(initialDirection);
@@ -40,13 +40,9 @@ export function UniversitiesPage() {
   const [selected, setSelected] = useState<University>(region.universities[0]);
   const [profile, setProfile] = useState<StudentProfile>(initialProfile);
   const filtered = useMemo(() => {
-    const allowedIds = new Set(specialty.universityIds);
-    const matchingUniversities = region.universities.filter((university) =>
-      allowedIds.has(university.id),
-    );
     const search = query.trim().toLocaleLowerCase('ru');
-    if (!search) return matchingUniversities;
-    return matchingUniversities.filter((university) =>
+    if (!search) return region.universities;
+    return region.universities.filter((university) =>
       `${university.name} ${university.shortName} ${university.location}`
         .toLocaleLowerCase('ru')
         .includes(search),
@@ -63,7 +59,7 @@ export function UniversitiesPage() {
     const nextSpecialty = universitySpecialties.find(
       ({ directionId }) => directionId === nextDirection.id,
     ) ?? universitySpecialties[0];
-    const nextRegions = filterRegions(nextSpecialty);
+    const nextRegions = filterRegions(nextSpecialty, nextDirection);
     setDirection(nextDirection);
     setSpecialty(nextSpecialty);
     setRegion(nextRegions[0]);
@@ -72,7 +68,7 @@ export function UniversitiesPage() {
   };
 
   const selectSpecialty = (nextSpecialty: UniversitySpecialty) => {
-    const nextRegions = filterRegions(nextSpecialty);
+    const nextRegions = filterRegions(nextSpecialty, direction);
     setSpecialty(nextSpecialty);
     setRegion(nextRegions[0]);
     setQuery('');
@@ -83,7 +79,10 @@ export function UniversitiesPage() {
     () => universitySpecialties.filter(({ directionId }) => directionId === direction.id),
     [direction],
   );
-  const regionsForSpecialty = useMemo(() => filterRegions(specialty), [specialty]);
+  const regionsForSpecialty = useMemo(
+    () => filterRegions(specialty, direction),
+    [direction, specialty],
+  );
 
   return (
     <main className="shell">
@@ -127,12 +126,19 @@ export function UniversitiesPage() {
   );
 }
 
-function filterRegions(specialty: UniversitySpecialty): UniversityRegion[] {
-  const allowedIds = new Set(specialty.universityIds);
+function filterRegions(
+  specialty: UniversitySpecialty,
+  direction: UniversityDirection,
+): UniversityRegion[] {
+  const specialtyIds = new Set(specialty.universityIds);
+  const directionIds = new Set(direction.universityIds);
   return universityRegions
     .map((region) => ({
       ...region,
-      universities: region.universities.filter((university) => allowedIds.has(university.id)),
+      universities: region.universities.filter(
+        (university) =>
+          specialtyIds.has(university.id) && directionIds.has(university.id),
+      ),
     }))
     .filter((region) => region.universities.length > 0);
 }

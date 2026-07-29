@@ -7,7 +7,8 @@ export type BrainGameId =
   | 'sequence' | 'pairs' | 'pattern'
   | 'count' | 'focus-match' | 'direction' | 'sort'
   | 'missing' | 'reverse' | 'growing-matrix'
-  | 'number-pattern' | 'target-equation' | 'odd-rule' | 'path-planner' | 'rotation';
+  | 'number-pattern' | 'target-equation' | 'odd-rule' | 'path-planner' | 'rotation'
+  | 'greater-expression' | 'multiplication' | 'number-path' | 'fractions' | 'missing-number';
 
 type Props = {
   focus: BrainFocus;
@@ -61,6 +62,16 @@ const categories: {
       { id: 'odd-rule', icon: '≠', ru: 'Лишнее число', en: 'Odd one out' },
       { id: 'path-planner', icon: '⌁', ru: 'Короткий маршрут', en: 'Path planner' },
       { id: 'rotation', icon: '↻', ru: 'Вращение фигур', en: 'Shape rotation' },
+    ],
+  },
+  {
+    id: 'math', ru: 'Математика', en: 'Math',
+    games: [
+      { id: 'greater-expression', icon: '>', ru: 'Что больше', en: 'Greater value' },
+      { id: 'multiplication', icon: '×', ru: 'Умножение', en: 'Multiplication' },
+      { id: 'number-path', icon: '→', ru: 'Числовой путь', en: 'Number path' },
+      { id: 'fractions', icon: '½', ru: 'Сравнение дробей', en: 'Compare fractions' },
+      { id: 'missing-number', icon: '…', ru: 'Пропущенное число', en: 'Missing number' },
     ],
   },
 ];

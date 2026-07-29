@@ -47,6 +47,7 @@
 .brain-game-library section:nth-child(2) button > span { background: #e17a5f; }
 .brain-game-library section:nth-child(3) button > span { background: #438ec4; }
 .brain-game-library section:nth-child(4) button > span { background: #8a65c7; }
+.brain-game-library section:nth-child(5) button > span { background: #d08a38; }
 .brain-game-library button small { color: #7d8198; }
 .brain-game-back { margin-top: 28px; padding: 9px 0; border: 0; color: #7059c7; background: transparent; font-weight: 850; cursor: pointer; }
 .pattern-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 9px; width: min(430px, 100%); margin: 30px auto 0; }
@@ -83,6 +84,9 @@
 .path-grid span.target { background: #e0ad56; }
 .rotation-shape { width: fit-content; margin: 32px auto; color: #7059c7; font-size: 90px; line-height: 1; }
 .training-result > p.result-level { margin: 12px 0 24px; color: #7059c7; font-size: 15px; }
+.expression-duel button { font-size: clamp(25px, 5vw, 42px); }
+.number-path { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 30px; flex-wrap: wrap; }
+.number-path button { display: grid; width: 76px; height: 76px; place-items: center; border: 0; border-radius: 17px; color: #fff; background: #d08a38; font-size: 24px; font-weight: 900; cursor: pointer; }
 .training-intro > p:not(.eyebrow) { color: #747990; font-size: 17px; }
 .training-intro > button, .brain-game form button, .training-result > button {
   padding: 14px 22px;

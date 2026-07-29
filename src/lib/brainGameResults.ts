@@ -1,7 +1,7 @@
 import { supabase } from './supabase';
 import type { BrainFocus } from './brainTrainingProfile';
 
-export type BrainGameCategory = BrainFocus | 'logic';
+export type BrainGameCategory = BrainFocus | 'logic' | 'math';
 
 export type BrainGameProgress = {
   gameId: string;

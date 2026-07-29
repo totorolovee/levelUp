@@ -13,6 +13,8 @@ import { CategorySortGame, DirectionRushGame } from './brainGames/SpeedExtraGame
 import { GrowingMatrixGame, MissingItemGame, ReverseSequenceGame } from './brainGames/MemoryExtraGames';
 import { NumberPatternGame, OddRuleGame, TargetEquationGame } from './brainGames/LogicGamesA';
 import { PathPlannerGame, RotationGame } from './brainGames/LogicGamesB';
+import { GreaterExpressionGame, MultiplicationSprintGame, NumberPathGame } from './brainGames/MathGamesA';
+import { FractionCompareGame, MissingNumberGame } from './brainGames/MathGamesB';
 
 type Props = {
   difficulty: number;
@@ -52,5 +54,10 @@ export function BrainGameRunner({
     case 'odd-rule': return <OddRuleGame {...common} />;
     case 'path-planner': return <PathPlannerGame {...common} />;
     case 'rotation': return <RotationGame {...common} />;
+    case 'greater-expression': return <GreaterExpressionGame {...common} />;
+    case 'multiplication': return <MultiplicationSprintGame {...common} />;
+    case 'number-path': return <NumberPathGame {...common} />;
+    case 'fractions': return <FractionCompareGame {...common} />;
+    case 'missing-number': return <MissingNumberGame {...common} />;
   }
 }

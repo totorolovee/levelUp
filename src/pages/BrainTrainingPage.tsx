@@ -82,8 +82,8 @@ export function BrainTrainingPage() {
           <div className="page-intro">
             <h1>{isRussian ? 'Выбери навык и начни игру' : 'Choose a skill and start playing'}</h1>
             <p>{isRussian
-              ? 'Двадцать одна многоуровневая игра развивает внимание, скорость, память и логику.'
-              : 'Twenty-one multi-level games train attention, speed, memory, and logic.'}</p>
+              ? 'Двадцать шесть многоуровневых игр развивают внимание, скорость, память, логику и математику.'
+              : 'Twenty-six multi-level games train attention, speed, memory, logic, and math.'}</p>
           </div>
           <BrainGameLibrary focus={profile.primaryFocus} isRussian={isRussian} onSelect={selectGame} progress={progress} />
         </section>

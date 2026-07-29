@@ -81,13 +81,11 @@ export function getBrainGameInfo(id: BrainGameId) {
 }
 
 export function getBrainGameCoverStyle(id: BrainGameId) {
-  const games = categories.flatMap((category) => category.games);
-  const index = Math.max(0, games.findIndex((game) => game.id === id));
   return {
-    backgroundImage: "url('/assets/game-covers.webp')",
-    backgroundPosition: `${(index % 5) * 25}% ${Math.floor(index / 5) * 20}%`,
+    backgroundImage: `url('/assets/game-covers/${id}.webp')`,
+    backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-    backgroundSize: '500% 600%',
+    backgroundSize: 'cover',
   };
 }
 

@@ -48,21 +48,26 @@ html[data-theme="dark"] .game-preview-stats div { border-color: #414668; backgro
 html[data-theme="dark"] .game-preview-stats dd { color: #c6b9ff; }
 
 @media (max-width: 560px) {
+  .page-transition:has(.brain-training-page) { touch-action: auto; }
   .brain-game-library section > div {
     display: flex;
     gap: 11px;
     margin-inline: -17px;
-    padding: 2px 17px 14px;
+    padding: 3px 17px 14px;
     overflow-x: auto;
+    overscroll-behavior-inline: contain;
     scroll-padding-inline: 17px;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
   }
   .brain-game-library section > div::-webkit-scrollbar { display: none; }
   .brain-game-library section > div button {
-    width: min(82vw, 320px);
-    flex: 0 0 min(82vw, 320px);
+    width: min(70vw, 260px);
+    flex: 0 0 min(70vw, 260px);
     scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
   .brain-game-preview { margin-top: 20px; border-radius: 22px; }
   .preview-game-cover { width: 100%; border-radius: 20px; }

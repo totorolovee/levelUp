@@ -177,7 +177,11 @@ html[data-theme="dark"] .training-result > .new-record { color: #ffe6ad; backgro
   .brain-assessment fieldset button span { display: inline; margin-right: 8px; }
   .brain-game-library section > div { grid-template-columns: 1fr; }
   .brain-game-library > section { padding: 17px; }
-  .brain-game-library section > div button { grid-template-columns: 100px 1fr; min-height: 102px; }
-  .brain-game-library section > div button > span { width: 100px; height: 56px; }
+  .brain-game-library section > div button { grid-template-columns: 88px 1fr; min-height: 94px; padding: 9px; }
+  .brain-game-library section > div button > span { width: 88px; height: 49px; border-radius: 11px; }
+  .game-card-copy { gap: 3px; }
+  .game-card-copy > strong { font-size: 13px; }
+  .game-card-copy small { min-height: 0; font-size: 9px; }
+  .game-card-copy em { font-size: 9px; }
   .number-duel button { min-width: 0; width: 50%; }
 }

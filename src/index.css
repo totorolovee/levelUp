@@ -1329,6 +1329,34 @@ html[data-theme="dark"] .reflection-history article small { color: #aeb3cb; }
 html[data-theme="dark"] .reflection-history article p { color: #d1d3e3; }
 
 .todo-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: start; }
+.todo-intro { padding-bottom: 30px; }
+.todo-intro h1 { max-width: 700px; font-size: clamp(32px, 4.2vw, 52px); }
+.todo-topic-picker { display: grid; gap: 16px; }
+.todo-topic-picker > header { display: flex; align-items: end; justify-content: space-between; gap: 20px; }
+.todo-topic-picker > header h2 { margin: 0; font-size: clamp(22px, 3vw, 32px); }
+.todo-topic-picker > header > span { display: grid; width: 45px; height: 45px; place-items: center; border-radius: 14px; color: #7057d5; background: #eee9f8; font-weight: 850; }
+.todo-topic-picker > div { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.todo-topic-picker > div > button { position: relative; display: grid; grid-template-columns: 46px 1fr auto; align-items: center; gap: 12px; min-height: 132px; padding: 18px; overflow: hidden; border: 1px solid #ded9e9; border-radius: 18px; color: inherit; background: #fff; box-shadow: 0 14px 34px rgba(75, 61, 126, .08); text-align: left; cursor: pointer; transition: transform .2s, border-color .2s, box-shadow .2s; }
+.todo-topic-picker > div > button:hover { border-color: #9d88de; box-shadow: 0 18px 42px rgba(75, 61, 126, .14); transform: translateY(-4px); }
+.todo-topic-picker button > i { display: grid; width: 46px; height: 46px; place-items: center; border-radius: 13px; color: #fff; background: linear-gradient(135deg, #7057d5, #7299df); font-style: normal; }
+.todo-topic-picker button > span { display: grid; min-width: 0; gap: 5px; }
+.todo-topic-picker button strong { overflow: hidden; font-size: 17px; text-overflow: ellipsis; white-space: nowrap; }
+.todo-topic-picker button small { color: #7d8198; font-size: 10px; }
+.todo-topic-picker button > b { color: #7057d5; font-size: 12px; }
+.todo-topic-picker button > em { position: absolute; right: 18px; bottom: 16px; left: 18px; height: 5px; overflow: hidden; border-radius: 99px; background: #ece8f3; }
+.todo-topic-picker button > em span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #7057d5, #56a3df); transition: width .35s; }
+.todo-topic-picker button > u { position: absolute; right: 17px; top: 14px; color: #9990b7; text-decoration: none; opacity: 0; transform: translateX(-5px); transition: opacity .2s, transform .2s; }
+.todo-topic-picker button:hover > u { opacity: 1; transform: translateX(0); }
+.todo-topic-view { max-width: 760px; margin: 0 auto; animation: topic-open .3s ease both; }
+.todo-topic-back { margin-bottom: 14px; padding: 8px 0; border: 0; color: #7057d5; background: transparent; font-weight: 800; cursor: pointer; }
+.todo-topic-title { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.todo-topic-title > span { display: grid; width: 54px; height: 54px; place-items: center; border-radius: 16px; color: #fff; background: linear-gradient(135deg, #7057d5, #7299df); font-size: 20px; }
+.todo-topic-title p { margin: 0 0 3px; color: #7b8097; font-size: 10px; font-weight: 850; letter-spacing: .8px; text-transform: uppercase; }
+.todo-topic-title h2 { margin: 0; font-size: clamp(25px, 4vw, 38px); }
+@keyframes topic-open {
+  from { opacity: 0; transform: translateY(12px) scale(.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
 .todo-category-creator { display: grid; grid-template-columns: minmax(180px, 1fr) minmax(180px, 320px) auto; align-items: center; gap: 12px; margin-bottom: 16px; padding: 16px 18px; border: 1px solid #ded9e9; border-radius: 16px; background: #fff; }
 .todo-category-creator > div { display: grid; gap: 3px; }
 .todo-category-creator span { color: #777c94; font-size: 12px; }
@@ -1397,6 +1425,12 @@ html[data-theme="dark"] .todo-category-creator span { color: #aeb3cb; }
 html[data-theme="dark"] .todo-column { border-color: #414668; background: linear-gradient(145deg, #272b49, #20243d); }
 html[data-theme="dark"] .todo-list article { border-color: #3f4464; background: #292d4b; }
 html[data-theme="dark"] .todo-check { border-color: #777da3; }
+html[data-theme="dark"] .todo-topic-picker > header > span { color: #c6b9ff; background: #343052; }
+html[data-theme="dark"] .todo-topic-picker > div > button { border-color: #414668; background: linear-gradient(145deg, #272b49, #20243d); box-shadow: 0 14px 34px rgba(2, 4, 16, .2); }
+html[data-theme="dark"] .todo-topic-picker button small { color: #aeb3cb; }
+html[data-theme="dark"] .todo-topic-picker button > b,
+html[data-theme="dark"] .todo-topic-back { color: #b5a3fa; }
+html[data-theme="dark"] .todo-topic-picker button > em { background: #181c34; }
 html[data-theme="dark"] .todo-category-delete { color: #e7aec1; background: #3b304d; }
 html[data-theme="dark"] .todo-date-field { color: #c6bdea; border-color: #464b70; background: #242842; }
 html[data-theme="dark"] .todo-subtasks > div button { border-color: #6c7197; }
@@ -1405,6 +1439,7 @@ html[data-theme="dark"] .todo-subtasks > div button { border-color: #6c7197; }
   .todo-board { grid-template-columns: 1fr; }
   .todo-category-creator { grid-template-columns: 1fr; }
   .todo-category-creator > small { grid-column: 1; }
+  .todo-topic-picker > div { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* Адаптивный гамбургер: пастельный днём и фиолетовый ночью */
@@ -1518,4 +1553,6 @@ html[data-theme="dark"] .saved-university-card > .remove-saved-university { colo
     padding-top: 72px;
   }
   .home-shell .sections-reveal { width: calc(100% - 28px); }
+  .todo-topic-picker > div { grid-template-columns: 1fr; }
+  .todo-topic-picker > div > button { min-height: 118px; }
 }

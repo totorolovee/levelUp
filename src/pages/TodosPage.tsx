@@ -3,6 +3,7 @@ import { AppHeader } from '../components/AppHeader';
 import { SmoothLink } from '../components/SmoothLink';
 import { TodoColumn } from '../components/TodoColumn';
 import { TodoCategoryCreator } from '../components/TodoCategoryCreator';
+import { TodoTopicPicker } from '../components/TodoTopicPicker';
 import { useLanguage } from '../lib/language';
 import {
   loadCustomTodoCategories,
@@ -17,6 +18,7 @@ export function TodosPage() {
   const { language } = useLanguage();
   const [items, setItems] = useState<TodoItem[]>([]);
   const [customCategories, setCustomCategories] = useState<TodoCategoryDefinition[]>([]);
+  const [selectedCategoryKey, setSelectedCategoryKey] = useState<string | null>(null);
   const [status, setStatus] = useState<'loading' | 'guest' | 'ready' | 'error'>('loading');
   const isRussian = language === 'ru';
 
@@ -46,6 +48,7 @@ export function TodosPage() {
     { key: 'personal', name: isRussian ? 'Личная жизнь' : 'Personal', icon: '♥', kind: 'builtin' },
   ];
   const categories = [...builtInCategories, ...customCategories];
+  const selectedCategory = categories.find(({ key }) => key === selectedCategoryKey);
 
   const changeCategory = (categoryKey: string, categoryItems: TodoItem[]) => {
     setItems((current) => [
@@ -60,6 +63,7 @@ export function TodosPage() {
       : `Delete “${category.name}” and all its tasks?`);
     if (!confirmed) return;
     await deleteTodoCategory(category.key);
+    setSelectedCategoryKey(null);
     setCustomCategories((current) => current.filter(({ key }) => key !== category.key));
     setItems((current) => current.filter(({ categoryKey }) => categoryKey !== category.key));
   };
@@ -70,8 +74,8 @@ export function TodosPage() {
       <section className="page-intro todo-intro">
         <div>
           <p className="eyebrow">{isRussian ? 'Задачи' : 'Tasks'}</p>
-          <h1>{isRussian ? 'Всё важное — в одном месте.' : 'Everything important, in one place.'}</h1>
-          <p>{isRussian ? 'Работа, учёба и личная жизнь без хаоса.' : 'Work, study, and personal life without the chaos.'}</p>
+          <h1>{isRussian ? 'Наведи порядок в делах.' : 'Bring order to your day.'}</h1>
+          <p>{isRussian ? 'Выбери тему и сосредоточься только на ней.' : 'Choose a topic and focus on one thing at a time.'}</p>
         </div>
       </section>
       {status === 'loading' && <p>{isRussian ? 'Загрузка…' : 'Loading…'}</p>}
@@ -84,21 +88,41 @@ export function TodosPage() {
       )}
       {status === 'ready' && (
         <>
-          <TodoCategoryCreator
-            isRussian={isRussian}
-            onCreate={(category) => setCustomCategories((current) => [...current, category])}
-          />
-          <div className="todo-board">
-            {categories.map((category) => (
-              <TodoColumn
-                category={category}
-                items={items.filter((item) => item.categoryKey === category.key)}
-                key={category.key}
-                onChange={(next) => changeCategory(category.key, next)}
-                onDeleteCategory={() => void removeCategory(category)}
+          {!selectedCategory && (
+            <>
+              <TodoCategoryCreator
+                isRussian={isRussian}
+                onCreate={(category) => setCustomCategories((current) => [...current, category])}
               />
-            ))}
-          </div>
+              <TodoTopicPicker
+                categories={categories}
+                isRussian={isRussian}
+                items={items}
+                onSelect={(category) => setSelectedCategoryKey(category.key)}
+              />
+            </>
+          )}
+          {selectedCategory && (
+            <section className="todo-topic-view">
+              <button className="todo-topic-back" onClick={() => setSelectedCategoryKey(null)} type="button">
+                ← {isRussian ? 'Все темы' : 'All topics'}
+              </button>
+              <div className="todo-topic-title">
+                <span>{selectedCategory.icon}</span>
+                <div>
+                  <p>{isRussian ? 'Сейчас в фокусе' : 'Current focus'}</p>
+                  <h2>{selectedCategory.name}</h2>
+                </div>
+              </div>
+              <TodoColumn
+                category={selectedCategory}
+                items={items.filter((item) => item.categoryKey === selectedCategory.key)}
+                key={selectedCategory.key}
+                onChange={(next) => changeCategory(selectedCategory.key, next)}
+                onDeleteCategory={() => void removeCategory(selectedCategory)}
+              />
+            </section>
+          )}
         </>
       )}
     </main>

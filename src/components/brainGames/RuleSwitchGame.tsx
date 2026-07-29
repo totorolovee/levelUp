@@ -29,6 +29,7 @@ export function RuleSwitchGame({ isRussian, onComplete }: BrainGameProps) {
       <h1>{current.rule === 'word'
         ? (isRussian ? 'Выбери значение слова' : 'Choose the word meaning')
         : (isRussian ? 'Выбери цвет текста' : 'Choose the ink color')}</h1>
+      <p>{isRussian ? 'Уровень' : 'Level'} {round + 1}/{rounds.length}</p>
       <div className={`rule-word ${current.ink}`}>{current.word === 'red' ? (isRussian ? 'КРАСНЫЙ' : 'RED') : (isRussian ? 'СИНИЙ' : 'BLUE')}</div>
       <div className="game-choice-row">
         <button onClick={() => answer('red')} type="button">{isRussian ? 'Красный' : 'Red'}</button>

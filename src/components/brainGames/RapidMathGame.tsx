@@ -25,7 +25,7 @@ export function RapidMathGame({ isRussian, onComplete }: BrainGameProps) {
     <section className="brain-game">
       <p className="eyebrow">{isRussian ? 'Скорость · Быстрый счёт' : 'Speed · Quick math'}</p>
       <h1>{current.left} + {current.right} = {current.shown}</h1>
-      <p>{isRussian ? 'Верно ли равенство?' : 'Is this correct?'}</p>
+      <p>{isRussian ? 'Верно ли равенство?' : 'Is this correct?'} · {isRussian ? 'Уровень' : 'Level'} {round + 1}/{rounds.length}</p>
       <div className="game-choice-row">
         <button onClick={() => answer(true)} type="button">{isRussian ? 'Да' : 'Yes'}</button>
         <button onClick={() => answer(false)} type="button">{isRussian ? 'Нет' : 'No'}</button>

@@ -33,6 +33,7 @@ export function PairMatchGame({ isRussian, onComplete }: BrainGameProps) {
     <section className="brain-game">
       <p className="eyebrow">{isRussian ? 'Память · Пары' : 'Memory · Pairs'}</p>
       <h1>{isRussian ? 'Найди одинаковые пары' : 'Match identical pairs'}</h1>
+      <p>{isRussian ? 'Найдено пар' : 'Pairs found'} {matched.size / 2}/6</p>
       <div className="pair-grid">
         {cards.map((icon, index) => (
           <button

@@ -38,7 +38,7 @@ export function SpeedTrainingGame({ isRussian, roundsCount, onComplete }: Props)
       <h1>{state === 'ready'
         ? (isRussian ? 'Нажми сейчас!' : 'Tap now!')
         : (isRussian ? 'Жди зелёный сигнал' : 'Wait for green')}</h1>
-      <p>{isRussian ? 'Попытка' : 'Attempt'} {round} / {roundsCount}</p>
+      <p>{isRussian ? 'Уровень' : 'Level'} {round} / {roundsCount}</p>
       <button
         className={`reaction-target ${state}`}
         onClick={react}

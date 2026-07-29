@@ -2,26 +2,35 @@ import { useEffect, useMemo, useState } from 'react';
 import type { BrainGameProps } from './types';
 
 export function PatternRecallGame({ isRussian, onComplete }: BrainGameProps) {
-  const targets = useMemo(() => {
-    const values = new Set<number>();
-    while (values.size < 6) values.add(Math.floor(Math.random() * 25));
-    return values;
-  }, []);
+  const [level, setLevel] = useState(0);
   const [show, setShow] = useState(true);
   const [chosen, setChosen] = useState<Set<number>>(new Set());
+  const [score, setScore] = useState(0);
+  const targets = useMemo(() => {
+    const values = new Set<number>();
+    while (values.size < 4 + level) values.add(Math.floor(Math.random() * 25));
+    return values;
+  }, [level]);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setShow(false), 3000);
+    setShow(true);
+    setChosen(new Set());
+    const timer = window.setTimeout(() => setShow(false), 2800 - level * 250);
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [level]);
 
   const choose = (index: number) => {
     if (show || chosen.has(index)) return;
-    const next = new Set(chosen).add(index);
-    setChosen(next);
-    if (next.size === targets.size) {
-      const correct = [...next].filter((value) => targets.has(value)).length;
-      window.setTimeout(() => onComplete(Math.round(correct / targets.size * 100)), 250);
+    const nextChosen = new Set(chosen).add(index);
+    setChosen(nextChosen);
+    if (nextChosen.size !== targets.size) return;
+    const hits = [...nextChosen].filter((value) => targets.has(value)).length;
+    const nextScore = score + hits / targets.size;
+    if (level === 4) {
+      window.setTimeout(() => onComplete(Math.round(nextScore / 5 * 100)), 250);
+    } else {
+      setScore(nextScore);
+      setLevel((value) => value + 1);
     }
   };
 
@@ -31,11 +40,12 @@ export function PatternRecallGame({ isRussian, onComplete }: BrainGameProps) {
       <h1>{show
         ? (isRussian ? 'Запомни светлые клетки' : 'Remember the bright cells')
         : (isRussian ? 'Повтори рисунок' : 'Repeat the pattern')}</h1>
+      <p>{isRussian ? 'Уровень' : 'Level'} {level + 1}/5</p>
       <div className="pattern-grid">
         {Array.from({ length: 25 }, (_, index) => (
           <button
             className={(show && targets.has(index)) || chosen.has(index) ? 'active' : ''}
-            key={index}
+            key={`${level}-${index}`}
             onClick={() => choose(index)}
             type="button"
           />

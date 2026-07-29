@@ -41,6 +41,8 @@
 .brain-game-library header > strong { display: grid; width: 40px; height: 40px; place-items: center; border-radius: 12px; color: #7059c7; background: #f0ecf8; }
 .brain-game-library section > div { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .brain-game-library section > div button { display: grid; grid-template-columns: 48px 1fr; gap: 3px 11px; min-height: 100px; align-items: center; padding: 16px; border: 0; border-radius: 16px; color: #252842; background: #f5f2f9; text-align: left; cursor: pointer; }
+.brain-game-library section > div button.priority-game { outline: 2px solid #e0ad56; outline-offset: -2px; background: #fff8e9; }
+.brain-game-library .priority-game small { color: #9b6821; font-weight: 850; }
 .brain-game-library section > div button > span { display: grid; width: 48px; height: 48px; grid-row: 1 / 3; place-items: center; border-radius: 14px; color: #fff; background: #7059c7; font-size: 18px; font-weight: 900; }
 .brain-game-library section:nth-child(2) button > span { background: #e17a5f; }
 .brain-game-library section:nth-child(3) button > span { background: #438ec4; }
@@ -61,6 +63,17 @@
 .game-choice-row, .number-duel { display: flex; justify-content: center; gap: 12px; margin-top: 28px; }
 .game-choice-row button, .number-duel button { min-width: 140px; padding: 16px; border: 0; border-radius: 14px; color: #fff; background: #7059c7; font-weight: 850; cursor: pointer; }
 .number-duel button { min-width: 180px; padding: 35px 20px; font-size: 44px; }
+.symbol-cloud { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; max-width: 480px; margin: 25px auto; }
+.symbol-cloud span { display: grid; aspect-ratio: 1; place-items: center; border-radius: 9px; color: #7059c7; background: #f0ecf6; }
+.focus-pair, .memory-objects { display: flex; justify-content: center; gap: 14px; margin: 32px 0; }
+.focus-pair span, .memory-objects span { display: grid; width: 82px; height: 82px; place-items: center; border-radius: 18px; color: #7059c7; background: #efebf7; font-size: 38px; }
+.direction-arrow { margin: 28px auto !important; color: #7059c7; font-size: 110px !important; }
+.direction-pad { display: grid; grid-template-columns: repeat(3, 70px); justify-content: center; gap: 7px; margin-top: 25px; }
+.direction-pad button { height: 60px; border: 0; border-radius: 13px; color: #fff; background: #7059c7; font-size: 25px; cursor: pointer; }
+.direction-pad button:first-child { grid-column: 2; }
+.direction-pad button:nth-child(2) { grid-column: 3; grid-row: 2; }
+.direction-pad button:nth-child(3) { grid-column: 2; grid-row: 3; }
+.direction-pad button:nth-child(4) { grid-column: 1; grid-row: 2; }
 .training-intro > p:not(.eyebrow) { color: #747990; font-size: 17px; }
 .training-intro > button, .brain-game form button, .training-result > button {
   padding: 14px 22px;
@@ -109,6 +122,7 @@ html[data-theme="dark"] .brain-assessment fieldset button.selected { border-colo
 html[data-theme="dark"] .personal-focus { color: #d5ccff !important; background: #343052; }
 html[data-theme="dark"] .brain-game-library > section { color: #fff; border-color: #414668; background: #242842; }
 html[data-theme="dark"] .brain-game-library section > div button { color: #fff; background: #303553; }
+html[data-theme="dark"] .brain-game-library section > div button.priority-game { outline-color: #c99a4e; background: #3c3543; }
 html[data-theme="dark"] .brain-game-library header > strong,
 html[data-theme="dark"] .brain-game-library header span { color: #d5ccff; background: #343052; }
 html[data-theme="dark"] .pattern-grid button { background: #363b5b; }
@@ -116,6 +130,9 @@ html[data-theme="dark"] .pattern-grid button.active,
 html[data-theme="dark"] .pair-grid button.open { background: #8069dc; }
 html[data-theme="dark"] .pair-grid button,
 html[data-theme="dark"] .scan-grid button { color: #d5ccff; background: #303553; }
+html[data-theme="dark"] .symbol-cloud span,
+html[data-theme="dark"] .focus-pair span,
+html[data-theme="dark"] .memory-objects span { color: #d5ccff; background: #303553; }
 @media (max-width: 560px) {
   .training-intro, .brain-game, .training-result, .brain-assessment { margin-top: 28px; border-radius: 20px; }
   .training-skills { grid-template-columns: 1fr; }

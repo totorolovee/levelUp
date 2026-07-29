@@ -11,6 +11,13 @@ import { QuickCompareGame } from '../components/brainGames/QuickCompareGame';
 import { RapidMathGame } from '../components/brainGames/RapidMathGame';
 import { RuleSwitchGame } from '../components/brainGames/RuleSwitchGame';
 import { TargetScanGame } from '../components/brainGames/TargetScanGame';
+import { FocusMatchGame, TargetCountGame } from '../components/brainGames/AttentionExtraGames';
+import { CategorySortGame, DirectionRushGame } from '../components/brainGames/SpeedExtraGames';
+import {
+  GrowingMatrixGame,
+  MissingItemGame,
+  ReverseSequenceGame,
+} from '../components/brainGames/MemoryExtraGames';
 import { saveBrainGameResult } from '../lib/brainGameResults';
 import {
   loadBrainTrainingProfile,
@@ -63,12 +70,19 @@ export function BrainTrainingPage() {
       case 'shade': return <AttentionTrainingGame {...common} />;
       case 'scan': return <TargetScanGame {...common} />;
       case 'switch': return <RuleSwitchGame {...common} />;
-      case 'reaction': return <SpeedTrainingGame {...common} roundsCount={6} />;
+      case 'reaction': return <SpeedTrainingGame {...common} roundsCount={12} />;
       case 'compare': return <QuickCompareGame {...common} />;
       case 'math': return <RapidMathGame {...common} />;
       case 'sequence': return <MemoryTrainingGame {...common} sequenceLength={(profile?.memoryNeed ?? 3) >= 4 ? 7 : 6} />;
       case 'pairs': return <PairMatchGame {...common} />;
       case 'pattern': return <PatternRecallGame {...common} />;
+      case 'count': return <TargetCountGame {...common} />;
+      case 'focus-match': return <FocusMatchGame {...common} />;
+      case 'direction': return <DirectionRushGame {...common} />;
+      case 'sort': return <CategorySortGame {...common} />;
+      case 'missing': return <MissingItemGame {...common} />;
+      case 'reverse': return <ReverseSequenceGame {...common} />;
+      case 'growing-matrix': return <GrowingMatrixGame {...common} />;
     }
   };
 
@@ -83,11 +97,10 @@ export function BrainTrainingPage() {
       {stage === 'library' && profile && (
         <section className="brain-library-screen">
           <div className="page-intro">
-            <p className="eyebrow">{isRussian ? 'Тренировка мозга' : 'Brain training'}</p>
             <h1>{isRussian ? 'Выбери навык и начни игру' : 'Choose a skill and start playing'}</h1>
             <p>{isRussian
-              ? 'Девять коротких игр развивают внимание, скорость и память.'
-              : 'Nine short games train attention, speed, and memory.'}</p>
+              ? 'Шестнадцать многоуровневых игр развивают внимание, скорость и память.'
+              : 'Sixteen multi-level games train attention, speed, and memory.'}</p>
           </div>
           <BrainGameLibrary focus={profile.primaryFocus} isRussian={isRussian} onSelect={selectGame} />
         </section>

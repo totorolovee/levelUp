@@ -33,7 +33,7 @@ export function QuickCompareGame({ isRussian, onComplete }: BrainGameProps) {
         <button onClick={() => choose('left')} type="button">{current.left}</button>
         <button onClick={() => choose('right')} type="button">{current.right}</button>
       </div>
-      <p>{round + 1}/{rounds.length}</p>
+      <p>{isRussian ? 'Уровень' : 'Level'} {round + 1}/{rounds.length}</p>
     </section>
   );
 }

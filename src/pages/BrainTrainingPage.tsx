@@ -95,7 +95,6 @@ export function BrainTrainingPage() {
       }} />}
       {stage === 'attention' && <AttentionTrainingGame
         isRussian={isRussian}
-        roundsCount={Math.max(6, 8 + ((profile?.attentionNeed ?? 3) - 3) * 2)}
         onComplete={(attention) => {
         setScores((current) => ({ ...current, attention }));
         setStage('speed');

@@ -50,8 +50,15 @@
 .memory-sequence { margin: 42px 0 10px; color: #7059c7; font-size: clamp(54px, 12vw, 96px); font-weight: 900; letter-spacing: 14px; }
 .brain-game form { display: grid; grid-template-columns: 1fr auto; gap: 10px; max-width: 440px; margin: 38px auto 0; }
 .brain-game input { min-width: 0; padding: 14px; border: 1px solid #d8d2e6; border-radius: 12px; text-align: center; }
-.attention-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; max-width: 430px; margin: 30px auto 0; }
-.attention-grid button { aspect-ratio: 1; border: 0; border-radius: 16px; color: #51458a; background: #efebf7; font-size: 30px; cursor: pointer; }
+.attention-level { display: flex; justify-content: space-between; gap: 18px; max-width: 520px; margin: 0 auto; color: #747990; font-size: 12px; }
+.attention-grid { display: grid; gap: clamp(7px, 1.4vw, 12px); width: min(520px, 100%); margin: 25px auto 0; }
+.attention-shape { width: 100%; aspect-ratio: 1; padding: 0; border: 0; cursor: pointer; }
+.attention-shape.circle { border-radius: 50%; }
+.attention-shape.square { border-radius: 18%; }
+.attention-shape.diamond { border-radius: 16%; transform: rotate(45deg) scale(.72); }
+.attention-shape.diamond:hover { transform: rotate(45deg) scale(.77); }
+.attention-shape.diamond:active { transform: rotate(45deg) scale(.68); }
+.attention-shape.hexagon { clip-path: polygon(25% 7%, 75% 7%, 100% 50%, 75% 93%, 25% 93%, 0 50%); }
 .reaction-target { width: min(320px, 80vw); aspect-ratio: 1.7; margin-top: 28px; border: 0; border-radius: 28px; color: #fff; font-size: 32px; font-weight: 900; cursor: default; }
 .reaction-target.waiting { background: #e18b6c; }
 .reaction-target.ready { background: #48a989; cursor: pointer; }
@@ -63,8 +70,8 @@ html[data-theme="dark"] .training-intro,
 html[data-theme="dark"] .brain-game,
 html[data-theme="dark"] .training-result,
 html[data-theme="dark"] .brain-assessment { color: #fff; border-color: #414668; background: #242842; }
-html[data-theme="dark"] .training-skills article,
-html[data-theme="dark"] .attention-grid button { color: #fff; background: #303553; }
+html[data-theme="dark"] .training-skills article { color: #fff; background: #303553; }
+html[data-theme="dark"] .attention-level { color: #afb4cf; }
 html[data-theme="dark"] .training-intro > p:not(.eyebrow) { color: #afb4cf; }
 html[data-theme="dark"] .brain-assessment fieldset button,
 html[data-theme="dark"] .education-choice select { color: #d8daeb; border-color: #464b70; background: #303553; }
@@ -75,6 +82,7 @@ html[data-theme="dark"] .personal-focus { color: #d5ccff !important; background:
   .training-skills { grid-template-columns: 1fr; }
   .brain-game form { grid-template-columns: 1fr; }
   .memory-sequence { letter-spacing: 7px; }
+  .attention-grid { gap: 6px; }
   .brain-assessment fieldset > div { grid-template-columns: 1fr; }
   .brain-assessment fieldset button { min-height: 48px; text-align: left; }
   .brain-assessment fieldset button span { display: inline; margin-right: 8px; }

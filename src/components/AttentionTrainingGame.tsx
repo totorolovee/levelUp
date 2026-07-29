@@ -1,43 +1,80 @@
 import { useMemo, useState } from 'react';
 
-const symbols = ['●', '▲', '■', '◆'];
+const TOTAL_LEVELS = 20;
+const shapes = ['circle', 'square', 'diamond', 'hexagon'] as const;
+
+function figureCount(level: number) {
+  if (level >= 20) return 49;
+  if (level >= 15) return 36;
+  if (level >= 10) return 25;
+  if (level >= 5) return 16;
+  return 9;
+}
+
+function createLevel(level: number) {
+  const count = figureCount(level);
+  const hue = Math.floor(Math.random() * 360);
+  const saturation = 58 + Math.floor(Math.random() * 18);
+  const lightness = 43 + Math.floor(Math.random() * 14);
+  const shadeDifference = 19 - (level - 1) * (16 / (TOTAL_LEVELS - 1));
+  const direction = Math.random() > .5 ? 1 : -1;
+  const oddLightness = Math.max(22, Math.min(78, lightness + shadeDifference * direction));
+
+  return {
+    count,
+    columns: Math.sqrt(count),
+    commonColor: `hsl(${hue} ${saturation}% ${lightness}%)`,
+    oddColor: `hsl(${hue} ${saturation}% ${oddLightness}%)`,
+    oddIndex: Math.floor(Math.random() * count),
+    shape: shapes[Math.floor(Math.random() * shapes.length)],
+  };
+}
 
 type Props = {
   isRussian: boolean;
-  roundsCount: number;
   onComplete: (score: number) => void;
 };
 
-export function AttentionTrainingGame({ isRussian, roundsCount, onComplete }: Props) {
-  const rounds = useMemo(() => Array.from({ length: roundsCount }, () => {
-    const common = symbols[Math.floor(Math.random() * symbols.length)];
-    const odd = symbols.filter((symbol) => symbol !== common)[Math.floor(Math.random() * 3)];
-    const oddIndex = Math.floor(Math.random() * 16);
-    return Array.from({ length: 16 }, (_, index) => index === oddIndex ? odd : common);
-  }), [roundsCount]);
-  const [round, setRound] = useState(0);
+export function AttentionTrainingGame({ isRussian, onComplete }: Props) {
+  const [level, setLevel] = useState(1);
   const [correct, setCorrect] = useState(0);
-  const current = rounds[round];
-  const common = current[0] === current[1] ? current[0] : current[2];
+  const current = useMemo(() => createLevel(level), [level]);
 
-  const choose = (symbol: string) => {
-    const nextCorrect = correct + Number(symbol !== common);
-    if (round === rounds.length - 1) {
-      onComplete(Math.round(nextCorrect / rounds.length * 100));
-    } else {
-      setCorrect(nextCorrect);
-      setRound((value) => value + 1);
+  const choose = (index: number) => {
+    const nextCorrect = correct + Number(index === current.oddIndex);
+    if (level === TOTAL_LEVELS) {
+      onComplete(Math.round(nextCorrect / TOTAL_LEVELS * 100));
+      return;
     }
+    setCorrect(nextCorrect);
+    setLevel((value) => value + 1);
   };
 
   return (
-    <section className="brain-game">
+    <section className="brain-game attention-game">
       <p className="eyebrow">02 · {isRussian ? 'Внимание' : 'Attention'}</p>
-      <h1>{isRussian ? 'Найди отличающийся символ' : 'Find the different symbol'}</h1>
-      <p>{isRussian ? 'Раунд' : 'Round'} {round + 1} / {rounds.length}</p>
-      <div className="attention-grid">
-        {current.map((symbol, index) => (
-          <button key={index} onClick={() => choose(symbol)} type="button">{symbol}</button>
+      <h1>{isRussian ? 'Найди другой оттенок' : 'Find the different shade'}</h1>
+      <div className="attention-level">
+        <span>{isRussian ? 'Уровень' : 'Level'} {level}/{TOTAL_LEVELS}</span>
+        <strong>{current.count} {isRussian ? 'фигур' : 'shapes'}</strong>
+      </div>
+      <div
+        className="attention-grid"
+        style={{ gridTemplateColumns: `repeat(${current.columns}, 1fr)` }}
+      >
+        {Array.from({ length: current.count }, (_, index) => (
+          <button
+            aria-label={isRussian ? `Фигура ${index + 1}` : `Shape ${index + 1}`}
+            className={`attention-shape ${current.shape}`}
+            key={`${level}-${index}`}
+            onClick={() => choose(index)}
+            style={{
+              backgroundColor: index === current.oddIndex
+                ? current.oddColor
+                : current.commonColor,
+            }}
+            type="button"
+          />
         ))}
       </div>
     </section>

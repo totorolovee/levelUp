@@ -25,17 +25,21 @@ export function AiCoachForm({ appContext, hasAppData }: AiCoachFormProps) {
 
     try {
       const prompt = [
-        'Вот данные пользователя из приложения:',
+        language === 'ru' ? 'Вот данные пользователя из приложения:' : 'Here is the user data from the app:',
         appContext,
-        `Запрос пользователя: ${details}`,
-        'Дай персональный, выполнимый совет на ближайший день.',
+        `${language === 'ru' ? 'Запрос пользователя' : 'User request'}: ${details}`,
+        language === 'ru'
+          ? 'Дай персональный, выполнимый совет на ближайший день.'
+          : 'Give personalized, actionable advice for the next day.',
       ].join('\n\n');
       setAnswer(await askAiCoach(prompt, language));
     } catch (requestError) {
       setError(
         requestError instanceof Error
           ? requestError.message
-          : 'Что-то пошло не так. Попробуй ещё раз.',
+          : (language === 'ru'
+            ? 'Что-то пошло не так. Попробуй ещё раз.'
+            : 'Something went wrong. Please try again.'),
       );
     } finally {
       setIsLoading(false);

@@ -20,6 +20,7 @@ function translatedText(source: string) {
     .replace(/(\d+) шагов выполнено/, '$1 steps completed')
     .replace(/(\d+) символов/, '$1 characters')
     .replace(/Покупка ([A-Z.]+)/, 'Buying $1')
+    .replace(/Почему именно (.+), а не просто популярная компания\?/, 'Why $1 specifically, rather than just a popular company?')
     .replace(/Уверенность:/, 'Confidence:')
     .replace(/Вопрос (\d+) из (\d+)/, 'Question $1 of $2')
     .replace(/Обновлено /, 'Updated ')

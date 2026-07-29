@@ -23,15 +23,15 @@ export function HeroDashboardPreview({ isSignedIn }: Props) {
           <small>
             {isSignedIn
               ? (isRussian ? 'Сегодняшний прогресс' : "Today's progress")
-              : (isRussian ? 'Твой личный прогресс' : 'Your personal progress')}
+              : (isRussian ? 'Личная система развития' : 'Personal growth system')}
           </small>
           <strong>
-            {isSignedIn ? '74%' : (isRussian ? 'Начни' : 'Start')}
+            {isSignedIn ? '74%' : 'LevelUp'}
           </strong>
           <p>
             {isSignedIn
               ? (isRussian ? 'Ещё один шаг до нового уровня' : 'One more step toward a new level')
-              : (isRussian ? 'Войди, чтобы сохранять достижения' : 'Sign in to save your achievements')}
+              : (isRussian ? 'Цели, привычки и прогресс в одном пространстве' : 'Goals, habits, and progress in one place')}
           </p>
         </div>
         <div className="preview-orb"><span>L</span></div>
@@ -47,15 +47,15 @@ export function HeroDashboardPreview({ isSignedIn }: Props) {
           <strong>{isRussian ? 'Твой список ждёт' : 'Your list is waiting'}</strong>
         </article>
         <article>
-          <small>{isRussian ? 'Опыт и ранги' : 'XP and ranks'}</small>
+          <small>{isRussian ? 'Путь развития' : 'Growth path'}</small>
           <strong className="preview-xp">
-            {isSignedIn ? '2 480' : (isRussian ? 'После входа' : 'After sign-in')}
+            {isSignedIn ? '2 480' : '0—4000 XP'}
           </strong>
           <div className="preview-line"><i /></div>
           <p>
             {isSignedIn
               ? (isRussian ? '+320 XP за неделю' : '+320 XP this week')
-              : (isRussian ? 'Выполняй задачи и получай XP' : 'Complete tasks and earn XP')}
+              : (isRussian ? 'Уровни, ранги и достижения' : 'Levels, ranks, and achievements')}
           </p>
         </article>
       </div>

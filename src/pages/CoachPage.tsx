@@ -3,8 +3,11 @@ import { AppHeader } from '../components/AppHeader';
 import { useGoals } from '../lib/goals';
 import { usePortfolio } from '../lib/portfolio';
 import { useReading } from '../lib/reading';
+import { useLanguage } from '../lib/language';
 
 export function CoachPage() {
+  const { language } = useLanguage();
+  const isRussian = language === 'ru';
   const { goal } = useGoals();
   const { decisions } = usePortfolio();
   const { progress, selectedTitles } = useReading();
@@ -12,14 +15,14 @@ export function CoachPage() {
 
   const appContext = [
     goal
-      ? `Цель: ${goal.title}. Выполнено шагов: ${goal.completedCount}. Следующий шаг: ${goal.actions[0] ?? 'не задан'}.`
-      : 'Активная цель не указана.',
+      ? `${isRussian ? 'Цель' : 'Goal'}: ${goal.title}. ${isRussian ? 'Выполнено шагов' : 'Steps completed'}: ${goal.completedCount}. ${isRussian ? 'Следующий шаг' : 'Next step'}: ${goal.actions[0] ?? (isRussian ? 'не задан' : 'not set')}.`
+      : (isRussian ? 'Активная цель не указана.' : 'No active goal is set.'),
     selectedTitles.length
-      ? `Чтение: ${selectedTitles.map((title) => `${title} — ${progress[title] ?? 0}%`).join('; ')}.`
-      : 'Книги пока не выбраны.',
+      ? `${isRussian ? 'Чтение' : 'Reading'}: ${selectedTitles.map((title) => `${title} — ${progress[title] ?? 0}%`).join('; ')}.`
+      : (isRussian ? 'Книги пока не выбраны.' : 'No books selected yet.'),
     decisions.length
-      ? `Инвестиционные решения: ${decisions.slice(0, 3).map((item) => `${item.company}, причина: ${item.reason}`).join('; ')}.`
-      : 'Инвестиционных решений пока нет.',
+      ? `${isRussian ? 'Инвестиционные решения' : 'Investment decisions'}: ${decisions.slice(0, 3).map((item) => `${item.company}, ${isRussian ? 'причина' : 'reason'}: ${item.reason}`).join('; ')}.`
+      : (isRussian ? 'Инвестиционных решений пока нет.' : 'No investment decisions yet.'),
   ].join('\n');
 
   return (

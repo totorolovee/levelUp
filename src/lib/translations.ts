@@ -1,6 +1,7 @@
 import { contentEnglish } from './contentTranslations';
 import { bookEnglish } from './bookTranslations';
 import { extraEnglish } from './translationDictionary';
+import { stockEnglish } from './stockTranslations';
 
 export const english: Record<string, string> = {
   'Цели': 'Goals',
@@ -68,6 +69,9 @@ export const english: Record<string, string> = {
   'за сегодня': 'today',
   'Загружаю последние доступные цены…': 'Loading the latest available prices…',
   'Биржа сейчас не вернула цены. Учебные значения не показываются.': 'The market did not return prices. Sample values are hidden.',
+  'Показаны только котировки, которые сейчас вернула биржа. Учебные цены скрыты.': 'Only quotes currently returned by the market are shown. Sample prices are hidden.',
+  'Нет котировки': 'Quote unavailable',
+  'Куплено:': 'Owned:',
   'Докажи, что это не случайная покупка': 'Show that this is not a random purchase',
   'Количество акций': 'Number of shares',
   'Почему ты хочешь купить эту компанию?': 'Why do you want to buy this company?',
@@ -89,9 +93,20 @@ export const english: Record<string, string> = {
   'Сильная сторона': 'Strength',
   'Главный риск': 'Main risk',
   'Конкуренты': 'Competitors',
+  'Сначала войди, чтобы покупки сохранялись.': 'Sign in first to save purchases.',
+  'Я учту твою цель, чтение и решения, сохранённые в приложении.': 'I will consider your goal, reading, and decisions saved in the app.',
+  'В приложении пока мало данных. Добавь контекст в поле ниже.': 'There is not much app data yet. Add some context below.',
+  'Твоя цель': 'Your goal',
+  'Текущий уровень': 'Current level',
+  'Поменять цель': 'Change goal',
+  'Почему это важно': 'Why it matters',
+  'Планируешь учёбу в США?': 'Planning to study in the US?',
+  'Сравни свой профиль с требованиями Stanford, MIT, Harvard и UC Berkeley.': 'Compare your profile with the requirements of Stanford, MIT, Harvard, and UC Berkeley.',
+  'Открыть навигатор →': 'Open university navigator →',
   'Поступление без хаоса': 'Admissions without chaos',
   'Выбери направление, специальность, регион и университет — затем сравни требования.': 'Choose a field, major, region, and university, then compare requirements.',
   ...extraEnglish,
   ...contentEnglish,
   ...bookEnglish,
+  ...stockEnglish,
 };

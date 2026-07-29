@@ -53,8 +53,9 @@ export function InvestingPage() {
       analysisFeedback: evaluation.feedback,
     });
     setNotice(
-      `${decision.quantity} ${selected.symbol} куплено за ${formatMoney(purchaseTotal)}. `
-      + `Осталось ${formatMoney(remainingBalance)}. ${evaluation.feedback}`,
+      language === 'ru'
+        ? `${decision.quantity} ${selected.symbol} куплено за ${formatMoney(purchaseTotal)}. Осталось ${formatMoney(remainingBalance)}. ${evaluation.feedback}`
+        : `${decision.quantity} ${selected.symbol} shares bought for ${formatMoney(purchaseTotal)}. Remaining ${formatMoney(remainingBalance)}. ${evaluation.feedback}`,
     );
   };
 

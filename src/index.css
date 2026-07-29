@@ -41,16 +41,20 @@ button, a, input, textarea, select { transition: border-color .2s, background-co
 .brand { color: #252842; font-family: Unbounded, Manrope, sans-serif; font-size: 19px; font-weight: 800; text-decoration: none; letter-spacing: -1px; }
 .brand span { color: #7059c7; }
 .creator-name { padding-left: 12px; border-left: 1px solid #d4cee0; color: #747990; font-size: 12px; }
-nav { position: relative; display: flex; width: 94px; min-height: 34px; flex: 0 0 auto; gap: 0; padding: 0; border: 0; border-radius: 10px; background: transparent; }
-.nav-trigger { display: flex; width: 94px; height: 34px; flex: 0 0 auto; align-items: center; justify-content: center; gap: 7px; padding: 0 10px; border: 0; border-radius: 10px; color: #747990; background: transparent; font-size: 12px; font-weight: 800; cursor: pointer; }
-.nav-trigger span { font-size: 14px; transition: transform .2s; }
-.nav-menu { position: absolute; z-index: 60; top: 34px; right: 0; display: grid; min-width: 160px; gap: 0; padding: 4px; border: 1px solid #dbd5e7; border-top: 0; border-radius: 0 0 13px 13px; opacity: 0; background: rgba(255, 255, 255, .97); box-shadow: 0 16px 45px rgba(55, 45, 92, .14); pointer-events: none; transform: translateY(-8px); transition: opacity .2s, transform .25s; backdrop-filter: blur(16px); }
-nav:hover, nav:focus-within { width: 94px; }
+nav { position: relative; display: flex; width: 38px; min-height: 34px; flex: 0 0 auto; gap: 0; padding: 0; border: 0; border-radius: 10px; background: transparent; }
+.nav-trigger { display: grid; width: 38px; height: 34px; flex: 0 0 auto; place-items: center; padding: 0; border: 1px solid #d8d2e6; border-radius: 10px; color: #747990; background: #fff; cursor: pointer; }
+.hamburger-icon { display: grid; width: 16px; gap: 3px; }
+.hamburger-icon i { display: block; width: 100%; height: 2px; border-radius: 9px; background: currentColor; transition: transform .2s, opacity .2s; }
+.nav-menu { position: absolute; z-index: 60; top: 40px; right: 0; display: grid; min-width: 190px; gap: 0; padding: 5px; border: 1px solid #dbd5e7; border-radius: 13px; opacity: 0; background: rgba(255, 255, 255, .97); box-shadow: 0 16px 45px rgba(55, 45, 92, .14); pointer-events: none; transform: translateY(-8px); transition: opacity .2s, transform .25s; backdrop-filter: blur(16px); }
+nav:hover, nav:focus-within { width: 38px; }
 nav:hover .nav-menu, nav:focus-within .nav-menu { opacity: 1; pointer-events: auto; transform: translateY(0); }
-nav:hover .nav-trigger, nav:focus-within .nav-trigger { border-radius: 9px 9px 0 0; }
-nav:hover .nav-trigger span, nav:focus-within .nav-trigger span { transform: rotate(180deg); }
 .nav-link { color: #747990; padding: 9px 12px; border-radius: 8px; text-decoration: none; font-size: 13px; white-space: nowrap; }
 .nav-link:hover, .nav-link.active { color: #51458a; background: #ece8f6; }
+.nav-profile { display: grid; grid-template-columns: 32px 1fr; column-gap: 9px; margin-bottom: 4px; padding: 9px; border-bottom: 1px solid #e4dfeb; border-radius: 8px 8px 4px 4px; }
+.nav-profile > span { display: grid; width: 32px; height: 32px; grid-row: 1 / 3; place-items: center; overflow: hidden; border-radius: 50%; color: #fff; background: #7059c7; font-weight: 850; }
+.nav-profile img { width: 100%; height: 100%; object-fit: cover; }
+.nav-profile strong { overflow: hidden; text-overflow: ellipsis; }
+.nav-profile small { font-size: 10px; font-weight: 650; opacity: .72; }
 
 .hero { min-height: 610px; display: grid; grid-template-columns: 1.1fr .9fr; align-items: center; gap: 80px; }
 .eyebrow { margin: 0 0 10px; color: #7059c7; font-size: 12px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; }
@@ -715,15 +719,15 @@ html[data-theme="dark"] ::selection { color: #14162a; background: #a590e3; }
   .language-toggle { width: 34px; }
   .theme-toggle { --thumb-shift: 0px; width: 62px; }
   html[data-theme="dark"] .theme-toggle { --thumb-shift: 28px; }
-  nav { position: fixed; z-index: 50; left: auto; right: 14px; bottom: 14px; display: flex; width: min(330px, calc(100% - 28px)); min-height: auto; flex-direction: column-reverse; gap: 0; padding: 0; border-radius: 16px; background: rgba(255, 255,255, .96); box-shadow: 0 12px 40px rgba(55, 45, 92, .18); backdrop-filter: blur(18px); }
-  html[data-theme="dark"] nav { background: rgba(37, 41, 68, .96); }
-  .nav-trigger { display: flex; width: 100%; height: 48px; justify-content: center; color: inherit; border-radius: 14px; }
-  .nav-menu { position: static; display: none; width: 100%; grid-template-columns: repeat(2, 1fr); gap: 3px; padding: 7px; border: 0; border-bottom: 1px solid #ded9e9; border-radius: 14px 14px 0 0; opacity: 1; box-shadow: none; pointer-events: auto; transform: none; }
+  nav { position: relative; width: 38px; min-height: 34px; border-radius: 10px; box-shadow: none; }
+  .nav-trigger { display: grid; width: 38px; height: 34px; }
+  .nav-menu { position: absolute; top: 40px; right: 0; display: none; width: min(300px, calc(100vw - 28px)); grid-template-columns: repeat(2, 1fr); gap: 3px; padding: 7px; border-radius: 14px; opacity: 1; box-shadow: 0 16px 45px rgba(4, 6, 18, .28); pointer-events: auto; transform: none; }
   nav.mobile-open .nav-menu { display: grid; }
-  nav.mobile-open .nav-trigger { border-radius: 0 0 14px 14px; }
-  nav.mobile-open .nav-trigger span { transform: rotate(180deg); }
-  nav:hover, nav:focus-within { width: auto; }
-  nav.mobile-open:hover, nav.mobile-open:focus-within { width: min(330px, calc(100% - 28px)); }
+  nav.mobile-open .hamburger-icon i:first-child { transform: translateY(5px) rotate(45deg); }
+  nav.mobile-open .hamburger-icon i:nth-child(2) { opacity: 0; }
+  nav.mobile-open .hamburger-icon i:last-child { transform: translateY(-5px) rotate(-45deg); }
+  nav:hover, nav:focus-within { width: 38px; }
+  .nav-profile { grid-column: 1 / -1; }
   .nav-link { padding: 11px 7px; overflow: hidden; border-radius: 9px; font-size: 12px; text-align: center; text-overflow: ellipsis; }
   h1 { letter-spacing: -2px; }
   .title-screen { min-height: 680px; padding: 180px 24px 100px; align-items: start; }

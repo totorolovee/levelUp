@@ -74,16 +74,6 @@ export function AppHeader() {
             Войти
           </Link>
         )}
-        {user && (
-          <Link className="header-username" href="/profile">
-            <span aria-hidden="true">
-              {avatarUrl
-                ? <img alt="" src={avatarUrl} />
-                : username?.charAt(0).toLocaleUpperCase('ru-RU')}
-            </span>
-            {username}
-          </Link>
-        )}
         <button
           aria-label={language === 'ru' ? 'Switch to English' : 'Переключить на русский'}
           className="language-toggle"
@@ -105,14 +95,31 @@ export function AppHeader() {
         </button>
         {user && <nav aria-label="Главная навигация" className={isMenuOpen ? 'mobile-open' : ''}>
           <button
+            aria-label={language === 'ru' ? 'Открыть меню' : 'Open menu'}
             aria-expanded={isMenuOpen}
             className="nav-trigger"
             onClick={() => setIsMenuOpen((current) => !current)}
             type="button"
           >
-            Разделы <span>↓</span>
+            <span className="hamburger-icon" aria-hidden="true">
+              <i />
+              <i />
+              <i />
+            </span>
           </button>
           <div className="nav-menu">
+            <Link
+              className={location === '/profile' ? 'nav-link nav-profile active' : 'nav-link nav-profile'}
+              href="/profile"
+            >
+              <span aria-hidden="true">
+                {avatarUrl
+                  ? <img alt="" src={avatarUrl} />
+                  : username?.charAt(0).toLocaleUpperCase('ru-RU')}
+              </span>
+              <strong>{username}</strong>
+              <small>{language === 'ru' ? 'Профиль' : 'Profile'}</small>
+            </Link>
             {links.map((link) => (
               <Link
                 className={location === link.href ? 'nav-link active' : 'nav-link'}

@@ -793,6 +793,21 @@ body:has(.home-shell) {
     radial-gradient(circle at 90% 82%, rgba(40, 116, 177, .1), transparent 30%),
     linear-gradient(180deg, #15182d, #1c2038 58%, #171a2e);
 }
+.home-shell { width: 100%; padding-bottom: 0; }
+.home-shell .app-header {
+  min-height: 76px;
+  border-bottom: 1px solid rgba(139, 121, 205, .2);
+  box-shadow: 0 8px 28px rgba(4, 6, 18, .16);
+}
+.home-shell .title-screen {
+  min-height: calc(100vh - 76px);
+  border: 0;
+  border-radius: 0;
+}
+.home-shell .sections-reveal {
+  width: min(1160px, calc(100% - 40px));
+  margin-inline: auto;
+}
 .home-shell .app-header { color: #eef0ff; background: rgba(21, 24, 45, .88); }
 .home-shell .brand { color: #fff; }
 .home-shell .creator-name { color: #9096b2; border-color: #3b405e; }
@@ -1448,4 +1463,19 @@ html[data-theme="dark"] .saved-university-card > .remove-saved-university { colo
   .saved-university-card { grid-template-columns: 1fr 1fr; }
   .saved-university-card > div { grid-column: 1 / -1; }
   .saved-university-card > button { width: 100%; }
+}
+
+@media (max-width: 560px) {
+  .home-shell .app-header {
+    position: sticky;
+    top: 0;
+    padding: 12px 14px;
+    background: rgba(21, 24, 45, .96);
+    backdrop-filter: blur(16px);
+  }
+  .home-shell .title-screen {
+    min-height: calc(100svh - 70px);
+    padding-top: 72px;
+  }
+  .home-shell .sections-reveal { width: calc(100% - 28px); }
 }

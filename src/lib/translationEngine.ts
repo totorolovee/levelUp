@@ -40,6 +40,7 @@ function translatedText(source: string) {
 }
 
 function translateTextNode(node: Text, language: Language) {
+  if (node.parentElement?.closest('[data-no-translate]')) return;
   const saved = savedText.get(node);
   if (language === 'ru') {
     if (saved && node.nodeValue === saved.translated) node.nodeValue = saved.source;
@@ -55,6 +56,7 @@ function translateTextNode(node: Text, language: Language) {
 }
 
 function translateAttributes(element: Element, language: Language) {
+  if (element.closest('[data-no-translate]')) return;
   const attributes = ['placeholder', 'aria-label', 'title'];
   const saved = savedAttributes.get(element) ?? new Map<string, string>();
   for (const name of attributes) {

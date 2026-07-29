@@ -126,7 +126,7 @@ export function AppHeader() {
               <i />
             </span>
           </button>
-          <div className="nav-menu">
+          <div className="nav-menu" data-no-translate>
             <Link
               className={location === '/profile' ? 'nav-link nav-profile active' : 'nav-link nav-profile'}
               href="/profile"

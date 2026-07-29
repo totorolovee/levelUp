@@ -78,13 +78,20 @@ export function UniversityDocumentAssistant({ specialty, university }: Props) {
       + `${saved.fileName ? ` — ${isRussian ? 'файл' : 'file'}: ${saved.fileName}` : ''}`
       + `${saved.notes ? ` — ${isRussian ? 'заметка' : 'note'}: ${saved.notes}` : ''}`,
     ).join('\n');
+    const analyzableFiles = documents
+      .map(({ saved }) => saved)
+      .filter(({ fileName }) => /\.(pdf|png|jpe?g)$/i.test(fileName))
+      .map(({ filePath }) => filePath)
+      .filter(Boolean)
+      .slice(0, 3);
     const { data, error } = await supabase.functions.invoke('ai', {
       body: {
         prompt: `${isRussian ? 'Университет' : 'University'}: ${content.name}\n`
           + `${isRussian ? 'Специальность' : 'Major'}: ${specialty}\n${checklist}`,
+        filePaths: analyzableFiles,
         system: isRussian
-          ? 'Ты помощник по сбору документов в университет. Составь полезный приоритетный план: что отсутствует, какой ближайший срок и что проверить в загруженных файлах. Ты видишь названия файлов и заметки, но не их содержимое — честно скажи это. Не обещай поступление и не выдумывай требования.'
-          : 'You are a university application document assistant. Give a useful prioritized plan: what is missing, the nearest deadline, and what to verify in uploaded files. You see file names and notes, not file contents—state this honestly. Never guarantee admission or invent requirements.',
+          ? 'Ты помощник по сбору документов в университет. Проанализируй переданные PDF или изображения: определи тип документа, проверь читаемость, наличие имени, дат, оценок, подписей и явных пропусков. Затем составь приоритетный план по чек-листу и срокам. Для Word-файлов доступно только название. Не обещай поступление, не выдумывай требования и не повторяй лишние персональные данные.'
+          : 'You are a university application document assistant. Analyze the supplied PDFs or images: identify document type and check readability, names, dates, grades, signatures, and obvious omissions. Then give a prioritized checklist and deadline plan. Only file names are available for Word files. Never guarantee admission, invent requirements, or repeat unnecessary personal data.',
       },
     });
     if (error) {
@@ -129,8 +136,8 @@ export function UniversityDocumentAssistant({ specialty, university }: Props) {
       </footer>
       <small className="document-ai-scope">
         {isRussian
-          ? 'AI учитывает чек-лист, сроки, заметки и названия файлов. Содержимое PDF и Word нужно проверить самостоятельно.'
-          : 'AI uses the checklist, deadlines, notes, and file names. Review PDF and Word contents yourself.'}
+          ? 'AI читает до трёх PDF или изображений за один анализ. Для Word учитываются только название и заметки.'
+          : 'AI reads up to three PDFs or images per analysis. For Word files, it only uses the file name and notes.'}
       </small>
       {status === 'loading' && <p>{isRussian ? 'Загружаю чек-лист…' : 'Loading checklist…'}</p>}
       {status === 'error' && <p className="coach-error">{isRussian ? 'Не удалось сохранить данные.' : 'Could not save your data.'}</p>}

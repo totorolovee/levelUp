@@ -1595,3 +1595,94 @@ html[data-theme="dark"] .document-ai-answer p { color: #d4d6e6; }
   .todo-topic-picker > div { grid-template-columns: 1fr; }
   .todo-topic-picker > div > button { min-height: 118px; }
 }
+
+/* Более плоская и широкая компоновка рабочих экранов */
+.shell:not(.home-shell) {
+  width: min(1600px, calc(100% - 32px));
+}
+.profile-card {
+  max-width: none;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.profile-tabs {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ded9e9;
+}
+.profile-universities { padding: 22px 0 0; }
+.choice-step,
+.region-picker {
+  padding: 10px 0 22px;
+  border: 0;
+  border-bottom: 1px solid #ded9e9;
+  border-radius: 0;
+  background: transparent;
+}
+.saved-university-card {
+  padding: 18px 0;
+  border: 0;
+  border-bottom: 1px solid #ded9e9;
+  border-radius: 0;
+  background: transparent;
+}
+.saved-university-card > .university-details {
+  padding: 24px 0 8px;
+  border: 0;
+  border-top: 1px solid #e2ddea;
+  border-radius: 0;
+  background: transparent;
+}
+.document-assistant {
+  margin-top: 10px;
+  padding: 24px 0 4px;
+  border: 0;
+  border-top: 1px solid #e2ddea;
+  border-radius: 0;
+  background: transparent;
+}
+.document-checklist { gap: 0; }
+.document-checklist article {
+  grid-template-columns: minmax(260px, 1fr) 210px;
+  align-items: center;
+  padding: 16px 0;
+  border: 0;
+  border-bottom: 1px solid #e6e1ec;
+  border-radius: 0;
+  background: transparent;
+}
+.document-checklist .friendly-date-picker {
+  width: 100%;
+  min-height: 42px;
+  align-self: center;
+}
+.document-checklist .friendly-date-picker > button {
+  display: flex;
+  align-items: center;
+  line-height: 1.2;
+}
+
+html[data-theme="dark"] .profile-card,
+html[data-theme="dark"] .saved-university-card,
+html[data-theme="dark"] .document-assistant,
+html[data-theme="dark"] .document-checklist article,
+html[data-theme="dark"] .choice-step,
+html[data-theme="dark"] .region-picker {
+  border-color: #414668;
+  background: transparent;
+  box-shadow: none;
+}
+html[data-theme="dark"] .profile-tabs,
+html[data-theme="dark"] .saved-university-card > .university-details {
+  border-color: #414668;
+}
+
+@media (max-width: 700px) {
+  .shell:not(.home-shell) { width: calc(100% - 24px); }
+  .profile-universities { padding-top: 16px; }
+  .saved-university-card { padding-block: 16px; }
+  .document-assistant { padding-top: 18px; }
+  .document-checklist article { grid-template-columns: 1fr; }
+}

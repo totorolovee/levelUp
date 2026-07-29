@@ -87,13 +87,23 @@ export function TodoColumn({ category, items, onChange, onDeleteCategory }: Prop
           <option value="medium">{isRussian ? 'Средний приоритет' : 'Medium priority'}</option>
           <option value="high">{isRussian ? 'Высокий приоритет' : 'High priority'}</option>
         </select>
-        <input
-          aria-label={isRussian ? 'Дедлайн' : 'Deadline'}
-          min={new Date().toISOString().slice(0, 10)}
-          onChange={(event) => setDueDate(event.target.value)}
-          type="date"
-          value={dueDate}
-        />
+        <label className="todo-date-field">
+          <span>
+            {dueDate
+              ? `${isRussian ? 'Дедлайн' : 'Due'}: ${new Intl.DateTimeFormat(
+                isRussian ? 'ru-RU' : 'en-US',
+                { day: 'numeric', month: 'long' },
+              ).format(new Date(`${dueDate}T00:00:00`))}`
+              : (isRussian ? 'Выбрать дедлайн' : 'Choose deadline')}
+          </span>
+          <input
+            aria-label={isRussian ? 'Дедлайн' : 'Deadline'}
+            min={new Date().toISOString().slice(0, 10)}
+            onChange={(event) => setDueDate(event.target.value)}
+            type="date"
+            value={dueDate}
+          />
+        </label>
       </div>
       <div className="todo-list">
         {sortedItems.map((item) => (

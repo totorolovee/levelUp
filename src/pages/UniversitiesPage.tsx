@@ -134,7 +134,9 @@ export function UniversitiesPage() {
       <AppHeader />
       <header className="page-intro university-intro">
         <div>
-          <p className="eyebrow">Admission navigator</p>
+          <p className="eyebrow">
+            {language === 'ru' ? 'Навигатор поступления' : 'Admission navigator'}
+          </p>
           <h1>Поступление без хаоса</h1>
           <p>Выбери направление, специальность, регион и университет — затем сравни требования.</p>
         </div>

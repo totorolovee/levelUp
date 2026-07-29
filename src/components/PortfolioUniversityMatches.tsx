@@ -31,11 +31,15 @@ export function PortfolioUniversityMatches({
           <p className="eyebrow">{isRussian ? 'По твоему портфолио' : 'Based on your portfolio'}</p>
           <h2>{isRussian ? 'Персональный подбор' : 'Personal matches'}</h2>
         </div>
-        {portfolio.major && <span>Major: {portfolio.major}</span>}
+        {portfolio.major && (
+          <span>{isRussian ? 'Специальность' : 'Major'}: {portfolio.major}</span>
+        )}
       </div>
       {!hasPortfolio ? (
         <p>
-          {isRussian ? 'Заполни IELTS, SAT, honors и major в профиле, чтобы получить подбор.' : 'Add IELTS, SAT, honors, and major to get matches.'}
+          {isRussian
+            ? 'Заполни IELTS, SAT, награды и специальность в профиле, чтобы получить подбор.'
+            : 'Add IELTS, SAT, honors, and major to get matches.'}
           {' '}<SmoothLink href="/profile">{isRussian ? 'Открыть портфолио →' : 'Open portfolio →'}</SmoothLink>
         </p>
       ) : (

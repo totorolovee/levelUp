@@ -80,6 +80,17 @@ export function getBrainGameInfo(id: BrainGameId) {
   return categories.flatMap((category) => category.games).find((game) => game.id === id);
 }
 
+export function getBrainGameCoverStyle(id: BrainGameId) {
+  const games = categories.flatMap((category) => category.games);
+  const index = Math.max(0, games.findIndex((game) => game.id === id));
+  return {
+    backgroundImage: "url('/assets/game-covers.webp')",
+    backgroundPosition: `${(index % 5) * 25}% ${Math.floor(index / 5) * 20}%`,
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: '500% 600%',
+  };
+}
+
 export function BrainGameLibrary({ focus, isRussian, progress, onSelect }: Props) {
   return (
     <div className="brain-game-library">
@@ -105,9 +116,11 @@ export function BrainGameLibrary({ focus, isRussian, progress, onSelect }: Props
                 onClick={() => onSelect(game.id, category.id)}
                 type="button"
               >
-                <span className="game-cover" aria-hidden="true">
-                  <i /><i /><b>{game.icon}</b>
-                </span>
+                <span
+                  className="game-cover"
+                  aria-hidden="true"
+                  style={getBrainGameCoverStyle(game.id)}
+                />
                 <div className="game-card-copy">
                   <strong>{isRussian ? game.ru : game.en}</strong>
                   <small>{focus === category.id && game.priority

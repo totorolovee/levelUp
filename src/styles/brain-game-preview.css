@@ -12,12 +12,12 @@
 .preview-game-cover {
   position: relative;
   display: grid;
-  width: 132px;
-  height: 132px;
+  width: min(430px, 100%);
+  aspect-ratio: 1.8;
   margin: 0 auto 24px;
   place-items: center;
   overflow: hidden;
-  border-radius: 32px;
+  border-radius: 26px;
   color: #fff;
   background: linear-gradient(145deg, #8068dc, #5f48bc);
   box-shadow: 0 20px 38px rgba(72, 49, 153, .24);
@@ -65,7 +65,7 @@ html[data-theme="dark"] .game-preview-stats dd { color: #c6b9ff; }
     scroll-snap-align: start;
   }
   .brain-game-preview { margin-top: 20px; border-radius: 22px; }
-  .preview-game-cover { width: 105px; height: 105px; border-radius: 26px; }
+  .preview-game-cover { width: 100%; border-radius: 20px; }
   .game-preview-stats { grid-template-columns: 1fr; }
   .game-action { font-size: 16px; }
 }

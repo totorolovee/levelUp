@@ -1356,3 +1356,66 @@ html[data-theme="dark"] .todo-check { border-color: #777da3; }
   .todo-category-creator { grid-template-columns: 1fr; }
   .todo-category-creator > small { grid-column: 1; }
 }
+
+/* Адаптивный гамбургер: пастельный днём и фиолетовый ночью */
+.app-header nav,
+.home-shell .app-header nav,
+html[data-theme="dark"] .app-header nav {
+  background: transparent;
+}
+.nav-trigger {
+  color: #6855b5;
+  border-color: #d8d0eb;
+  background: linear-gradient(145deg, #fff, #eee9f8);
+  box-shadow: 0 6px 16px rgba(77, 61, 132, .1);
+  transition: border-color .2s, box-shadow .2s, transform .2s;
+}
+.nav-trigger:hover,
+nav.mobile-open .nav-trigger {
+  color: #fff;
+  border-color: #8065df;
+  background: linear-gradient(135deg, #7057d5, #9270e8);
+  box-shadow: 0 8px 22px rgba(105, 76, 205, .28);
+}
+.nav-trigger:active { transform: scale(.96); }
+html[data-theme="dark"] .nav-trigger,
+html[data-theme="dark"] .home-shell .nav-trigger {
+  color: #c4b8ff;
+  border-color: #464166;
+  background: linear-gradient(145deg, #2d3151, #232741);
+  box-shadow: 0 7px 18px rgba(3, 5, 18, .25);
+}
+html[data-theme="dark"] .nav-trigger:hover,
+html[data-theme="dark"] nav.mobile-open .nav-trigger {
+  color: #fff;
+  border-color: #8f76ec;
+  background: linear-gradient(135deg, #624bc1, #8060dc);
+}
+html[data-theme="light"] .nav-menu {
+  border-color: #ded6ec;
+  background: rgba(252, 250, 255, .97);
+}
+html[data-theme="dark"] .nav-menu {
+  border-color: #403b61;
+  background: rgba(33, 36, 62, .98);
+}
+
+@media (max-width: 560px) {
+  .app-header { width: 100%; margin-left: 0; }
+  .header-actions { margin-left: auto; }
+  .nav-trigger { border-radius: 11px; }
+  .nav-menu {
+    top: 42px;
+    max-height: min(560px, calc(100vh - 96px));
+    overflow-y: auto;
+    transform-origin: top right;
+    animation: mobile-menu-in .18s ease both;
+  }
+  .nav-link { min-height: 41px; display: grid; place-items: center; }
+  .nav-profile { display: grid; min-height: 55px; place-items: initial; text-align: left; }
+}
+
+@keyframes mobile-menu-in {
+  from { opacity: 0; transform: translateY(-6px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}

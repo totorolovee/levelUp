@@ -17,6 +17,7 @@ import { UniversitiesPage } from './pages/UniversitiesPage';
 import { LeaguesPage } from './pages/LeaguesPage';
 import { ReflectionPage } from './pages/ReflectionPage';
 import { TodosPage } from './pages/TodosPage';
+import { BrainTrainingPage } from './pages/BrainTrainingPage';
 import { AuthenticatedPage } from './components/AuthenticatedPage';
 
 // Здесь живут только маршруты. Сами экраны складывай в src/pages/.
@@ -41,6 +42,7 @@ export default function App() {
                   <Route path="/coach"><AuthenticatedPage><CoachPage /></AuthenticatedPage></Route>
                   <Route path="/leagues"><AuthenticatedPage><LeaguesPage /></AuthenticatedPage></Route>
                   <Route path="/reflection"><AuthenticatedPage><ReflectionPage /></AuthenticatedPage></Route>
+                  <Route path="/training"><AuthenticatedPage><BrainTrainingPage /></AuthenticatedPage></Route>
                   <Route path="/login" component={LoginPage} />
                   <Route path="/profile" component={ProfilePage} />
                   <Route component={NotFoundPage} />

@@ -7,6 +7,7 @@ import { useLanguage } from '../lib/language';
 import { getUserAvatarUrl } from '../lib/avatars';
 
 const links = [
+  { href: '/training', ru: 'Тренировка', en: 'Workout' },
   { href: '/todos', ru: 'Задачи', en: 'Tasks' },
   { href: '/goals', ru: 'Цели', en: 'Goals' },
   { href: '/universities', ru: 'Вузы', en: 'Universities' },

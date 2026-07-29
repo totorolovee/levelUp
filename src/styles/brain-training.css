@@ -1,0 +1,51 @@
+.brain-training-page { min-height: 100vh; }
+.training-intro, .brain-game, .training-result {
+  width: min(760px, 100%);
+  margin: 70px auto 0;
+  padding: clamp(28px, 6vw, 58px);
+  border: 1px solid #ded9e9;
+  border-radius: 28px;
+  background: #fff;
+  box-shadow: 0 22px 60px rgba(75, 61, 126, .1);
+  text-align: center;
+}
+.training-intro > p:not(.eyebrow) { color: #747990; font-size: 17px; }
+.training-intro > button, .brain-game form button, .training-result > button {
+  padding: 14px 22px;
+  border: 0;
+  border-radius: 12px;
+  color: #fff;
+  background: #7059c7;
+  font-weight: 850;
+  cursor: pointer;
+}
+.training-skills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 30px 0; }
+.training-skills article { display: grid; gap: 4px; padding: 20px 12px; border-radius: 18px; background: #f1eef7; }
+.training-skills span { color: #7059c7; font-size: 11px; font-weight: 900; }
+.training-skills small { color: #8589a0; }
+.training-best { margin: 22px 0 0; font-size: 13px !important; }
+.brain-game h1 { margin-inline: auto; font-size: clamp(30px, 5vw, 52px); letter-spacing: -2px; }
+.memory-sequence { margin: 42px 0 10px; color: #7059c7; font-size: clamp(54px, 12vw, 96px); font-weight: 900; letter-spacing: 14px; }
+.brain-game form { display: grid; grid-template-columns: 1fr auto; gap: 10px; max-width: 440px; margin: 38px auto 0; }
+.brain-game input { min-width: 0; padding: 14px; border: 1px solid #d8d2e6; border-radius: 12px; text-align: center; }
+.attention-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; max-width: 430px; margin: 30px auto 0; }
+.attention-grid button { aspect-ratio: 1; border: 0; border-radius: 16px; color: #51458a; background: #efebf7; font-size: 30px; cursor: pointer; }
+.reaction-target { width: min(320px, 80vw); aspect-ratio: 1.7; margin-top: 28px; border: 0; border-radius: 28px; color: #fff; font-size: 32px; font-weight: 900; cursor: default; }
+.reaction-target.waiting { background: #e18b6c; }
+.reaction-target.ready { background: #48a989; cursor: pointer; }
+.training-result > span { display: grid; width: 64px; height: 64px; margin: 0 auto 20px; place-items: center; border-radius: 50%; color: #fff; background: #48a989; font-size: 30px; }
+.training-result h1 { margin: 10px auto; color: #7059c7; font-size: clamp(60px, 12vw, 100px); }
+.training-result > p:not(.eyebrow) { font-size: 24px; font-weight: 900; }
+.training-result > div { display: flex; justify-content: center; gap: 18px; margin: 28px 0; flex-wrap: wrap; }
+html[data-theme="dark"] .training-intro,
+html[data-theme="dark"] .brain-game,
+html[data-theme="dark"] .training-result { color: #fff; border-color: #414668; background: #242842; }
+html[data-theme="dark"] .training-skills article,
+html[data-theme="dark"] .attention-grid button { color: #fff; background: #303553; }
+html[data-theme="dark"] .training-intro > p:not(.eyebrow) { color: #afb4cf; }
+@media (max-width: 560px) {
+  .training-intro, .brain-game, .training-result { margin-top: 28px; border-radius: 20px; }
+  .training-skills { grid-template-columns: 1fr; }
+  .brain-game form { grid-template-columns: 1fr; }
+  .memory-sequence { letter-spacing: 7px; }
+}

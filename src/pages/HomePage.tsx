@@ -87,6 +87,15 @@ export function HomePage() {
           </section>
           <section className="section-grid" aria-label="Разделы приложения">
             <SectionCard
+              accent="#ee765f"
+              description={language === 'ru'
+                ? 'Короткие упражнения на память, внимание и скорость'
+                : 'Quick exercises for memory, attention, and speed'}
+              href="/training"
+              icon="✦"
+              title={language === 'ru' ? 'Тренировка дня' : 'Daily workout'}
+            />
+            <SectionCard
               accent="#8b70ef"
               description="Работа, учёба и личные задачи в одном месте"
               href="/todos"

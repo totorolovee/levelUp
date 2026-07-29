@@ -26,14 +26,18 @@ type ProgressRow = {
 };
 
 export async function loadExperience(totalActiveDays: number) {
-  const { data, error } = await supabase
-    .from('reading_progress')
-    .select('progress');
-  if (error) throw error;
+  const [readingResult, trainingResult] = await Promise.all([
+    supabase.from('reading_progress').select('progress'),
+    supabase.from('brain_training_sessions').select('xp_earned'),
+  ]);
+  if (readingResult.error) throw readingResult.error;
+  if (trainingResult.error) throw trainingResult.error;
 
-  const readingXp = ((data ?? []) as ProgressRow[])
+  const readingXp = ((readingResult.data ?? []) as ProgressRow[])
     .reduce((sum, book) => sum + book.progress, 0);
-  const xp = totalActiveDays * 25 + readingXp;
+  const trainingXp = (trainingResult.data ?? [])
+    .reduce((sum, session) => sum + session.xp_earned, 0);
+  const xp = totalActiveDays * 25 + readingXp + trainingXp;
   let currentIndex = 0;
   ranks.forEach((rank, index) => {
     if (xp >= rank.xp) currentIndex = index;

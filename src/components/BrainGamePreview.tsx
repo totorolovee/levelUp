@@ -1,5 +1,5 @@
 import type { BrainGameId } from './BrainGameLibrary';
-import { getBrainGameCoverStyle, getBrainGameInfo } from './BrainGameLibrary';
+import { getBrainGameInfo } from './BrainGameLibrary';
 import type { BrainGameCategory, BrainGameProgress } from '../lib/brainGameResults';
 import { getBrainGameDescription } from '../lib/brainGameDescriptions';
 
@@ -28,11 +28,6 @@ export function BrainGamePreview({
       <button className="brain-game-back" onClick={onBack} type="button">
         ← {isRussian ? 'Все игры' : 'All games'}
       </button>
-      <div
-        className="preview-game-cover"
-        aria-hidden="true"
-        style={getBrainGameCoverStyle(gameId)}
-      />
       <p className="eyebrow">{isRussian ? 'Перед началом' : 'Before you play'}</p>
       <h1>{isRussian ? game?.ru : game?.en}</h1>
       <p className="game-action">{isRussian ? description.action.ru : description.action.en}</p>

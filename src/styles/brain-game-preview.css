@@ -9,31 +9,6 @@
   text-align: center;
 }
 .brain-game-preview > .brain-game-back { display: block; margin: -18px 0 20px; }
-.preview-game-cover {
-  position: relative;
-  display: grid;
-  width: min(430px, 100%);
-  aspect-ratio: 1.8;
-  margin: 0 auto 24px;
-  place-items: center;
-  overflow: hidden;
-  border: 6px solid #7059c7;
-  border-radius: 26px;
-  color: #fff;
-  background: linear-gradient(145deg, #8068dc, #5f48bc);
-  box-shadow: 0 20px 38px rgba(72, 49, 153, .24);
-}
-.category-speed .preview-game-cover { background: linear-gradient(145deg, #f0936e, #cc604d); }
-.category-memory .preview-game-cover { background: linear-gradient(145deg, #5ca8d8, #347bac); }
-.category-logic .preview-game-cover { background: linear-gradient(145deg, #a77ae0, #7651b0); }
-.category-math .preview-game-cover { background: linear-gradient(145deg, #e6a34e, #bb702b); }
-.category-speed .preview-game-cover { border-color: #d96e55; }
-.category-memory .preview-game-cover { border-color: #438ec4; }
-.category-logic .preview-game-cover { border-color: #8a65c7; }
-.category-math .preview-game-cover { border-color: #d08a38; }
-.preview-game-cover strong { position: relative; z-index: 2; font-size: 42px; }
-.preview-game-cover i { position: absolute; width: 92px; height: 92px; right: -28px; top: -25px; border-radius: 50%; background: rgba(255,255,255,.18); }
-.preview-game-cover i:nth-child(2) { width: 58px; height: 58px; inset: auto auto -19px -15px; }
 .brain-game-preview h1 { margin: 6px auto 14px; font-size: clamp(34px, 6vw, 58px); letter-spacing: -2px; }
 .game-action { max-width: 620px; margin: 0 auto; color: #646982; font-size: 18px; line-height: 1.65; }
 .skill-explanation { max-width: 650px; margin: 28px auto; padding: 19px 22px; border-radius: 18px; background: #efebf7; text-align: left; }
@@ -99,7 +74,6 @@ html[data-theme="dark"] .game-preview-stats dd { color: #c6b9ff; }
   .carousel-arrow.next { right: -10px; }
   html[data-theme="dark"] .carousel-arrow { color: #d4caff; border-color: #4b4770; background: rgba(42,46,75,.94); }
   .brain-game-preview { margin-top: 20px; border-radius: 22px; }
-  .preview-game-cover { width: 100%; border-radius: 20px; }
   .game-preview-stats { grid-template-columns: 1fr; }
   .game-action { font-size: 16px; }
 }

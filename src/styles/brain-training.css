@@ -139,6 +139,11 @@
 .training-result h1 { margin: 10px auto; color: #7059c7; font-size: clamp(60px, 12vw, 100px); }
 .training-result > p:not(.eyebrow) { font-size: 24px; font-weight: 900; }
 .training-result > div { display: flex; justify-content: center; gap: 18px; margin: 28px 0; flex-wrap: wrap; }
+.training-result > .game-mistake-feedback { display: flex; width: min(430px, 100%); align-items: center; justify-content: flex-start; gap: 12px; margin: 20px auto; padding: 14px 16px; border: 1px solid #f0b1aa; border-radius: 16px; color: #743c37; background: #fff0ed; text-align: left; animation: mistake-arrive .35s ease-out; }
+.game-mistake-feedback > span { display: grid; width: 34px; height: 34px; flex: 0 0 34px; place-items: center; border-radius: 50%; color: #fff; background: #d7655b; font-weight: 900; }
+.game-mistake-feedback > div { display: grid; gap: 2px; }
+.game-mistake-feedback small { color: #8c5550; }
+@keyframes mistake-arrive { from { opacity: 0; transform: translateY(8px); } }
 .training-result > .new-record { display: grid; width: min(360px, 100%); gap: 3px; margin: 22px auto; padding: 16px; border-radius: 18px; color: #72501d; background: linear-gradient(135deg, #fff3d3, #ffe2a8); box-shadow: 0 12px 28px rgba(151,104,30,.12); }
 .new-record span { font-size: 28px; }
 .new-record small { font-weight: 750; }
@@ -178,6 +183,8 @@ html[data-theme="dark"] .rotation-shape,
 html[data-theme="dark"] .training-result > p.result-level { color: #c6b9ff; }
 html[data-theme="dark"] .game-card-copy em { color: #c6b9ff; }
 html[data-theme="dark"] .training-result > .new-record { color: #ffe6ad; background: linear-gradient(135deg, #4b3b33, #3b3044); }
+html[data-theme="dark"] .training-result > .game-mistake-feedback { color: #ffd7d2; border-color: #76504f; background: #493539; }
+html[data-theme="dark"] .game-mistake-feedback small { color: #e7b9b5; }
 @media (max-width: 560px) {
   .training-intro, .brain-game, .training-result, .brain-assessment { margin-top: 28px; border-radius: 20px; }
   .training-skills { grid-template-columns: 1fr; }

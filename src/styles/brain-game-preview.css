@@ -34,13 +34,14 @@ html[data-theme="dark"] .game-preview-stats dd { color: #c6b9ff; }
     gap: 11px;
     margin-inline: -17px;
     padding: 3px 17px 14px;
-    overflow-x: auto;
+    overflow-x: scroll;
+    overflow-y: hidden;
     overscroll-behavior-inline: contain;
     scroll-padding-inline: 17px;
     scroll-snap-type: x proximity;
     scrollbar-width: none;
     cursor: grab;
-    touch-action: pan-x pan-y;
+    touch-action: pan-x;
     user-select: none;
     -webkit-overflow-scrolling: touch;
   }
@@ -73,6 +74,7 @@ html[data-theme="dark"] .game-preview-stats dd { color: #c6b9ff; }
   .carousel-arrow.previous { left: -10px; }
   .carousel-arrow.next { right: -10px; }
   html[data-theme="dark"] .carousel-arrow { color: #d4caff; border-color: #4b4770; background: rgba(42,46,75,.94); }
+  .carousel-arrow.previous { display: none; }
   .brain-game-preview { margin-top: 20px; border-radius: 22px; }
   .game-preview-stats { grid-template-columns: 1fr; }
   .game-action { font-size: 16px; }

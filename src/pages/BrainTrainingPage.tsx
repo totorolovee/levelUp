@@ -127,6 +127,17 @@ export function BrainTrainingPage() {
           <p className="eyebrow">{isRussian ? 'Игра завершена' : 'Game complete'}</p>
           <h1>{result.score}/100</h1>
           <p>+{result.xp} XP</p>
+          {result.score < 100 && (
+            <div className="game-mistake-feedback" role="status">
+              <span aria-hidden="true">!</span>
+              <div>
+                <strong>{isRussian ? 'В этой игре были ошибки' : 'You made some mistakes'}</strong>
+                <small>{isRussian
+                  ? 'Ничего страшного — попробуй ещё раз и улучши результат.'
+                  : 'That is okay — try again and improve your score.'}</small>
+              </div>
+            </div>
+          )}
           {result.isNewRecord && (
             <div className="new-record">
               <span>🏆</span>

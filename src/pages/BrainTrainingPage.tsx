@@ -3,6 +3,7 @@ import { AppHeader } from '../components/AppHeader';
 import { BrainAssessment } from '../components/BrainAssessment';
 import { BrainGameLibrary, type BrainGameId } from '../components/BrainGameLibrary';
 import { BrainGameRunner } from '../components/BrainGameRunner';
+import { BrainGamePreview } from '../components/BrainGamePreview';
 import {
   loadBrainGameProgress,
   saveBrainGameResult,
@@ -15,7 +16,7 @@ import {
 } from '../lib/brainTrainingProfile';
 import { useLanguage } from '../lib/language';
 
-type Stage = 'loading' | 'assessment' | 'library' | 'game' | 'result';
+type Stage = 'loading' | 'assessment' | 'library' | 'preview' | 'game' | 'result';
 
 export function BrainTrainingPage() {
   const { language } = useLanguage();
@@ -48,7 +49,7 @@ export function BrainTrainingPage() {
     setGameId(selectedId);
     setCategory(selectedCategory);
     setError('');
-    setStage('game');
+    setStage('preview');
   };
 
   const completeGame = async (score: number) => {
@@ -109,6 +110,16 @@ export function BrainTrainingPage() {
             onComplete={completeGame}
           />
         </>
+      )}
+      {stage === 'preview' && (
+        <BrainGamePreview
+          category={category}
+          gameId={gameId}
+          isRussian={isRussian}
+          onBack={() => setStage('library')}
+          onStart={() => setStage('game')}
+          progress={progress[gameId]}
+        />
       )}
       {stage === 'result' && (
         <section className="training-result">

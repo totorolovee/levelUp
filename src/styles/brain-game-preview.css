@@ -1,0 +1,71 @@
+.brain-game-preview {
+  width: min(820px, 100%);
+  margin: 34px auto 0;
+  padding: clamp(26px, 6vw, 58px);
+  border: 1px solid #ded9e9;
+  border-radius: 30px;
+  background: linear-gradient(145deg, #fff, #f7f4fb);
+  box-shadow: 0 24px 64px rgba(75, 61, 126, .11);
+  text-align: center;
+}
+.brain-game-preview > .brain-game-back { display: block; margin: -18px 0 20px; }
+.preview-game-cover {
+  position: relative;
+  display: grid;
+  width: 132px;
+  height: 132px;
+  margin: 0 auto 24px;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 32px;
+  color: #fff;
+  background: linear-gradient(145deg, #8068dc, #5f48bc);
+  box-shadow: 0 20px 38px rgba(72, 49, 153, .24);
+}
+.category-speed .preview-game-cover { background: linear-gradient(145deg, #f0936e, #cc604d); }
+.category-memory .preview-game-cover { background: linear-gradient(145deg, #5ca8d8, #347bac); }
+.category-logic .preview-game-cover { background: linear-gradient(145deg, #a77ae0, #7651b0); }
+.category-math .preview-game-cover { background: linear-gradient(145deg, #e6a34e, #bb702b); }
+.preview-game-cover strong { position: relative; z-index: 2; font-size: 42px; }
+.preview-game-cover i { position: absolute; width: 92px; height: 92px; right: -28px; top: -25px; border-radius: 50%; background: rgba(255,255,255,.18); }
+.preview-game-cover i:nth-child(2) { width: 58px; height: 58px; inset: auto auto -19px -15px; }
+.brain-game-preview h1 { margin: 6px auto 14px; font-size: clamp(34px, 6vw, 58px); letter-spacing: -2px; }
+.game-action { max-width: 620px; margin: 0 auto; color: #646982; font-size: 18px; line-height: 1.65; }
+.skill-explanation { max-width: 650px; margin: 28px auto; padding: 19px 22px; border-radius: 18px; background: #efebf7; text-align: left; }
+.skill-explanation span { color: #7059c7; font-size: 11px; font-weight: 900; text-transform: uppercase; }
+.skill-explanation p { margin: 7px 0 0; color: #5f647d; line-height: 1.6; }
+.game-preview-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 26px 0; }
+.game-preview-stats div { padding: 17px; border: 1px solid #e1dcea; border-radius: 16px; background: #fff; }
+.game-preview-stats dt { color: #85899e; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+.game-preview-stats dd { margin: 7px 0 0; color: #7059c7; font-size: 22px; font-weight: 900; }
+.start-brain-game { padding: 15px 24px; border: 0; border-radius: 13px; color: #fff; background: #7059c7; box-shadow: 0 12px 28px rgba(82, 59, 165, .22); font-weight: 900; cursor: pointer; }
+html[data-theme="dark"] .brain-game-preview { color: #fff; border-color: #414668; background: linear-gradient(145deg, #292d4b, #20243d); }
+html[data-theme="dark"] .game-action { color: #c6c9dc; }
+html[data-theme="dark"] .skill-explanation { background: #343052; }
+html[data-theme="dark"] .skill-explanation span { color: #c6b9ff; }
+html[data-theme="dark"] .skill-explanation p { color: #d4d6e6; }
+html[data-theme="dark"] .game-preview-stats div { border-color: #414668; background: #303553; }
+html[data-theme="dark"] .game-preview-stats dd { color: #c6b9ff; }
+
+@media (max-width: 560px) {
+  .brain-game-library section > div {
+    display: flex;
+    gap: 11px;
+    margin-inline: -17px;
+    padding: 2px 17px 14px;
+    overflow-x: auto;
+    scroll-padding-inline: 17px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .brain-game-library section > div::-webkit-scrollbar { display: none; }
+  .brain-game-library section > div button {
+    width: min(82vw, 320px);
+    flex: 0 0 min(82vw, 320px);
+    scroll-snap-align: start;
+  }
+  .brain-game-preview { margin-top: 20px; border-radius: 22px; }
+  .preview-game-cover { width: 105px; height: 105px; border-radius: 26px; }
+  .game-preview-stats { grid-template-columns: 1fr; }
+  .game-action { font-size: 16px; }
+}

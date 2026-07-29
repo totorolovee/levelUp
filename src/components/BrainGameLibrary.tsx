@@ -76,6 +76,10 @@ const categories: {
   },
 ];
 
+export function getBrainGameInfo(id: BrainGameId) {
+  return categories.flatMap((category) => category.games).find((game) => game.id === id);
+}
+
 export function BrainGameLibrary({ focus, isRussian, progress, onSelect }: Props) {
   return (
     <div className="brain-game-library">

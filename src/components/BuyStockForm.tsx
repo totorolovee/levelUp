@@ -100,7 +100,9 @@ export function BuyStockForm({ stock, balance, onBuy }: BuyStockFormProps) {
         <label>
           Срок
           <select onChange={(event) => setHorizon(event.target.value)} value={horizon}>
+            <option>1 неделя</option>
             <option>1 месяц</option>
+            <option>3 месяца</option>
             <option>1 год</option>
             <option>3–5 лет</option>
           </select>

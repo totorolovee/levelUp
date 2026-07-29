@@ -87,6 +87,8 @@ export const english: Record<string, string> = {
   'Когда ты признаешь решение ошибочным?': 'When will you consider the decision wrong?',
   'Срок': 'Time horizon',
   '1 месяц': '1 month',
+  '1 неделя': '1 week',
+  '3 месяца': '3 months',
   '1 год': '1 year',
   '3–5 лет': '3–5 years',
   'Добавить в портфель': 'Add to portfolio',

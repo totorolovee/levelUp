@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 
 type Props = {
+  difficulty: number;
   isRussian: boolean;
   roundsCount: number;
   onComplete: (score: number) => void;
 };
 
-export function SpeedTrainingGame({ isRussian, roundsCount, onComplete }: Props) {
+export function SpeedTrainingGame({ difficulty, isRussian, roundsCount, onComplete }: Props) {
   const [round, setRound] = useState(1);
   const [state, setState] = useState<'waiting' | 'ready'>('waiting');
   const results = useRef<number[]>([]);
@@ -17,9 +18,9 @@ export function SpeedTrainingGame({ isRussian, roundsCount, onComplete }: Props)
     const timer = window.setTimeout(() => {
       startedAt.current = performance.now();
       setState('ready');
-    }, 900 + Math.random() * 1600);
+    }, Math.max(500, 900 - difficulty * 15) + Math.random() * 1400);
     return () => window.clearTimeout(timer);
-  }, [round]);
+  }, [difficulty, round]);
 
   const react = () => {
     if (state !== 'ready') return;

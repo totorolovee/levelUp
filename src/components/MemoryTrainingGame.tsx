@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 type Props = {
+  difficulty: number;
   isRussian: boolean;
   sequenceLength: number;
   onComplete: (score: number) => void;

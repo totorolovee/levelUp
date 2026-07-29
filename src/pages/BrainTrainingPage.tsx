@@ -1,27 +1,16 @@
 import { useEffect, useState } from 'react';
 import { AppHeader } from '../components/AppHeader';
-import { AttentionTrainingGame } from '../components/AttentionTrainingGame';
 import { BrainAssessment } from '../components/BrainAssessment';
 import { BrainGameLibrary, type BrainGameId } from '../components/BrainGameLibrary';
-import { MemoryTrainingGame } from '../components/MemoryTrainingGame';
-import { SpeedTrainingGame } from '../components/SpeedTrainingGame';
-import { PairMatchGame } from '../components/brainGames/PairMatchGame';
-import { PatternRecallGame } from '../components/brainGames/PatternRecallGame';
-import { QuickCompareGame } from '../components/brainGames/QuickCompareGame';
-import { RapidMathGame } from '../components/brainGames/RapidMathGame';
-import { RuleSwitchGame } from '../components/brainGames/RuleSwitchGame';
-import { TargetScanGame } from '../components/brainGames/TargetScanGame';
-import { FocusMatchGame, TargetCountGame } from '../components/brainGames/AttentionExtraGames';
-import { CategorySortGame, DirectionRushGame } from '../components/brainGames/SpeedExtraGames';
+import { BrainGameRunner } from '../components/BrainGameRunner';
 import {
-  GrowingMatrixGame,
-  MissingItemGame,
-  ReverseSequenceGame,
-} from '../components/brainGames/MemoryExtraGames';
-import { saveBrainGameResult } from '../lib/brainGameResults';
+  loadBrainGameProgress,
+  saveBrainGameResult,
+  type BrainGameCategory,
+  type BrainGameProgress,
+} from '../lib/brainGameResults';
 import {
   loadBrainTrainingProfile,
-  type BrainFocus,
   type BrainTrainingProfile,
 } from '../lib/brainTrainingProfile';
 import { useLanguage } from '../lib/language';
@@ -34,20 +23,22 @@ export function BrainTrainingPage() {
   const [stage, setStage] = useState<Stage>('loading');
   const [profile, setProfile] = useState<BrainTrainingProfile | null>(null);
   const [gameId, setGameId] = useState<BrainGameId>('shade');
-  const [category, setCategory] = useState<BrainFocus>('attention');
-  const [result, setResult] = useState({ score: 0, xp: 0 });
+  const [category, setCategory] = useState<BrainGameCategory>('attention');
+  const [progress, setProgress] = useState<Record<string, BrainGameProgress>>({});
+  const [result, setResult] = useState({ score: 0, xp: 0, level: 1, leveledUp: false });
   const [error, setError] = useState('');
 
   useEffect(() => {
-    loadBrainTrainingProfile()
-      .then((saved) => {
-        setProfile(saved);
-        setStage(saved ? 'library' : 'assessment');
+    Promise.all([loadBrainTrainingProfile(), loadBrainGameProgress()])
+      .then(([savedProfile, savedProgress]) => {
+        setProfile(savedProfile);
+        setProgress(savedProgress);
+        setStage(savedProfile ? 'library' : 'assessment');
       })
       .catch(() => setError(isRussian ? 'Не удалось загрузить игры.' : 'Could not load games.'));
   }, [isRussian]);
 
-  const selectGame = (selectedId: BrainGameId, selectedCategory: BrainFocus) => {
+  const selectGame = (selectedId: BrainGameId, selectedCategory: BrainGameCategory) => {
     setGameId(selectedId);
     setCategory(selectedCategory);
     setError('');
@@ -56,33 +47,25 @@ export function BrainTrainingPage() {
 
   const completeGame = async (score: number) => {
     try {
-      const xp = await saveBrainGameResult(gameId, category, score);
-      setResult({ score, xp });
+      const saved = await saveBrainGameResult(gameId, category, score);
+      setResult({
+        score,
+        xp: saved.xpEarned,
+        level: saved.currentLevel,
+        leveledUp: saved.leveledUp,
+      });
+      setProgress((current) => ({
+        ...current,
+        [gameId]: {
+          gameId,
+          currentLevel: saved.currentLevel,
+          completedCount: (current[gameId]?.completedCount ?? 0) + 1,
+          bestScore: Math.max(current[gameId]?.bestScore ?? 0, score),
+        },
+      }));
       setStage('result');
     } catch {
       setError(isRussian ? 'Не удалось сохранить результат.' : 'Could not save your score.');
-    }
-  };
-
-  const game = () => {
-    const common = { isRussian, onComplete: completeGame };
-    switch (gameId) {
-      case 'shade': return <AttentionTrainingGame {...common} />;
-      case 'scan': return <TargetScanGame {...common} />;
-      case 'switch': return <RuleSwitchGame {...common} />;
-      case 'reaction': return <SpeedTrainingGame {...common} roundsCount={12} />;
-      case 'compare': return <QuickCompareGame {...common} />;
-      case 'math': return <RapidMathGame {...common} />;
-      case 'sequence': return <MemoryTrainingGame {...common} sequenceLength={(profile?.memoryNeed ?? 3) >= 4 ? 7 : 6} />;
-      case 'pairs': return <PairMatchGame {...common} />;
-      case 'pattern': return <PatternRecallGame {...common} />;
-      case 'count': return <TargetCountGame {...common} />;
-      case 'focus-match': return <FocusMatchGame {...common} />;
-      case 'direction': return <DirectionRushGame {...common} />;
-      case 'sort': return <CategorySortGame {...common} />;
-      case 'missing': return <MissingItemGame {...common} />;
-      case 'reverse': return <ReverseSequenceGame {...common} />;
-      case 'growing-matrix': return <GrowingMatrixGame {...common} />;
     }
   };
 
@@ -99,10 +82,10 @@ export function BrainTrainingPage() {
           <div className="page-intro">
             <h1>{isRussian ? 'Выбери навык и начни игру' : 'Choose a skill and start playing'}</h1>
             <p>{isRussian
-              ? 'Шестнадцать многоуровневых игр развивают внимание, скорость и память.'
-              : 'Sixteen multi-level games train attention, speed, and memory.'}</p>
+              ? 'Двадцать одна многоуровневая игра развивает внимание, скорость, память и логику.'
+              : 'Twenty-one multi-level games train attention, speed, memory, and logic.'}</p>
           </div>
-          <BrainGameLibrary focus={profile.primaryFocus} isRussian={isRussian} onSelect={selectGame} />
+          <BrainGameLibrary focus={profile.primaryFocus} isRussian={isRussian} onSelect={selectGame} progress={progress} />
         </section>
       )}
       {stage === 'game' && (
@@ -110,7 +93,13 @@ export function BrainTrainingPage() {
           <button className="brain-game-back" onClick={() => setStage('library')} type="button">
             ← {isRussian ? 'Все игры' : 'All games'}
           </button>
-          {game()}
+          <BrainGameRunner
+            difficulty={progress[gameId]?.currentLevel ?? 1}
+            gameId={gameId}
+            isRussian={isRussian}
+            memoryNeed={profile?.memoryNeed ?? 3}
+            onComplete={completeGame}
+          />
         </>
       )}
       {stage === 'result' && (
@@ -119,6 +108,11 @@ export function BrainTrainingPage() {
           <p className="eyebrow">{isRussian ? 'Игра завершена' : 'Game complete'}</p>
           <h1>{result.score}/100</h1>
           <p>+{result.xp} XP</p>
+          <p className="result-level">
+            {result.leveledUp
+              ? (isRussian ? `Новый уровень сложности: ${result.level}` : `New difficulty level: ${result.level}`)
+              : (isRussian ? `Уровень сложности: ${result.level}` : `Difficulty level: ${result.level}`)}
+          </p>
           <button onClick={() => setStage('library')} type="button">
             {isRussian ? 'Выбрать другую игру' : 'Choose another game'}
           </button>

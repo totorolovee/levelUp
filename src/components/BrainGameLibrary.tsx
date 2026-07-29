@@ -1,20 +1,23 @@
 import type { BrainFocus } from '../lib/brainTrainingProfile';
+import type { BrainGameCategory, BrainGameProgress } from '../lib/brainGameResults';
 
 export type BrainGameId =
   | 'shade' | 'scan' | 'switch'
   | 'reaction' | 'compare' | 'math'
   | 'sequence' | 'pairs' | 'pattern'
   | 'count' | 'focus-match' | 'direction' | 'sort'
-  | 'missing' | 'reverse' | 'growing-matrix';
+  | 'missing' | 'reverse' | 'growing-matrix'
+  | 'number-pattern' | 'target-equation' | 'odd-rule' | 'path-planner' | 'rotation';
 
 type Props = {
   focus: BrainFocus;
   isRussian: boolean;
-  onSelect: (id: BrainGameId, category: BrainFocus) => void;
+  progress: Record<string, BrainGameProgress>;
+  onSelect: (id: BrainGameId, category: BrainGameCategory) => void;
 };
 
 const categories: {
-  id: BrainFocus;
+  id: BrainGameCategory;
   ru: string;
   en: string;
   games: { id: BrainGameId; icon: string; ru: string; en: string; priority?: boolean }[];
@@ -50,9 +53,19 @@ const categories: {
       { id: 'growing-matrix', icon: '▦+', ru: 'Растущая матрица', en: 'Growing matrix' },
     ],
   },
+  {
+    id: 'logic', ru: 'Логика и решение задач', en: 'Logic and problem solving',
+    games: [
+      { id: 'number-pattern', icon: '∴', ru: 'Числовой ряд', en: 'Number pattern' },
+      { id: 'target-equation', icon: '?', ru: 'Знак операции', en: 'Missing operator' },
+      { id: 'odd-rule', icon: '≠', ru: 'Лишнее число', en: 'Odd one out' },
+      { id: 'path-planner', icon: '⌁', ru: 'Короткий маршрут', en: 'Path planner' },
+      { id: 'rotation', icon: '↻', ru: 'Вращение фигур', en: 'Shape rotation' },
+    ],
+  },
 ];
 
-export function BrainGameLibrary({ focus, isRussian, onSelect }: Props) {
+export function BrainGameLibrary({ focus, isRussian, progress, onSelect }: Props) {
   return (
     <div className="brain-game-library">
       {categories.map((category) => (
@@ -65,7 +78,9 @@ export function BrainGameLibrary({ focus, isRussian, onSelect }: Props) {
             <strong>{category.games.length}</strong>
           </header>
           <div>
-            {category.games.map((game) => (
+            {category.games.map((game) => {
+              const saved = progress[game.id];
+              return (
               <button
                 className={focus === category.id && game.priority ? 'priority-game' : ''}
                 key={game.id}
@@ -75,10 +90,17 @@ export function BrainGameLibrary({ focus, isRussian, onSelect }: Props) {
                 <span>{game.icon}</span>
                 <strong>{isRussian ? game.ru : game.en}</strong>
                 <small>{focus === category.id && game.priority
-                  ? (isRussian ? '★ Приоритет для тебя' : '★ Priority for you')
-                  : (isRussian ? 'Уровни · Играть →' : 'Levels · Play →')}</small>
+                  ? (isRussian
+                    ? `★ Приоритет для тебя${saved ? ` · ✓ пройдено · сложность ${saved.currentLevel}` : ''}`
+                    : `★ Priority for you${saved ? ` · ✓ completed · difficulty ${saved.currentLevel}` : ''}`)
+                  : saved
+                    ? (isRussian
+                      ? `✓ Пройдено · сложность ${saved.currentLevel}`
+                      : `✓ Completed · difficulty ${saved.currentLevel}`)
+                    : (isRussian ? 'Уровни · Играть →' : 'Levels · Play →')}</small>
               </button>
-            ))}
+              );
+            })}
           </div>
         </section>
       ))}

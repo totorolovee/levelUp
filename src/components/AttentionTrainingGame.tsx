@@ -11,12 +11,15 @@ function figureCount(level: number) {
   return 9;
 }
 
-function createLevel(level: number) {
+function createLevel(level: number, difficulty: number) {
   const count = figureCount(level);
   const hue = Math.floor(Math.random() * 360);
   const saturation = 58 + Math.floor(Math.random() * 18);
   const lightness = 43 + Math.floor(Math.random() * 14);
-  const shadeDifference = 19 - (level - 1) * (16 / (TOTAL_LEVELS - 1));
+  const shadeDifference = Math.max(
+    1.5,
+    19 - (level - 1) * (16 / (TOTAL_LEVELS - 1)) - (difficulty - 1) * .35,
+  );
   const direction = Math.random() > .5 ? 1 : -1;
   const oddLightness = Math.max(22, Math.min(78, lightness + shadeDifference * direction));
 
@@ -31,14 +34,15 @@ function createLevel(level: number) {
 }
 
 type Props = {
+  difficulty: number;
   isRussian: boolean;
   onComplete: (score: number) => void;
 };
 
-export function AttentionTrainingGame({ isRussian, onComplete }: Props) {
+export function AttentionTrainingGame({ difficulty, isRussian, onComplete }: Props) {
   const [level, setLevel] = useState(1);
   const [correct, setCorrect] = useState(0);
-  const current = useMemo(() => createLevel(level), [level]);
+  const current = useMemo(() => createLevel(level, difficulty), [difficulty, level]);
 
   const choose = (index: number) => {
     const nextCorrect = correct + Number(index === current.oddIndex);

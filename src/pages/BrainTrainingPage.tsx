@@ -10,21 +10,33 @@ import {
   type TrainingScores,
 } from '../lib/brainTraining';
 import { useLanguage } from '../lib/language';
+import { BrainAssessment } from '../components/BrainAssessment';
+import {
+  loadBrainTrainingProfile,
+  type BrainTrainingProfile,
+} from '../lib/brainTrainingProfile';
 
-type Stage = 'intro' | 'memory' | 'attention' | 'speed' | 'result';
+type Stage = 'loading' | 'assessment' | 'intro' | 'memory' | 'attention' | 'speed' | 'result';
 
 export function BrainTrainingPage() {
   const { language } = useLanguage();
   const isRussian = language === 'ru';
-  const [stage, setStage] = useState<Stage>('intro');
+  const [stage, setStage] = useState<Stage>('loading');
+  const [profile, setProfile] = useState<BrainTrainingProfile | null>(null);
   const [scores, setScores] = useState<TrainingScores>({ memory: 0, attention: 0, speed: 0 });
   const [result, setResult] = useState<{ totalScore: number; xpEarned: number } | null>(null);
   const [history, setHistory] = useState<TrainingHistory[]>([]);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    loadTrainingHistory().then(setHistory).catch(() => setHistory([]));
-  }, []);
+    Promise.all([loadTrainingHistory(), loadBrainTrainingProfile()])
+      .then(([savedHistory, savedProfile]) => {
+        setHistory(savedHistory);
+        setProfile(savedProfile);
+        setStage(savedProfile ? 'intro' : 'assessment');
+      })
+      .catch(() => setError(isRussian ? 'Не удалось загрузить тренировку.' : 'Could not load workout.'));
+  }, [isRussian]);
 
   const finish = async (speed: number) => {
     const completed = { ...scores, speed };
@@ -42,13 +54,25 @@ export function BrainTrainingPage() {
   return (
     <main className="shell brain-training-page">
       <AppHeader />
+      {stage === 'loading' && <div className="route-loading" />}
+      {stage === 'assessment' && <BrainAssessment isRussian={isRussian} onComplete={(saved) => {
+        setProfile(saved);
+        setStage('intro');
+      }} />}
       {stage === 'intro' && (
         <section className="training-intro">
-          <p className="eyebrow">{isRussian ? 'Тренировка дня' : 'Daily workout'}</p>
+          <p className="eyebrow">{isRussian ? 'Тренировка мозга' : 'Brain workout'}</p>
           <h1>{isRussian ? 'Разбуди мозг за 5 минут' : 'Wake up your brain in 5 minutes'}</h1>
           <p>{isRussian
             ? 'Три коротких упражнения проверят память, внимание и скорость реакции.'
             : 'Three quick exercises test memory, attention, and reaction speed.'}</p>
+          {profile && <p className="personal-focus">
+            {isRussian ? 'Главный акцент' : 'Main focus'}: <strong>{{
+              memory: isRussian ? 'память' : 'memory',
+              attention: isRussian ? 'внимание' : 'attention',
+              speed: isRussian ? 'скорость' : 'speed',
+            }[profile.primaryFocus]}</strong>
+          </p>}
           <div className="training-skills">
             <article><span>01</span><strong>{isRussian ? 'Память' : 'Memory'}</strong><small>≈ 1 min</small></article>
             <article><span>02</span><strong>{isRussian ? 'Внимание' : 'Attention'}</strong><small>≈ 2 min</small></article>
@@ -62,15 +86,25 @@ export function BrainTrainingPage() {
           </p>}
         </section>
       )}
-      {stage === 'memory' && <MemoryTrainingGame isRussian={isRussian} onComplete={(memory) => {
+      {stage === 'memory' && <MemoryTrainingGame
+        isRussian={isRussian}
+        sequenceLength={(profile?.memoryNeed ?? 3) >= 4 ? 7 : 6}
+        onComplete={(memory) => {
         setScores((current) => ({ ...current, memory }));
         setStage('attention');
       }} />}
-      {stage === 'attention' && <AttentionTrainingGame isRussian={isRussian} onComplete={(attention) => {
+      {stage === 'attention' && <AttentionTrainingGame
+        isRussian={isRussian}
+        roundsCount={Math.max(6, 8 + ((profile?.attentionNeed ?? 3) - 3) * 2)}
+        onComplete={(attention) => {
         setScores((current) => ({ ...current, attention }));
         setStage('speed');
       }} />}
-      {stage === 'speed' && <SpeedTrainingGame isRussian={isRussian} onComplete={finish} />}
+      {stage === 'speed' && <SpeedTrainingGame
+        isRussian={isRussian}
+        roundsCount={Math.max(4, 5 + ((profile?.speedNeed ?? 3) - 3))}
+        onComplete={finish}
+      />}
       {stage === 'result' && result && (
         <section className="training-result">
           <span>✓</span>

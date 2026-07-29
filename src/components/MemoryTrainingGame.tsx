@@ -1,11 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
 
-type Props = { isRussian: boolean; onComplete: (score: number) => void };
+type Props = {
+  isRussian: boolean;
+  sequenceLength: number;
+  onComplete: (score: number) => void;
+};
 
-export function MemoryTrainingGame({ isRussian, onComplete }: Props) {
+export function MemoryTrainingGame({ isRussian, sequenceLength, onComplete }: Props) {
   const sequence = useMemo(
-    () => Array.from({ length: 6 }, () => Math.floor(Math.random() * 10)).join(''),
-    [],
+    () => Array.from({ length: sequenceLength }, () => Math.floor(Math.random() * 10)).join(''),
+    [sequenceLength],
   );
   const [isVisible, setIsVisible] = useState(true);
   const [answer, setAnswer] = useState('');
@@ -33,12 +37,12 @@ export function MemoryTrainingGame({ isRussian, onComplete }: Props) {
           <input
             autoFocus
             inputMode="numeric"
-            maxLength={6}
+            maxLength={sequenceLength}
             onChange={(event) => setAnswer(event.target.value.replace(/\D/g, ''))}
-            placeholder={isRussian ? '6 цифр' : '6 digits'}
+            placeholder={isRussian ? `${sequenceLength} цифр` : `${sequenceLength} digits`}
             value={answer}
           />
-          <button disabled={answer.length !== 6} type="submit">
+          <button disabled={answer.length !== sequenceLength} type="submit">
             {isRussian ? 'Проверить' : 'Check'}
           </button>
         </form>

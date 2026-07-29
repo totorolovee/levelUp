@@ -93,7 +93,7 @@ export function HomePage() {
                 : 'Quick exercises for memory, attention, and speed'}
               href="/training"
               icon="✦"
-              title={language === 'ru' ? 'Тренировка дня' : 'Daily workout'}
+              title={language === 'ru' ? 'Тренировка мозга' : 'Brain workout'}
             />
             <SectionCard
               accent="#8b70ef"

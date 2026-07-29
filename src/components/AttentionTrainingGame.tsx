@@ -2,15 +2,19 @@ import { useMemo, useState } from 'react';
 
 const symbols = ['●', '▲', '■', '◆'];
 
-type Props = { isRussian: boolean; onComplete: (score: number) => void };
+type Props = {
+  isRussian: boolean;
+  roundsCount: number;
+  onComplete: (score: number) => void;
+};
 
-export function AttentionTrainingGame({ isRussian, onComplete }: Props) {
-  const rounds = useMemo(() => Array.from({ length: 8 }, () => {
+export function AttentionTrainingGame({ isRussian, roundsCount, onComplete }: Props) {
+  const rounds = useMemo(() => Array.from({ length: roundsCount }, () => {
     const common = symbols[Math.floor(Math.random() * symbols.length)];
     const odd = symbols.filter((symbol) => symbol !== common)[Math.floor(Math.random() * 3)];
     const oddIndex = Math.floor(Math.random() * 16);
     return Array.from({ length: 16 }, (_, index) => index === oddIndex ? odd : common);
-  }), []);
+  }), [roundsCount]);
   const [round, setRound] = useState(0);
   const [correct, setCorrect] = useState(0);
   const current = rounds[round];

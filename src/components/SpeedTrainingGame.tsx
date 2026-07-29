@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 
-type Props = { isRussian: boolean; onComplete: (score: number) => void };
+type Props = {
+  isRussian: boolean;
+  roundsCount: number;
+  onComplete: (score: number) => void;
+};
 
-export function SpeedTrainingGame({ isRussian, onComplete }: Props) {
+export function SpeedTrainingGame({ isRussian, roundsCount, onComplete }: Props) {
   const [round, setRound] = useState(1);
   const [state, setState] = useState<'waiting' | 'ready'>('waiting');
   const results = useRef<number[]>([]);
@@ -20,8 +24,8 @@ export function SpeedTrainingGame({ isRussian, onComplete }: Props) {
   const react = () => {
     if (state !== 'ready') return;
     results.current.push(performance.now() - startedAt.current);
-    if (round === 5) {
-      const average = results.current.reduce((sum, value) => sum + value, 0) / 5;
+    if (round === roundsCount) {
+      const average = results.current.reduce((sum, value) => sum + value, 0) / roundsCount;
       onComplete(Math.max(0, Math.min(100, Math.round(120 - average / 5))));
     } else {
       setRound((value) => value + 1);
@@ -34,7 +38,7 @@ export function SpeedTrainingGame({ isRussian, onComplete }: Props) {
       <h1>{state === 'ready'
         ? (isRussian ? 'Нажми сейчас!' : 'Tap now!')
         : (isRussian ? 'Жди зелёный сигнал' : 'Wait for green')}</h1>
-      <p>{isRussian ? 'Попытка' : 'Attempt'} {round} / 5</p>
+      <p>{isRussian ? 'Попытка' : 'Attempt'} {round} / {roundsCount}</p>
       <button
         className={`reaction-target ${state}`}
         onClick={react}

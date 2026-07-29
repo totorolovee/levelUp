@@ -1,5 +1,5 @@
 .brain-training-page { min-height: 100vh; }
-.training-intro, .brain-game, .training-result {
+.training-intro, .brain-game, .training-result, .brain-assessment {
   width: min(760px, 100%);
   margin: 70px auto 0;
   padding: clamp(28px, 6vw, 58px);
@@ -9,6 +9,28 @@
   box-shadow: 0 22px 60px rgba(75, 61, 126, .1);
   text-align: center;
 }
+.brain-assessment { text-align: left; }
+.brain-assessment h1 { font-size: clamp(30px, 5vw, 48px); }
+.brain-assessment fieldset { margin: 25px 0; padding: 0; border: 0; }
+.brain-assessment legend { margin-bottom: 12px; font-size: 16px; font-weight: 800; }
+.brain-assessment fieldset > div { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; }
+.brain-assessment fieldset button {
+  min-height: 78px;
+  padding: 10px 7px;
+  border: 1px solid #ded9e9;
+  border-radius: 12px;
+  color: #666b86;
+  background: #f7f4fa;
+  font-size: 10px;
+  cursor: pointer;
+}
+.brain-assessment fieldset button span { display: block; margin-bottom: 4px; color: #7059c7; font-size: 18px; font-weight: 900; }
+.brain-assessment fieldset button.selected { color: #51458a; border-color: #8c76d6; background: #ebe5fa; box-shadow: inset 0 0 0 1px #8c76d6; }
+.brain-assessment > button { display: block; margin-left: auto; padding: 13px 20px; border: 0; border-radius: 11px; color: #fff; background: #7059c7; font-weight: 850; cursor: pointer; }
+.brain-assessment > button:disabled { cursor: default; opacity: .5; }
+.education-choice { display: grid; gap: 7px; margin: 22px 0; font-weight: 800; }
+.education-choice select { padding: 12px; border: 1px solid #d8d2e6; border-radius: 11px; background: #f7f4fa; }
+.personal-focus { width: fit-content; margin: 20px auto 0; padding: 8px 13px; border-radius: 99px; color: #65599a !important; background: #eee9f8; font-size: 13px !important; }
 .training-intro > p:not(.eyebrow) { color: #747990; font-size: 17px; }
 .training-intro > button, .brain-game form button, .training-result > button {
   padding: 14px 22px;
@@ -39,13 +61,21 @@
 .training-result > div { display: flex; justify-content: center; gap: 18px; margin: 28px 0; flex-wrap: wrap; }
 html[data-theme="dark"] .training-intro,
 html[data-theme="dark"] .brain-game,
-html[data-theme="dark"] .training-result { color: #fff; border-color: #414668; background: #242842; }
+html[data-theme="dark"] .training-result,
+html[data-theme="dark"] .brain-assessment { color: #fff; border-color: #414668; background: #242842; }
 html[data-theme="dark"] .training-skills article,
 html[data-theme="dark"] .attention-grid button { color: #fff; background: #303553; }
 html[data-theme="dark"] .training-intro > p:not(.eyebrow) { color: #afb4cf; }
+html[data-theme="dark"] .brain-assessment fieldset button,
+html[data-theme="dark"] .education-choice select { color: #d8daeb; border-color: #464b70; background: #303553; }
+html[data-theme="dark"] .brain-assessment fieldset button.selected { border-color: #a08cf0; background: #403866; }
+html[data-theme="dark"] .personal-focus { color: #d5ccff !important; background: #343052; }
 @media (max-width: 560px) {
-  .training-intro, .brain-game, .training-result { margin-top: 28px; border-radius: 20px; }
+  .training-intro, .brain-game, .training-result, .brain-assessment { margin-top: 28px; border-radius: 20px; }
   .training-skills { grid-template-columns: 1fr; }
   .brain-game form { grid-template-columns: 1fr; }
   .memory-sequence { letter-spacing: 7px; }
+  .brain-assessment fieldset > div { grid-template-columns: 1fr; }
+  .brain-assessment fieldset button { min-height: 48px; text-align: left; }
+  .brain-assessment fieldset button span { display: inline; margin-right: 8px; }
 }

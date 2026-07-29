@@ -50,6 +50,6 @@ export function RotationGame({ isRussian, onComplete }: BrainGameProps) {
     <h1>{isRussian ? 'Выбери такое же направление' : 'Choose the matching direction'}</h1>
     <div className="rotation-shape" style={{ transform: `rotate(${rounds[level] * 90}deg)` }}>➤</div>
     <p>{isRussian ? 'Уровень' : 'Level'} {level + 1}/{rounds.length}</p>
-    <div className="game-choice-row">{['→', '↓', '←', '↑'].map((arrow, index) => <button key={arrow} onClick={() => choose(index)} type="button">{arrow}</button>)}</div>
+    <div className="game-choice-row rotation-options">{['→', '↓', '←', '↑'].map((arrow, index) => <button key={arrow} onClick={() => choose(index)} type="button">{arrow}</button>)}</div>
   </section>;
 }

@@ -9,7 +9,7 @@
 html { width: 100%; max-width: 100%; overflow-x: clip; color-scheme: light; overscroll-behavior-x: none; }
 body { width: 100%; max-width: 100%; margin: 0; min-width: 320px; overflow-x: clip; background: linear-gradient(180deg, #f8f6fb 0, #f3f0f8 100%); line-height: 1.45; overscroll-behavior-x: none; }
 #root, .page-transition { width: 100%; max-width: 100%; overflow-x: clip; }
-.page-transition { touch-action: pan-y; }
+.page-transition { touch-action: auto; }
 button, input, textarea { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button, a, input, textarea, select { transition: border-color .2s, background-color .2s, box-shadow .2s, transform .2s; }

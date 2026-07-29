@@ -52,7 +52,7 @@ html[data-theme="dark"] .skill-explanation p { color: #d4d6e6; }
 html[data-theme="dark"] .game-preview-stats div { border-color: #414668; background: #303553; }
 html[data-theme="dark"] .game-preview-stats dd { color: #c6b9ff; }
 
-@media (max-width: 560px) {
+@media (max-width: 700px) {
   .page-transition:has(.brain-training-page) { touch-action: auto; }
   .brain-game-library section > div {
     display: flex;

@@ -43,6 +43,7 @@ export const english: Record<string, string> = {
   'Куда исчезнем на пару глав?': 'Where shall we disappear for a few chapters?',
   'В моих книгах': 'In my books',
   'Книга добавлена ✓': 'Book added ✓',
+  'Прочитано ✓': 'Completed ✓',
   'Добавить книгу': 'Add book',
   'Узнать о книге →': 'About the book →',
   'Без спойлеров': 'No spoilers',

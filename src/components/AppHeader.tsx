@@ -7,15 +7,15 @@ import { useLanguage } from '../lib/language';
 import { getUserAvatarUrl } from '../lib/avatars';
 
 const links = [
-  { href: '/todos', label: 'Задачи' },
-  { href: '/goals', label: 'Цели' },
-  { href: '/universities', label: 'Вузы' },
-  { href: '/reading', label: 'Книги' },
-  { href: '/investing', label: 'Инвестиции' },
-  { href: '/journal', label: 'Журнал' },
-  { href: '/coach', label: 'AI совет' },
-  { href: '/reflection', label: 'Рефлексия' },
-  { href: '/leagues', label: 'Лиги' },
+  { href: '/todos', ru: 'Задачи', en: 'Tasks' },
+  { href: '/goals', ru: 'Цели', en: 'Goals' },
+  { href: '/universities', ru: 'Вузы', en: 'Universities' },
+  { href: '/reading', ru: 'Книги', en: 'Books' },
+  { href: '/investing', ru: 'Инвестиции', en: 'Investing' },
+  { href: '/journal', ru: 'Журнал', en: 'Journal' },
+  { href: '/coach', ru: 'AI совет', en: 'AI advice' },
+  { href: '/reflection', ru: 'Рефлексия', en: 'Reflection' },
+  { href: '/leagues', ru: 'Лиги', en: 'Leagues' },
 ];
 
 export function AppHeader() {
@@ -126,7 +126,7 @@ export function AppHeader() {
                 href={link.href}
                 key={link.href}
               >
-                {link.label}
+                {link[language]}
               </Link>
               ))}
           </div>

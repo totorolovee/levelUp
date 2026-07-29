@@ -53,6 +53,9 @@ export function UniversityDetails({
         <Requirement title={labels.english}>{content.englishNote}</Requirement>
         <Requirement title={labels.deadlines}>{content.deadlines}</Requirement>
       </div>
+      <h3 className="requirements-title">
+        {language === 'ru' ? 'Подробный список требований' : 'Detailed requirements checklist'}
+      </h3>
       <div className="university-columns">
         <UniversityList items={content.documents} title={labels.prepare} />
         <UniversityList items={content.opportunities} title={labels.offers} />

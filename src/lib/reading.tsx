@@ -58,11 +58,17 @@ export function ReadingProvider({ children }: { children: ReactNode }) {
   };
 
   const updateProgress = (title: string, value: number) => {
-    setProgress((current) => ({ ...current, [title]: value }));
-    void saveReadingProgress(title, value);
-    if (value >= 100) {
-      void unlockAchievement('book_completed').catch(() => undefined);
-    }
+    setProgress((current) => {
+      const previous = current[title] ?? 0;
+      const next = Math.max(previous, value);
+      if (next !== previous) {
+        void saveReadingProgress(title, next);
+        if (next >= 100) {
+          void unlockAchievement('book_completed').catch(() => undefined);
+        }
+      }
+      return { ...current, [title]: next };
+    });
   };
 
   return (

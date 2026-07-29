@@ -23,6 +23,7 @@ import { qsWorldRankings2027 } from '../lib/universityRankings';
 import { useLanguage } from '../lib/language';
 import { getSpecialtyTranslation } from '../lib/universityTranslations';
 import { PortfolioUniversityMatches } from '../components/PortfolioUniversityMatches';
+import { SaveUniversityButton } from '../components/SaveUniversityButton';
 import {
   emptyAdmissionPortfolio,
   loadAdmissionPortfolio,
@@ -163,7 +164,10 @@ export function UniversitiesPage() {
           selectedId={selected.id}
           universities={filtered}
         />
-        <UniversityDetails specialty={specialtyDisplayName} university={selected} />
+        <div>
+          <UniversityDetails specialty={specialtyDisplayName} university={selected} />
+          <SaveUniversityButton specialty={specialty} universityId={selected.id} />
+        </div>
       </div>
       <div className="readiness-layout">
         <StudentProfileForm onChange={setProfile} profile={profile} />

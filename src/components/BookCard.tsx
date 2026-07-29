@@ -19,10 +19,10 @@ export function BookCard({
   onSelect,
 }: BookCardProps) {
   return (
-    <article className="book-card">
+    <article className={progress >= 100 ? 'book-card book-completed' : 'book-card'}>
       <BookCover book={book} />
       <div className="book-details">
-        <span>{selected ? 'В моих книгах' : book.topic}</span>
+        <span>{progress >= 100 ? 'Прочитано ✓' : selected ? 'В моих книгах' : book.topic}</span>
         <h2>{book.title}</h2>
         <p>{book.description}</p>
         <div className="book-actions">
@@ -42,7 +42,8 @@ export function BookCard({
             aria-label={`Прогресс книги «${book.title}»`}
             className="card-progress-slider"
             max="100"
-            min="0"
+            disabled={progress >= 100}
+            min={progress}
             onChange={(event) => onProgressChange(Number(event.target.value))}
             step="2"
             type="range"

@@ -59,7 +59,7 @@ export function GoalOnboarding({ onComplete }: { onComplete: (plan: GoalPlan) =>
   if (questions.length === 0) {
     return (
       <section className="coach-onboarding">
-        <p className="eyebrow">Личный AI Coach</p>
+        <p className="eyebrow">Личный ИИ-наставник</p>
         <h1>С какой целью будем работать?</h1>
         <p>Сначала я задам несколько вопросов. Потом соберу маршрут именно под тебя.</p>
         <div className="coach-input">

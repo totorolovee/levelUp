@@ -82,7 +82,7 @@ export function HomePage() {
             </div>
             <div className="level-pill">
               <span>Твой уровень</span>
-              <strong>Level 1</strong>
+              <strong>{language === 'ru' ? 'Уровень 1' : 'Level 1'}</strong>
             </div>
           </section>
           <section className="section-grid" aria-label="Разделы приложения">
@@ -91,42 +91,42 @@ export function HomePage() {
               description="Работа, учёба и личные задачи в одном месте"
               href="/todos"
               icon="✓"
-              title={language === 'ru' ? 'Поставь галочку' : 'Tick the box'}
+              title={language === 'ru' ? 'Задачи' : 'Tasks'}
             />
             <SectionCard
               accent="#7559ff"
               description="Большие цели и маленькие ежедневные шаги"
               href="/goals"
               icon="◎"
-              title="Goals"
+              title={language === 'ru' ? 'Цели' : 'Goals'}
             />
             <SectionCard
               accent="#a45cff"
               description="Запоминай главные идеи из прочитанного"
               href="/reading"
               icon="▤"
-              title="Reading"
+              title={language === 'ru' ? 'Чтение' : 'Reading'}
             />
             <SectionCard
               accent="#2d8cff"
               description="Выбирай направление, страну и подходящий университет"
               href="/universities"
               icon="◇"
-              title="Universities"
+              title={language === 'ru' ? 'Университеты' : 'Universities'}
             />
             <SectionCard
               accent="#27c2f3"
               description="Виртуальный портфель и журнал решений"
               href="/investing"
               icon="↗"
-              title="Investing"
+              title={language === 'ru' ? 'Инвестиции' : 'Investing'}
             />
             <SectionCard
               accent="#e65fb7"
               description="Понимай свои эмоции, энергию и привычки"
               href="/reflection"
               icon="♡"
-              title="Reflection"
+              title={language === 'ru' ? 'Рефлексия' : 'Reflection'}
             />
           </section>
           <aside className="daily-note">

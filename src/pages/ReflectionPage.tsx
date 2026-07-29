@@ -37,7 +37,7 @@ export function ReflectionPage() {
       <AppHeader />
       <section className="page-intro reflection-intro">
         <div>
-          <p className="eyebrow">Reflection</p>
+          <p className="eyebrow">Рефлексия</p>
           <h1>{isRussian ? 'Замечай себя, а не оценивай.' : 'Notice yourself, without judgment.'}</h1>
           <p>{isRussian ? 'Короткая ежедневная пауза для настроения, энергии и честной мысли.' : 'A short daily pause for your mood, energy, and one honest thought.'}</p>
         </div>

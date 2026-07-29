@@ -1,6 +1,7 @@
 import { supabase } from './supabase';
 
 export type TodoCategory = 'work' | 'study' | 'personal';
+export type TodoPriority = 'low' | 'medium' | 'high';
 
 export type TodoCategoryDefinition = {
   key: string;
@@ -14,6 +15,8 @@ export type TodoItem = {
   categoryKey: string;
   title: string;
   completed: boolean;
+  priority: TodoPriority;
+  dueDate: string | null;
 };
 
 type TodoRow = {
@@ -22,11 +25,13 @@ type TodoRow = {
   custom_category_id: string | null;
   title: string;
   completed: boolean;
+  priority: TodoPriority;
+  due_date: string | null;
 };
 
 type TodoCategoryRow = { id: string; name: string };
 
-const columns = 'id,category,custom_category_id,title,completed';
+const columns = 'id,category,custom_category_id,title,completed,priority,due_date';
 
 function toTodoItem(row: TodoRow): TodoItem {
   return {
@@ -34,6 +39,8 @@ function toTodoItem(row: TodoRow): TodoItem {
     categoryKey: row.custom_category_id ? `custom:${row.custom_category_id}` : row.category ?? '',
     title: row.title,
     completed: row.completed,
+    priority: row.priority,
+    dueDate: row.due_date,
   };
 }
 
@@ -46,7 +53,12 @@ export async function loadTodos() {
   return (data as TodoRow[]).map(toTodoItem);
 }
 
-export async function createTodo(categoryKey: string, title: string) {
+export async function createTodo(
+  categoryKey: string,
+  title: string,
+  priority: TodoPriority,
+  dueDate: string,
+) {
   const customId = categoryKey.startsWith('custom:') ? categoryKey.slice(7) : null;
   const { data, error } = await supabase
     .from('todo_items')
@@ -54,6 +66,8 @@ export async function createTodo(categoryKey: string, title: string) {
       category: customId ? null : categoryKey,
       custom_category_id: customId,
       title: title.trim(),
+      priority,
+      due_date: dueDate || null,
     })
     .select(columns)
     .single();
@@ -84,6 +98,13 @@ export async function createTodoCategory(name: string): Promise<TodoCategoryDefi
   if (error) throw error;
   const row = data as TodoCategoryRow;
   return { key: `custom:${row.id}`, name: row.name, icon: '●', kind: 'custom' };
+}
+
+export async function deleteTodoCategory(categoryKey: string) {
+  const id = categoryKey.startsWith('custom:') ? categoryKey.slice(7) : '';
+  if (!id) return;
+  const { error } = await supabase.from('todo_categories').delete().eq('id', id);
+  if (error) throw error;
 }
 
 export async function setTodoCompleted(id: string, completed: boolean) {

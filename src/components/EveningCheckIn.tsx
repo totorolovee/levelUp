@@ -40,7 +40,7 @@ export function EveningCheckIn({ goal, currentAction, availableTime, onSave }: E
     <section className="evening-checkin">
       <p className="eyebrow">Вечерний check-in</p>
       <h2>Как прошёл день?</h2>
-      <p>Расскажи честно. Coach не оценивает — он улучшает следующий шаг.</p>
+      <p>Расскажи честно. Наставник не оценивает — он улучшает следующий шаг.</p>
       <textarea onChange={(event) => setNote(event.target.value)} placeholder="Не хватило времени / всё получилось / было слишком сложно…" rows={3} value={note} />
       <button disabled={note.trim().length < 3 || isLoading} onClick={submit} type="button">
         {isLoading ? 'Coach анализирует…' : 'Отправить коучу'}

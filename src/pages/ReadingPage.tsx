@@ -28,7 +28,7 @@ export function ReadingPage() {
       <AppHeader />
       <section className="page-intro">
         <div>
-          <p className="eyebrow">Reading</p>
+          <p className="eyebrow">Чтение</p>
           <h1>Открой книгу. Забери идею. Создай своё.</h1>
           <p>
             Здесь каждая история может изменить твой следующий шаг.

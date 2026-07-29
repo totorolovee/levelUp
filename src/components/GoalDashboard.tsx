@@ -40,7 +40,7 @@ export function GoalDashboard({
       </section>
       <aside className="goal-why"><span>Почему это важно</span><p>«{goal.why}»</p></aside>
       <NextBestStep action={currentAction} onComplete={onCompleteStep} />
-      <div className="coach-message"><span>LevelUp Coach</span><p>{goal.coachMessage}</p></div>
+      <div className="coach-message"><span>Наставник LevelUp</span><p>{goal.coachMessage}</p></div>
       <GoalRoadmap milestones={goal.milestones} />
       <EveningCheckIn
         availableTime={goal.availableTime}

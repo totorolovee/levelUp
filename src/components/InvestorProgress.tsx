@@ -12,7 +12,7 @@ export function InvestorProgress({ score }: { score: number }) {
         <span>баллов</span>
       </div>
       <div>
-        <p className="eyebrow">Investor Score</p>
+        <p className="eyebrow">Оценка инвестора</p>
         <h2>Не прибыль. Качество решений.</h2>
         <p className="score-copy">Баллы даются за анализ, а не за случайную прибыль.</p>
       </div>

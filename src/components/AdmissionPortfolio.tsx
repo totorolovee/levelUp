@@ -93,7 +93,7 @@ export function AdmissionPortfolio() {
           )}
         </label>
         <label className="portfolio-wide">
-          {isRussian ? 'Honors — награды и достижения' : 'Honors and achievements'}
+          {isRussian ? 'Награды и достижения' : 'Honors and achievements'}
           <textarea
             maxLength={2000}
             onChange={(event) => update('honors', event.target.value)}
@@ -103,7 +103,7 @@ export function AdmissionPortfolio() {
           />
         </label>
         <label className="portfolio-wide">
-          Major
+          {isRussian ? 'Специальность' : 'Major'}
           <input
             maxLength={120}
             onChange={(event) => update('major', event.target.value)}

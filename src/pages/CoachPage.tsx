@@ -30,7 +30,7 @@ export function CoachPage() {
       <AppHeader />
       <section className="page-intro">
         <div>
-          <p className="eyebrow">AI Coach</p>
+          <p className="eyebrow">ИИ-наставник</p>
           <h1>Совет, который учитывает твой путь.</h1>
           <p>
             Расскажи, что сейчас мешает. Наставник посмотрит на данные LevelUp

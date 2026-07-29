@@ -7,6 +7,7 @@ import { useLanguage } from '../lib/language';
 import {
   loadCustomTodoCategories,
   loadTodos,
+  deleteTodoCategory,
   type TodoCategoryDefinition,
   type TodoItem,
 } from '../lib/todos';
@@ -53,12 +54,22 @@ export function TodosPage() {
     ]);
   };
 
+  const removeCategory = async (category: TodoCategoryDefinition) => {
+    const confirmed = window.confirm(isRussian
+      ? `Удалить тему «${category.name}» и все задачи в ней?`
+      : `Delete “${category.name}” and all its tasks?`);
+    if (!confirmed) return;
+    await deleteTodoCategory(category.key);
+    setCustomCategories((current) => current.filter(({ key }) => key !== category.key));
+    setItems((current) => current.filter(({ categoryKey }) => categoryKey !== category.key));
+  };
+
   return (
     <main className="shell">
       <AppHeader />
       <section className="page-intro todo-intro">
         <div>
-          <p className="eyebrow">{isRussian ? 'Поставь галочку' : 'Tick the box'}</p>
+          <p className="eyebrow">{isRussian ? 'Задачи' : 'Tasks'}</p>
           <h1>{isRussian ? 'Всё важное — в одном месте.' : 'Everything important, in one place.'}</h1>
           <p>{isRussian ? 'Работа, учёба и личная жизнь без хаоса.' : 'Work, study, and personal life without the chaos.'}</p>
         </div>
@@ -84,6 +95,7 @@ export function TodosPage() {
                 items={items.filter((item) => item.categoryKey === category.key)}
                 key={category.key}
                 onChange={(next) => changeCategory(category.key, next)}
+                onDeleteCategory={() => void removeCategory(category)}
               />
             ))}
           </div>

@@ -111,7 +111,7 @@ export function BuyStockForm({ stock, balance, onBuy }: BuyStockFormProps) {
         </label>
       </div>
       <p className="coach-question">
-        <span>AI Coach</span>
+        <span>ИИ-наставник</span>
         {reason.length < MIN_ANSWER_LENGTH
           ? `Почему именно ${stock.name}, а не просто популярная компания?`
           : 'Ты описал возможный рост. Какие факты могут доказать обратное?'}

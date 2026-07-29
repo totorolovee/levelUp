@@ -38,7 +38,7 @@ export function HeroDashboardPreview({ isSignedIn }: Props) {
       </div>
       <div className="preview-widgets">
         <article>
-          <small>{isRussian ? 'Поставь галочку' : 'Tick the box'}</small>
+          <small>{isRussian ? 'Задачи' : 'Tasks'}</small>
           <div className="preview-tasks">
             <p><i /><span>{isRussian ? 'Создай первую задачу' : 'Create your first task'}</span></p>
             <p><i /><span>{isRussian ? 'Раздели дела по темам' : 'Sort tasks into topics'}</span></p>

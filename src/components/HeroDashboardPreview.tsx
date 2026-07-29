@@ -15,13 +15,13 @@ export function HeroDashboardPreview() {
       </div>
       <div className="preview-widgets">
         <article>
-          <small>Активность</small>
-          <div className="preview-bars">
-            {[42, 66, 50, 86, 72, 96, 78].map((height, index) => (
-              <i key={index} style={{ height: `${height}%` }} />
-            ))}
+          <small>Tick the box</small>
+          <div className="preview-tasks">
+            <p><i>✓</i><span>Повторить SAT</span></p>
+            <p><i /><span>Закончить проект</span></p>
+            <p><i /><span>Тренировка</span></p>
           </div>
-          <strong>7 дней</strong>
+          <strong>1 из 3 готово</strong>
         </article>
         <article>
           <small>Опыт</small>

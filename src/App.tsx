@@ -16,6 +16,7 @@ import { ReadingPage } from './pages/ReadingPage';
 import { UniversitiesPage } from './pages/UniversitiesPage';
 import { LeaguesPage } from './pages/LeaguesPage';
 import { ReflectionPage } from './pages/ReflectionPage';
+import { TodosPage } from './pages/TodosPage';
 
 // Здесь живут только маршруты. Сами экраны складывай в src/pages/.
 export default function App() {
@@ -30,6 +31,7 @@ export default function App() {
               <div className="page-transition" key={location}>
                 <Switch>
                   <Route path="/" component={HomePage} />
+                  <Route path="/todos" component={TodosPage} />
                   <Route path="/goals" component={GoalsPage} />
                   <Route path="/universities" component={UniversitiesPage} />
                   <Route path="/reading" component={ReadingPage} />

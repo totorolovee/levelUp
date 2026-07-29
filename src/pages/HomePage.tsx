@@ -85,6 +85,13 @@ export function HomePage() {
           </section>
           <section className="section-grid" aria-label="Разделы приложения">
             <SectionCard
+              accent="#8b70ef"
+              description="Работа, учёба и личные задачи в одном месте"
+              href="/todos"
+              icon="✓"
+              title="Tick the box"
+            />
+            <SectionCard
               accent="#7559ff"
               description="Большие цели и маленькие ежедневные шаги"
               href="/goals"

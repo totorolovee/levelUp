@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AppHeader } from '../components/AppHeader';
 import { BuyStockForm } from '../components/BuyStockForm';
 import type { BuyDecision } from '../components/BuyStockForm';
@@ -22,7 +22,15 @@ export function InvestingPage() {
     status: marketStatus,
     updatedAt: marketUpdatedAt,
   } = useLiveMarket(stocks);
-  const { addDecision, balance, decisions, status: portfolioStatus } = usePortfolio();
+  const {
+    addDecision,
+    balance,
+    decisions,
+    settledCount,
+    settleDueInvestments,
+    status: portfolioStatus,
+  } = usePortfolio();
+  const settledForUpdate = useRef<string | null>(null);
   const balanceText = portfolioStatus === 'ready' ? formatMoney(balance) : '…';
   const score = Math.min(
     100,
@@ -30,9 +38,20 @@ export function InvestingPage() {
       + decisions.filter((item) => item.lesson).length * 20,
   );
   const ownedBySymbol = decisions.reduce<Record<string, number>>((totals, decision) => {
+    if (decision.settledAt) return totals;
     totals[decision.symbol] = (totals[decision.symbol] ?? 0) + decision.quantity;
     return totals;
   }, {});
+
+  useEffect(() => {
+    if (marketStatus !== 'live' || portfolioStatus !== 'ready' || !marketUpdatedAt) return;
+    const updateKey = marketUpdatedAt.toISOString();
+    if (settledForUpdate.current === updateKey) return;
+    settledForUpdate.current = updateKey;
+    void settleDueInvestments().catch(() => {
+      settledForUpdate.current = null;
+    });
+  }, [marketStatus, marketUpdatedAt, portfolioStatus, settleDueInvestments]);
 
   const buyStock = async (decision: BuyDecision) => {
     if (!selected) return;
@@ -93,6 +112,13 @@ export function InvestingPage() {
         </p>
       )}
       {notice && <p className="success">{notice}</p>}
+      {settledCount > 0 && (
+        <p className="success">
+          {language === 'ru'
+            ? `Срок завершён: закрыто позиций — ${settledCount}. Деньги возвращены на баланс по последней цене.`
+            : `${settledCount} matured position(s) closed. The proceeds were returned at the latest price.`}
+        </p>
+      )}
       <InvestorProgress score={score} />
       <section className="investing-layout">
         <div>

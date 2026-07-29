@@ -1,9 +1,17 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from 'react';
 import {
   loadInvestmentDecisions,
   loadInvestmentBalance,
   saveDecisionLesson,
   saveInvestmentDecision,
+  settleMatureInvestments,
 } from './investmentDecisions';
 import { supabase } from './supabase';
 import { unlockAchievement } from './achievements';
@@ -22,14 +30,26 @@ export type Decision = {
   analysisApproved: boolean;
   analysisFeedback: string;
   lesson?: string;
+  maturesAt: Date;
+  settledAt?: Date;
+  settlementPrice?: number;
+  settlementValue?: number;
   createdAt: Date;
 };
+
+type NewDecision = Omit<
+  Decision,
+  'id' | 'createdAt' | 'maturesAt' | 'settledAt'
+    | 'settlementPrice' | 'settlementValue'
+>;
 
 type PortfolioContextValue = {
   balance: number;
   decisions: Decision[];
+  settledCount: number;
   status: 'loading' | 'guest' | 'ready' | 'error';
-  addDecision: (decision: Omit<Decision, 'id' | 'createdAt'>) => Promise<void>;
+  addDecision: (decision: NewDecision) => Promise<void>;
+  settleDueInvestments: () => Promise<void>;
   reviewDecision: (id: string, lesson: string) => Promise<void>;
 };
 
@@ -38,6 +58,7 @@ const PortfolioContext = createContext<PortfolioContextValue | null>(null);
 export function PortfolioProvider({ children }: { children: ReactNode }) {
   const [balance, setBalance] = useState(0);
   const [decisions, setDecisions] = useState<Decision[]>([]);
+  const [settledCount, setSettledCount] = useState(0);
   const [status, setStatus] = useState<PortfolioContextValue['status']>('loading');
 
   useEffect(() => {
@@ -48,6 +69,7 @@ export function PortfolioProvider({ children }: { children: ReactNode }) {
         if (isActive) {
           setDecisions([]);
           setBalance(0);
+          setSettledCount(0);
           setStatus('guest');
         }
         return;
@@ -59,6 +81,7 @@ export function PortfolioProvider({ children }: { children: ReactNode }) {
       if (!isActive) return;
       setDecisions(saved);
       setBalance(savedBalance);
+      setSettledCount(0);
       setStatus('ready');
     };
     void load().catch(() => isActive && setStatus('error'));
@@ -71,7 +94,7 @@ export function PortfolioProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  const addDecision = async (decision: Omit<Decision, 'id' | 'createdAt'>) => {
+  const addDecision = async (decision: NewDecision) => {
     const purchase = await saveInvestmentDecision(decision);
     void unlockAchievement('first_investment').catch(() => undefined);
     setBalance(purchase.balance);
@@ -87,8 +110,26 @@ export function PortfolioProvider({ children }: { children: ReactNode }) {
     );
   };
 
+  const settleDueInvestments = useCallback(async () => {
+    const settlement = await settleMatureInvestments();
+    if (!settlement.settledCount) return;
+    setBalance(settlement.balance);
+    setDecisions(await loadInvestmentDecisions());
+    setSettledCount(settlement.settledCount);
+  }, []);
+
   return (
-    <PortfolioContext.Provider value={{ balance, decisions, status, addDecision, reviewDecision }}>
+    <PortfolioContext.Provider
+      value={{
+        balance,
+        decisions,
+        settledCount,
+        status,
+        addDecision,
+        settleDueInvestments,
+        reviewDecision,
+      }}
+    >
       {children}
     </PortfolioContext.Provider>
   );

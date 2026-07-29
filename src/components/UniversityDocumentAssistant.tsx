@@ -136,7 +136,7 @@ export function UniversityDocumentAssistant({ specialty, university }: Props) {
       </footer>
       <small className="document-ai-scope">
         {isRussian
-          ? 'AI читает до трёх PDF или изображений за один анализ. Для Word учитываются только название и заметки.'
+          ? 'ИИ читает до трёх PDF или изображений за один анализ. Для Word учитываются только название и заметки.'
           : 'AI reads up to three PDFs or images per analysis. For Word files, it only uses the file name and notes.'}
       </small>
       {status === 'loading' && <p>{isRussian ? 'Загружаю чек-лист…' : 'Loading checklist…'}</p>}

@@ -3,9 +3,11 @@ import { DecisionReview } from '../components/DecisionReview';
 import { SmoothLink } from '../components/SmoothLink';
 import { usePortfolio } from '../lib/portfolio';
 import { formatMoney } from '../lib/stocks';
+import { useLanguage } from '../lib/language';
 
 export function JournalPage() {
   const { decisions, reviewDecision } = usePortfolio();
+  const { language } = useLanguage();
 
   return (
     <main className="shell">
@@ -51,6 +53,15 @@ export function JournalPage() {
               <small>
                 {decision.quantity} шт. · {formatMoney(decision.price)} за акцию
               </small>
+              <p className={decision.settledAt ? 'success' : 'market-status'}>
+                {decision.settledAt
+                  ? (language === 'ru'
+                    ? `Срок завершён · возвращено ${formatMoney(decision.settlementValue ?? 0)}`
+                    : `Matured · ${formatMoney(decision.settlementValue ?? 0)} returned`)
+                  : (language === 'ru'
+                    ? `Возврат ${decision.maturesAt.toLocaleDateString('ru-RU')}`
+                    : `Returns on ${decision.maturesAt.toLocaleDateString('en-US')}`)}
+              </p>
               <p className={decision.analysisApproved ? 'success' : 'coach-error'}>
                 AI: {decision.analysisFeedback}
               </p>

@@ -29,7 +29,7 @@ export async function loadMarketPrices(stocks: Stock[]) {
       && typeof item.change === 'number';
   });
   const updatedAt = typeof data.updatedAt === 'string' ? data.updatedAt : null;
-  if (updatedAt) void saveCachedQuotes(quotes, updatedAt);
+  if (updatedAt) await saveCachedQuotes(quotes, updatedAt);
 
   return mergeQuotes(stocks, quotes, updatedAt);
 }

@@ -15,6 +15,10 @@ type DecisionRow = {
   analysis_approved: boolean;
   analysis_feedback: string;
   lesson: string | null;
+  matures_at: string;
+  settled_at: string | null;
+  settlement_price: number | string | null;
+  settlement_value: number | string | null;
   created_at: string;
 };
 
@@ -26,7 +30,8 @@ type PurchaseResult = {
 const columns = [
   'id', 'symbol', 'company', 'quantity', 'price', 'reason', 'risk',
   'invalidation', 'horizon', 'confidence', 'analysis_approved',
-  'analysis_feedback', 'lesson', 'created_at',
+  'analysis_feedback', 'lesson', 'matures_at', 'settled_at',
+  'settlement_price', 'settlement_value', 'created_at',
 ].join(',');
 
 function fromRow(row: DecisionRow): Decision {
@@ -44,6 +49,14 @@ function fromRow(row: DecisionRow): Decision {
     analysisApproved: row.analysis_approved,
     analysisFeedback: row.analysis_feedback,
     lesson: row.lesson ?? undefined,
+    maturesAt: new Date(row.matures_at),
+    settledAt: row.settled_at ? new Date(row.settled_at) : undefined,
+    settlementPrice: row.settlement_price === null
+      ? undefined
+      : Number(row.settlement_price),
+    settlementValue: row.settlement_value === null
+      ? undefined
+      : Number(row.settlement_value),
     createdAt: new Date(row.created_at),
   };
 }
@@ -63,8 +76,25 @@ export async function loadInvestmentBalance() {
   return Number(data);
 }
 
+export async function settleMatureInvestments() {
+  const { data, error } = await supabase.rpc('settle_mature_investments');
+  if (error) throw error;
+  const result = data as unknown as {
+    balance: number | string;
+    settled_count: number;
+  };
+  return {
+    balance: Number(result.balance),
+    settledCount: result.settled_count,
+  };
+}
+
 export async function saveInvestmentDecision(
-  decision: Omit<Decision, 'id' | 'createdAt'>,
+  decision: Omit<
+    Decision,
+    'id' | 'createdAt' | 'maturesAt' | 'settledAt'
+      | 'settlementPrice' | 'settlementValue'
+  >,
 ) {
   const { data, error } = await supabase.rpc('buy_investment', {
     chosen_symbol: decision.symbol,

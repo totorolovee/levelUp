@@ -39,11 +39,13 @@
 .brain-game-library h2 { margin: 0; font-size: 23px; }
 .brain-game-library header span { display: inline-block; margin-top: 5px; padding: 3px 8px; border-radius: 99px; color: #7059c7; background: #eee9f8; font-size: 10px; font-weight: 850; }
 .brain-game-library header > strong { display: grid; width: 40px; height: 40px; place-items: center; border-radius: 12px; color: #7059c7; background: #f0ecf8; }
-.brain-game-library section > div { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.brain-game-library section > div button { display: grid; grid-template-rows: auto 1fr; gap: 9px; min-width: 0; min-height: 196px; padding: 10px; overflow: hidden; border: 0; border-radius: 20px; color: #252842; background: #f5f2f9; box-shadow: inset 0 0 0 1px rgba(93,76,151,.08), 0 10px 24px rgba(64,48,116,.07); text-align: left; cursor: pointer; }
-.brain-game-library section > div button.priority-game { outline: 2px solid #e0ad56; outline-offset: -2px; background: #fff8e9; }
+.game-carousel { position: relative; }
+.game-carousel-track { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.carousel-arrow { display: none; }
+.game-carousel-track > button { display: grid; height: 210px; min-width: 0; grid-template-rows: auto 1fr; gap: 9px; padding: 10px; overflow: hidden; border: 0; border-radius: 20px; color: #252842; background: #f5f2f9; box-shadow: inset 0 0 0 1px rgba(93,76,151,.08), 0 10px 24px rgba(64,48,116,.07); text-align: left; cursor: pointer; }
+.game-carousel-track > button.priority-game { outline: 2px solid #e0ad56; outline-offset: -2px; background: #fff8e9; }
 .brain-game-library .priority-game small { color: #9b6821; font-weight: 850; }
-.brain-game-library section > div button > span { position: relative; display: block; width: 100%; aspect-ratio: 1.9; overflow: hidden; border: 3px solid #7059c7; border-radius: 15px; color: #fff; background-color: #7059c7; box-shadow: 0 10px 22px rgba(69,49,139,.16); }
+.game-carousel-track > button > span { position: relative; display: block; width: 100%; aspect-ratio: 1.9; overflow: hidden; border: 3px solid #7059c7; border-radius: 15px; color: #fff; background-color: #7059c7; box-shadow: 0 10px 22px rgba(69,49,139,.16); }
 .game-cover b { position: relative; z-index: 2; font-size: 25px; font-weight: 950; text-shadow: 0 3px 10px rgba(34,22,73,.22); }
 .game-cover i { position: absolute; width: 54px; height: 54px; right: -18px; top: -15px; border-radius: 50%; background: rgba(255,255,255,.2); }
 .game-cover i:nth-child(2) { width: 36px; height: 36px; right: auto; top: auto; bottom: -12px; left: -9px; background: rgba(255,255,255,.14); }
@@ -154,8 +156,8 @@ html[data-theme="dark"] .education-choice select { color: #d8daeb; border-color:
 html[data-theme="dark"] .brain-assessment fieldset button.selected { border-color: #a08cf0; background: #403866; }
 html[data-theme="dark"] .personal-focus { color: #d5ccff !important; background: #343052; }
 html[data-theme="dark"] .brain-game-library > section { color: #fff; border-color: #414668; background: #242842; }
-html[data-theme="dark"] .brain-game-library section > div button { color: #fff; background: #303553; }
-html[data-theme="dark"] .brain-game-library section > div button.priority-game { outline-color: #c99a4e; background: #3c3543; }
+html[data-theme="dark"] .game-carousel-track > button { color: #fff; background: #303553; }
+html[data-theme="dark"] .game-carousel-track > button.priority-game { outline-color: #c99a4e; background: #3c3543; }
 html[data-theme="dark"] .brain-game-library header > strong,
 html[data-theme="dark"] .brain-game-library header span { color: #d5ccff; background: #343052; }
 html[data-theme="dark"] .pattern-grid button { background: #363b5b; }
@@ -181,10 +183,9 @@ html[data-theme="dark"] .training-result > .new-record { color: #ffe6ad; backgro
   .brain-assessment fieldset > div { grid-template-columns: 1fr; }
   .brain-assessment fieldset button { min-height: 48px; text-align: left; }
   .brain-assessment fieldset button span { display: inline; margin-right: 8px; }
-  .brain-game-library section > div { grid-template-columns: 1fr; }
   .brain-game-library > section { padding: 17px; }
-  .brain-game-library section > div button { min-height: 176px; padding: 8px; }
-  .brain-game-library section > div button > span { width: 100%; border-width: 2px; border-radius: 12px; }
+  .game-carousel-track > button { height: 184px; padding: 8px; }
+  .game-carousel-track > button > span { width: 100%; border-width: 2px; border-radius: 12px; }
   .game-card-copy { gap: 3px; padding-inline: 3px; }
   .game-card-copy > strong { font-size: 14px; }
   .game-card-copy small { min-height: 0; font-size: 9px; }

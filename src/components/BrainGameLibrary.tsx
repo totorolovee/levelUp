@@ -1,5 +1,6 @@
 import type { BrainFocus } from '../lib/brainTrainingProfile';
 import type { BrainGameCategory, BrainGameProgress } from '../lib/brainGameResults';
+import { HorizontalGameCarousel } from './HorizontalGameCarousel';
 
 export type BrainGameId =
   | 'shade' | 'scan' | 'switch'
@@ -104,7 +105,7 @@ export function BrainGameLibrary({ focus, isRussian, progress, onSelect }: Props
             </div>
             <strong>{category.games.length}</strong>
           </header>
-          <div>
+          <HorizontalGameCarousel isRussian={isRussian}>
             {category.games.map((game) => {
               const saved = progress[game.id];
               return (
@@ -137,7 +138,7 @@ export function BrainGameLibrary({ focus, isRussian, progress, onSelect }: Props
               </button>
               );
             })}
-          </div>
+          </HorizontalGameCarousel>
         </section>
       ))}
     </div>

@@ -80,7 +80,10 @@ export function BrainGameLibrary({ focus, isRussian, progress, onSelect }: Props
   return (
     <div className="brain-game-library">
       {categories.map((category) => (
-        <section className={focus === category.id ? 'recommended' : ''} key={category.id}>
+        <section
+          className={`${focus === category.id ? 'recommended ' : ''}category-${category.id}`}
+          key={category.id}
+        >
           <header>
             <div>
               <h2>{isRussian ? category.ru : category.en}</h2>
@@ -98,17 +101,24 @@ export function BrainGameLibrary({ focus, isRussian, progress, onSelect }: Props
                 onClick={() => onSelect(game.id, category.id)}
                 type="button"
               >
-                <span>{game.icon}</span>
-                <strong>{isRussian ? game.ru : game.en}</strong>
-                <small>{focus === category.id && game.priority
-                  ? (isRussian
-                    ? `★ Приоритет для тебя${saved ? ` · ✓ пройдено · сложность ${saved.currentLevel}` : ''}`
-                    : `★ Priority for you${saved ? ` · ✓ completed · difficulty ${saved.currentLevel}` : ''}`)
-                  : saved
+                <span className="game-cover" aria-hidden="true">
+                  <i /><i /><b>{game.icon}</b>
+                </span>
+                <div className="game-card-copy">
+                  <strong>{isRussian ? game.ru : game.en}</strong>
+                  <small>{focus === category.id && game.priority
                     ? (isRussian
-                      ? `✓ Пройдено · сложность ${saved.currentLevel}`
-                      : `✓ Completed · difficulty ${saved.currentLevel}`)
-                    : (isRussian ? 'Уровни · Играть →' : 'Levels · Play →')}</small>
+                      ? `★ Приоритет${saved ? ` · ✓ уровень ${saved.currentLevel}` : ''}`
+                      : `★ Priority${saved ? ` · ✓ level ${saved.currentLevel}` : ''}`)
+                    : saved
+                      ? (isRussian
+                        ? `✓ Пройдено · уровень ${saved.currentLevel}`
+                        : `✓ Completed · level ${saved.currentLevel}`)
+                      : (isRussian ? 'Уровни · Играть →' : 'Levels · Play →')}</small>
+                  <em>{saved
+                    ? `${isRussian ? 'Рекорд' : 'Best score'}: ${saved.bestScore}/100`
+                    : (isRussian ? 'Рекорд ещё не установлен' : 'No score yet')}</em>
+                </div>
               </button>
               );
             })}

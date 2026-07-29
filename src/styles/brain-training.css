@@ -40,10 +40,17 @@
 .brain-game-library header span { display: inline-block; margin-top: 5px; padding: 3px 8px; border-radius: 99px; color: #7059c7; background: #eee9f8; font-size: 10px; font-weight: 850; }
 .brain-game-library header > strong { display: grid; width: 40px; height: 40px; place-items: center; border-radius: 12px; color: #7059c7; background: #f0ecf8; }
 .brain-game-library section > div { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.brain-game-library section > div button { display: grid; grid-template-columns: 48px 1fr; gap: 3px 11px; min-height: 100px; align-items: center; padding: 16px; border: 0; border-radius: 16px; color: #252842; background: #f5f2f9; text-align: left; cursor: pointer; }
+.brain-game-library section > div button { display: grid; grid-template-columns: 82px 1fr; gap: 14px; min-height: 122px; align-items: center; padding: 12px; overflow: hidden; border: 0; border-radius: 19px; color: #252842; background: #f5f2f9; box-shadow: inset 0 0 0 1px rgba(93,76,151,.06); text-align: left; cursor: pointer; }
 .brain-game-library section > div button.priority-game { outline: 2px solid #e0ad56; outline-offset: -2px; background: #fff8e9; }
 .brain-game-library .priority-game small { color: #9b6821; font-weight: 850; }
-.brain-game-library section > div button > span { display: grid; width: 48px; height: 48px; grid-row: 1 / 3; place-items: center; border-radius: 14px; color: #fff; background: #7059c7; font-size: 18px; font-weight: 900; }
+.brain-game-library section > div button > span { position: relative; display: grid; width: 82px; height: 96px; place-items: center; overflow: hidden; border-radius: 17px; color: #fff; background: #7059c7; box-shadow: 0 10px 22px rgba(69,49,139,.2); }
+.game-cover b { position: relative; z-index: 2; font-size: 25px; font-weight: 950; text-shadow: 0 3px 10px rgba(34,22,73,.22); }
+.game-cover i { position: absolute; width: 54px; height: 54px; right: -18px; top: -15px; border-radius: 50%; background: rgba(255,255,255,.2); }
+.game-cover i:nth-child(2) { width: 36px; height: 36px; right: auto; top: auto; bottom: -12px; left: -9px; background: rgba(255,255,255,.14); }
+.game-card-copy { display: grid; min-width: 0; gap: 5px; }
+.game-card-copy > strong { font-size: 15px; line-height: 1.25; }
+.game-card-copy small { min-height: 26px; line-height: 1.3; }
+.game-card-copy em { color: #7059c7; font-size: 10px; font-style: normal; font-weight: 850; }
 .brain-game-library section:nth-child(2) button > span { background: #e17a5f; }
 .brain-game-library section:nth-child(3) button > span { background: #438ec4; }
 .brain-game-library section:nth-child(4) button > span { background: #8a65c7; }
@@ -87,6 +94,9 @@
 .expression-duel button { font-size: clamp(25px, 5vw, 42px); }
 .number-path { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 30px; flex-wrap: wrap; }
 .number-path button { display: grid; width: 76px; height: 76px; place-items: center; border: 0; border-radius: 17px; color: #fff; background: #d08a38; font-size: 24px; font-weight: 900; cursor: pointer; }
+.brain-game { position: relative; overflow: hidden; background: linear-gradient(145deg, #fff, #f8f5fc); }
+.brain-game::before { content: ""; position: absolute; width: 210px; height: 210px; right: -100px; top: -110px; border-radius: 50%; background: linear-gradient(135deg, rgba(112,89,199,.13), rgba(67,142,196,.08)); }
+.brain-game > * { position: relative; z-index: 1; }
 .training-intro > p:not(.eyebrow) { color: #747990; font-size: 17px; }
 .training-intro > button, .brain-game form button, .training-result > button {
   padding: 14px 22px;
@@ -122,10 +132,14 @@
 .training-result h1 { margin: 10px auto; color: #7059c7; font-size: clamp(60px, 12vw, 100px); }
 .training-result > p:not(.eyebrow) { font-size: 24px; font-weight: 900; }
 .training-result > div { display: flex; justify-content: center; gap: 18px; margin: 28px 0; flex-wrap: wrap; }
+.training-result > .new-record { display: grid; width: min(360px, 100%); gap: 3px; margin: 22px auto; padding: 16px; border-radius: 18px; color: #72501d; background: linear-gradient(135deg, #fff3d3, #ffe2a8); box-shadow: 0 12px 28px rgba(151,104,30,.12); }
+.new-record span { font-size: 28px; }
+.new-record small { font-weight: 750; }
 html[data-theme="dark"] .training-intro,
 html[data-theme="dark"] .brain-game,
 html[data-theme="dark"] .training-result,
 html[data-theme="dark"] .brain-assessment { color: #fff; border-color: #414668; background: #242842; }
+html[data-theme="dark"] .brain-game { background: linear-gradient(145deg, #292d4b, #20243d); }
 html[data-theme="dark"] .training-skills article { color: #fff; background: #303553; }
 html[data-theme="dark"] .attention-level { color: #afb4cf; }
 html[data-theme="dark"] .training-intro > p:not(.eyebrow) { color: #afb4cf; }
@@ -150,6 +164,8 @@ html[data-theme="dark"] .path-grid span { background: #303553; }
 html[data-theme="dark"] .path-grid span.player { background: #8069dc; box-shadow: inset 0 0 0 8px #514675; }
 html[data-theme="dark"] .rotation-shape,
 html[data-theme="dark"] .training-result > p.result-level { color: #c6b9ff; }
+html[data-theme="dark"] .game-card-copy em { color: #c6b9ff; }
+html[data-theme="dark"] .training-result > .new-record { color: #ffe6ad; background: linear-gradient(135deg, #4b3b33, #3b3044); }
 @media (max-width: 560px) {
   .training-intro, .brain-game, .training-result, .brain-assessment { margin-top: 28px; border-radius: 20px; }
   .training-skills { grid-template-columns: 1fr; }
@@ -161,5 +177,7 @@ html[data-theme="dark"] .training-result > p.result-level { color: #c6b9ff; }
   .brain-assessment fieldset button span { display: inline; margin-right: 8px; }
   .brain-game-library section > div { grid-template-columns: 1fr; }
   .brain-game-library > section { padding: 17px; }
+  .brain-game-library section > div button { grid-template-columns: 74px 1fr; min-height: 112px; }
+  .brain-game-library section > div button > span { width: 74px; height: 86px; }
   .number-duel button { min-width: 0; width: 50%; }
 }

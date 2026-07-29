@@ -25,7 +25,13 @@ export function BrainTrainingPage() {
   const [gameId, setGameId] = useState<BrainGameId>('shade');
   const [category, setCategory] = useState<BrainGameCategory>('attention');
   const [progress, setProgress] = useState<Record<string, BrainGameProgress>>({});
-  const [result, setResult] = useState({ score: 0, xp: 0, level: 1, leveledUp: false });
+  const [result, setResult] = useState({
+    score: 0,
+    xp: 0,
+    level: 1,
+    leveledUp: false,
+    isNewRecord: false,
+  });
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -47,12 +53,14 @@ export function BrainTrainingPage() {
 
   const completeGame = async (score: number) => {
     try {
+      const previousBest = progress[gameId]?.bestScore ?? 0;
       const saved = await saveBrainGameResult(gameId, category, score);
       setResult({
         score,
         xp: saved.xpEarned,
         level: saved.currentLevel,
         leveledUp: saved.leveledUp,
+        isNewRecord: score > previousBest,
       });
       setProgress((current) => ({
         ...current,
@@ -108,6 +116,13 @@ export function BrainTrainingPage() {
           <p className="eyebrow">{isRussian ? 'Игра завершена' : 'Game complete'}</p>
           <h1>{result.score}/100</h1>
           <p>+{result.xp} XP</p>
+          {result.isNewRecord && (
+            <div className="new-record">
+              <span>🏆</span>
+              <strong>{isRussian ? 'Новый личный рекорд!' : 'New personal best!'}</strong>
+              <small>{isRussian ? `Лучший score: ${result.score}/100` : `Best score: ${result.score}/100`}</small>
+            </div>
+          )}
           <p className="result-level">
             {result.leveledUp
               ? (isRussian ? `Новый уровень сложности: ${result.level}` : `New difficulty level: ${result.level}`)

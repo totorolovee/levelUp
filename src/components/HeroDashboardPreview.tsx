@@ -1,13 +1,21 @@
 import { useLanguage } from '../lib/language';
 
-export function HeroDashboardPreview() {
+type Props = {
+  isSignedIn: boolean;
+};
+
+export function HeroDashboardPreview({ isSignedIn }: Props) {
   const { language } = useLanguage();
   const isRussian = language === 'ru';
 
   return (
     <div className="hero-dashboard-preview" aria-hidden="true">
       <div className="preview-topline">
-        <span>LEVEL OVERVIEW</span>
+        <span>
+          {isSignedIn
+            ? (isRussian ? 'ОБЗОР УРОВНЯ' : 'LEVEL OVERVIEW')
+            : (isRussian ? 'НАЧНИ СВОЙ ПУТЬ' : 'START YOUR JOURNEY')}
+        </span>
         <i />
       </div>
       <div className="preview-highlight">

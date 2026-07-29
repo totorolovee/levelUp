@@ -65,7 +65,7 @@ export function HomePage() {
             </SmoothLink>
           )}
         </div>
-        <HeroDashboardPreview />
+        <HeroDashboardPreview isSignedIn={isSignedIn === true} />
         <div className="title-footer">
           <span>Создано</span>
           <strong>Kassenov Alimzhan</strong>

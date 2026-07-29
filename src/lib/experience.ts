@@ -26,18 +26,22 @@ type ProgressRow = {
 };
 
 export async function loadExperience(totalActiveDays: number) {
-  const [readingResult, trainingResult] = await Promise.all([
+  const [readingResult, trainingResult, gamesResult] = await Promise.all([
     supabase.from('reading_progress').select('progress'),
     supabase.from('brain_training_sessions').select('xp_earned'),
+    supabase.from('brain_game_results').select('xp_earned'),
   ]);
   if (readingResult.error) throw readingResult.error;
   if (trainingResult.error) throw trainingResult.error;
+  if (gamesResult.error) throw gamesResult.error;
 
   const readingXp = ((readingResult.data ?? []) as ProgressRow[])
     .reduce((sum, book) => sum + book.progress, 0);
   const trainingXp = (trainingResult.data ?? [])
     .reduce((sum, session) => sum + session.xp_earned, 0);
-  const xp = totalActiveDays * 25 + readingXp + trainingXp;
+  const gamesXp = (gamesResult.data ?? [])
+    .reduce((sum, game) => sum + game.xp_earned, 0);
+  const xp = totalActiveDays * 25 + readingXp + trainingXp + gamesXp;
   let currentIndex = 0;
   ranks.forEach((rank, index) => {
     if (xp >= rank.xp) currentIndex = index;

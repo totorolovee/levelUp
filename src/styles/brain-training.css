@@ -42,19 +42,25 @@
 .game-carousel { position: relative; }
 .game-carousel-track { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .carousel-arrow { display: none; }
-.game-carousel-track > button { display: block; height: 138px; min-width: 0; padding: 18px; overflow: hidden; border: 1px solid #e3deeb; border-top: 4px solid #7059c7; border-radius: 18px; color: #252842; background: #f8f6fb; box-shadow: 0 10px 24px rgba(64,48,116,.07); text-align: left; cursor: pointer; }
-.game-carousel-track > button.priority-game { outline: 2px solid #e0ad56; outline-offset: -2px; background: #fff8e9; }
-.brain-game-library .priority-game small { color: #9b6821; font-weight: 850; }
-.game-card-copy { display: grid; min-width: 0; gap: 8px; height: 100%; }
-.game-card-copy > strong { font-size: 18px; line-height: 1.2; }
+.game-carousel-track > button { display: block; height: 124px; min-width: 0; padding: 14px; overflow: hidden; border: 0; border-radius: 17px; color: #29243f; background: linear-gradient(145deg, #e5ddff, #d3c6fb); box-shadow: 0 9px 20px rgba(64,48,116,.1); text-align: left; cursor: pointer; }
+.game-carousel-track > button.priority-game { outline: 2px solid rgba(255,255,255,.8); outline-offset: -4px; background: linear-gradient(145deg, #ffe4a8, #f5c879); }
+.brain-game-library .priority-game small { color: #72501d; font-weight: 850; }
+.game-card-copy { display: grid; min-width: 0; gap: 5px; height: 100%; }
+.game-card-heading { display: flex; min-width: 0; align-items: center; gap: 9px; }
+.game-card-heading > span { display: grid; width: 31px; height: 31px; flex: 0 0 31px; place-items: center; border-radius: 10px; color: #fff; background: rgba(63,48,119,.55); box-shadow: inset 0 1px 0 rgba(255,255,255,.35); font-size: 16px; font-weight: 900; }
+.game-card-heading > strong { font-size: 16px; line-height: 1.15; }
 .game-card-copy small { min-height: 26px; line-height: 1.3; }
-.game-card-copy em { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 8px; border-top: 1px solid #e3deeb; color: #7059c7; font-size: 10px; font-style: normal; font-weight: 850; }
+.game-card-copy em { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 6px; border-top: 1px solid rgba(59,44,112,.18); color: #51418d; font-size: 10px; font-style: normal; font-weight: 850; }
 .game-card-copy em b { font-size: 15px; }
-.category-speed .game-carousel-track > button { border-top-color: #d96e55; }
-.category-memory .game-carousel-track > button { border-top-color: #438ec4; }
-.category-logic .game-carousel-track > button { border-top-color: #8a65c7; }
-.category-math .game-carousel-track > button { border-top-color: #d08a38; }
-.brain-game-library button small { color: #7d8198; }
+.category-speed .game-carousel-track > button { background: linear-gradient(145deg, #ffd9cd, #f5b8a7); }
+.category-speed .game-card-heading > span { background: rgba(167,70,48,.55); }
+.category-memory .game-carousel-track > button { background: linear-gradient(145deg, #d4ecff, #acd5f2); }
+.category-memory .game-card-heading > span { background: rgba(42,111,160,.55); }
+.category-logic .game-carousel-track > button { background: linear-gradient(145deg, #eadcff, #ccb2f1); }
+.category-logic .game-card-heading > span { background: rgba(103,70,159,.55); }
+.category-math .game-carousel-track > button { background: linear-gradient(145deg, #ffe5b9, #f3c981); }
+.category-math .game-card-heading > span { background: rgba(163,101,27,.55); }
+.brain-game-library button small { color: rgba(45,39,69,.7); }
 .brain-game-back { margin-top: 28px; padding: 9px 0; border: 0; color: #7059c7; background: transparent; font-weight: 850; cursor: pointer; }
 .pattern-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 9px; width: min(430px, 100%); margin: 30px auto 0; }
 .pattern-grid button { aspect-ratio: 1; border: 0; border-radius: 13px; background: #e5e0ed; cursor: pointer; }
@@ -149,8 +155,13 @@ html[data-theme="dark"] .education-choice select { color: #d8daeb; border-color:
 html[data-theme="dark"] .brain-assessment fieldset button.selected { border-color: #a08cf0; background: #403866; }
 html[data-theme="dark"] .personal-focus { color: #d5ccff !important; background: #343052; }
 html[data-theme="dark"] .brain-game-library > section { color: #fff; border-color: #414668; background: #242842; }
-html[data-theme="dark"] .game-carousel-track > button { color: #fff; background: #303553; }
-html[data-theme="dark"] .game-carousel-track > button.priority-game { outline-color: #c99a4e; background: #3c3543; }
+html[data-theme="dark"] .game-carousel-track > button { color: #fff; background: linear-gradient(145deg, #554586, #3d3566); }
+html[data-theme="dark"] .category-speed .game-carousel-track > button { background: linear-gradient(145deg, #77463e, #57383c); }
+html[data-theme="dark"] .category-memory .game-carousel-track > button { background: linear-gradient(145deg, #345b78, #34465f); }
+html[data-theme="dark"] .category-logic .game-carousel-track > button { background: linear-gradient(145deg, #5d4782, #41365f); }
+html[data-theme="dark"] .category-math .game-carousel-track > button { background: linear-gradient(145deg, #755631, #55422f); }
+html[data-theme="dark"] .game-carousel-track > button.priority-game { outline-color: rgba(255,224,162,.75); background: linear-gradient(145deg, #765633, #57402f); }
+html[data-theme="dark"] .brain-game-library button small { color: rgba(255,255,255,.72); }
 html[data-theme="dark"] .brain-game-library header > strong,
 html[data-theme="dark"] .brain-game-library header span { color: #d5ccff; background: #343052; }
 html[data-theme="dark"] .pattern-grid button { background: #363b5b; }
@@ -177,9 +188,9 @@ html[data-theme="dark"] .training-result > .new-record { color: #ffe6ad; backgro
   .brain-assessment fieldset button { min-height: 48px; text-align: left; }
   .brain-assessment fieldset button span { display: inline; margin-right: 8px; }
   .brain-game-library > section { padding: 17px; }
-  .game-carousel-track > button { height: 132px; padding: 14px; }
+  .game-carousel-track > button { height: 118px; padding: 12px; }
   .game-card-copy { gap: 5px; }
-  .game-card-copy > strong { font-size: 16px; }
+  .game-card-heading > strong { font-size: 15px; }
   .game-card-copy small { min-height: 0; font-size: 9px; }
   .game-card-copy em { font-size: 9px; }
   .number-duel button { min-width: 0; width: 50%; }

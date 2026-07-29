@@ -11,7 +11,7 @@ export function HorizontalGameCarousel({ children, isRussian }: Props) {
   const [isDragging, setIsDragging] = useState(false);
 
   const startDrag = (event: PointerEvent<HTMLDivElement>) => {
-    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    if (event.pointerType !== 'mouse' || event.button !== 0) return;
     const track = trackRef.current;
     if (!track) return;
     drag.current = {
@@ -25,13 +25,14 @@ export function HorizontalGameCarousel({ children, isRussian }: Props) {
   };
 
   const moveDrag = (event: PointerEvent<HTMLDivElement>) => {
-    if (!drag.current.active || !trackRef.current) return;
+    if (event.pointerType !== 'mouse' || !drag.current.active || !trackRef.current) return;
     const distance = drag.current.startX - event.clientX;
     if (Math.abs(distance) > 5) drag.current.moved = true;
     trackRef.current.scrollLeft = drag.current.scrollLeft + distance;
   };
 
   const stopDrag = (event: PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType !== 'mouse') return;
     drag.current.active = false;
     if (trackRef.current?.hasPointerCapture(event.pointerId)) {
       trackRef.current.releasePointerCapture(event.pointerId);

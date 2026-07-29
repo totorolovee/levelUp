@@ -37,18 +37,18 @@ html[data-theme="dark"] .game-preview-stats dd { color: #c6b9ff; }
     overflow-x: auto;
     overscroll-behavior-inline: contain;
     scroll-padding-inline: 17px;
-    scroll-snap-type: x mandatory;
+    scroll-snap-type: x proximity;
     scrollbar-width: none;
     cursor: grab;
-    touch-action: pan-y;
+    touch-action: pan-x pan-y;
     user-select: none;
     -webkit-overflow-scrolling: touch;
   }
   .game-carousel-track.dragging { cursor: grabbing; scroll-snap-type: none; }
   .game-carousel-track::-webkit-scrollbar { display: none; }
   .game-carousel-track > button {
-    width: min(64vw, 235px);
-    flex: 0 0 min(64vw, 235px);
+    width: min(58vw, 210px);
+    flex: 0 0 min(58vw, 210px);
     scroll-snap-align: start;
     scroll-snap-stop: always;
   }

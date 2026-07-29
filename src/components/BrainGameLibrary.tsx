@@ -107,7 +107,10 @@ export function BrainGameLibrary({ focus, isRussian, progress, onSelect }: Props
                 type="button"
               >
                 <div className="game-card-copy">
-                  <strong>{isRussian ? game.ru : game.en}</strong>
+                  <div className="game-card-heading">
+                    <span aria-hidden="true">{game.icon}</span>
+                    <strong>{isRussian ? game.ru : game.en}</strong>
+                  </div>
                   <small>{focus === category.id && game.priority
                     ? (isRussian
                       ? `★ Приоритет${saved ? ` · ✓ уровень ${saved.currentLevel}` : ''}`

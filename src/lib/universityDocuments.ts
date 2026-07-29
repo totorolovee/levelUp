@@ -5,6 +5,8 @@ export type UniversityDocumentProgress = {
   completed: boolean;
   dueDate: string;
   notes: string;
+  filePath: string;
+  fileName: string;
 };
 
 type ProgressRow = {
@@ -12,12 +14,14 @@ type ProgressRow = {
   completed: boolean;
   due_date: string | null;
   notes: string;
+  file_path: string | null;
+  file_name: string | null;
 };
 
 export async function loadUniversityDocuments(universityId: string) {
   const { data, error } = await supabase
     .from('university_document_progress')
-    .select('document_key,completed,due_date,notes')
+    .select('document_key,completed,due_date,notes,file_path,file_name')
     .eq('university_id', universityId);
   if (error) throw error;
   return (data as ProgressRow[]).map((row) => ({
@@ -25,6 +29,8 @@ export async function loadUniversityDocuments(universityId: string) {
     completed: row.completed,
     dueDate: row.due_date ?? '',
     notes: row.notes,
+    filePath: row.file_path ?? '',
+    fileName: row.file_name ?? '',
   }));
 }
 
@@ -42,6 +48,8 @@ export async function saveUniversityDocument(
     completed: progress.completed,
     due_date: progress.dueDate || null,
     notes: progress.notes,
+    file_path: progress.filePath || null,
+    file_name: progress.fileName || null,
     updated_at: new Date().toISOString(),
   }, { onConflict: 'user_id,university_id,document_key' });
   if (error) throw error;

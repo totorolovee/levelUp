@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useLanguage } from '../lib/language';
 import {
   createTodo,
@@ -7,6 +7,7 @@ import {
   type TodoPriority,
 } from '../lib/todos';
 import { TodoTaskCard } from './TodoTaskCard';
+import { FriendlyDatePicker } from './FriendlyDatePicker';
 
 type Props = {
   category: TodoCategoryDefinition;
@@ -23,7 +24,6 @@ export function TodoColumn({ category, items, onChange, onDeleteCategory }: Prop
   const [isSaving, setIsSaving] = useState(false);
   const [priority, setPriority] = useState<TodoPriority>('medium');
   const [dueDate, setDueDate] = useState('');
-  const dateInputRef = useRef<HTMLInputElement>(null);
   const isRussian = language === 'ru';
   const sortedItems = [...items].sort(
     (first, second) => priorityOrder[first.priority] - priorityOrder[second.priority],
@@ -75,33 +75,11 @@ export function TodoColumn({ category, items, onChange, onDeleteCategory }: Prop
           <option value="medium">{isRussian ? 'Средний приоритет' : 'Medium priority'}</option>
           <option value="high">{isRussian ? 'Высокий приоритет' : 'High priority'}</option>
         </select>
-        <div className="todo-date-field">
-          <button
-            onClick={() => {
-              const input = dateInputRef.current;
-              if (!input) return;
-              if (typeof input.showPicker === 'function') input.showPicker();
-              else input.click();
-            }}
-            type="button"
-          >
-            {dueDate
-              ? `${isRussian ? 'Дедлайн' : 'Due'}: ${new Intl.DateTimeFormat(
-                isRussian ? 'ru-RU' : 'en-US',
-                { day: 'numeric', month: 'long' },
-              ).format(new Date(`${dueDate}T00:00:00`))}`
-              : (isRussian ? 'Выбрать дедлайн' : 'Choose deadline')}
-          </button>
-          <input
-            aria-label={isRussian ? 'Дедлайн' : 'Deadline'}
-            min={new Date().toISOString().slice(0, 10)}
-            onChange={(event) => setDueDate(event.target.value)}
-            ref={dateInputRef}
-            tabIndex={-1}
-            type="date"
-            value={dueDate}
-          />
-        </div>
+        <FriendlyDatePicker
+          ariaLabel={isRussian ? 'Дедлайн' : 'Deadline'}
+          onChange={setDueDate}
+          value={dueDate}
+        />
       </div>
       <div className="todo-list">
         {sortedItems.map((item) => (

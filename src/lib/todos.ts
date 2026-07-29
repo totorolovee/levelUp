@@ -1,4 +1,6 @@
 import { supabase } from './supabase';
+import { loadTodoSubtasks, type TodoSubtask } from './todoSubtasks';
+export type { TodoSubtask } from './todoSubtasks';
 
 export type TodoCategory = 'work' | 'study' | 'personal';
 export type TodoPriority = 'low' | 'medium' | 'high';
@@ -20,13 +22,6 @@ export type TodoItem = {
   subtasks: TodoSubtask[];
 };
 
-export type TodoSubtask = {
-  id: string;
-  todoId: string;
-  title: string;
-  completed: boolean;
-};
-
 type TodoRow = {
   id: string;
   category: TodoCategory | null;
@@ -38,13 +33,6 @@ type TodoRow = {
 };
 
 type TodoCategoryRow = { id: string; name: string };
-type TodoSubtaskRow = {
-  id: string;
-  todo_id: string;
-  title: string;
-  completed: boolean;
-};
-
 const columns = 'id,category,custom_category_id,title,completed,priority,due_date';
 
 function toTodoItem(row: TodoRow, subtasks: TodoSubtask[] = []): TodoItem {
@@ -62,18 +50,13 @@ function toTodoItem(row: TodoRow, subtasks: TodoSubtask[] = []): TodoItem {
 export async function loadTodos() {
   const [todoResult, subtaskResult] = await Promise.all([
     supabase.from('todo_items').select(columns).order('created_at', { ascending: false }),
-    supabase.from('todo_subtasks').select('id,todo_id,title,completed').order('created_at'),
+    loadTodoSubtasks(),
   ]);
   if (todoResult.error) throw todoResult.error;
-  if (subtaskResult.error) throw subtaskResult.error;
-  const subtasks = (subtaskResult.data as TodoSubtaskRow[]).map(toTodoSubtask);
+  const subtasks = subtaskResult;
   return (todoResult.data as TodoRow[]).map((row) =>
     toTodoItem(row, subtasks.filter(({ todoId }) => todoId === row.id)),
   );
-}
-
-function toTodoSubtask(row: TodoSubtaskRow): TodoSubtask {
-  return { id: row.id, todoId: row.todo_id, title: row.title, completed: row.completed };
 }
 
 export async function createTodo(
@@ -140,28 +123,5 @@ export async function setTodoCompleted(id: string, completed: boolean) {
 
 export async function deleteTodo(id: string) {
   const { error } = await supabase.from('todo_items').delete().eq('id', id);
-  if (error) throw error;
-}
-
-export async function createTodoSubtask(todoId: string, title: string) {
-  const { data, error } = await supabase
-    .from('todo_subtasks')
-    .insert({ todo_id: todoId, title: title.trim() })
-    .select('id,todo_id,title,completed')
-    .single();
-  if (error) throw error;
-  return toTodoSubtask(data as TodoSubtaskRow);
-}
-
-export async function setTodoSubtaskCompleted(id: string, completed: boolean) {
-  const { error } = await supabase
-    .from('todo_subtasks')
-    .update({ completed, updated_at: new Date().toISOString() })
-    .eq('id', id);
-  if (error) throw error;
-}
-
-export async function deleteTodoSubtask(id: string) {
-  const { error } = await supabase.from('todo_subtasks').delete().eq('id', id);
   if (error) throw error;
 }

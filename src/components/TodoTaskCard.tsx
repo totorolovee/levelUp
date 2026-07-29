@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import {
-  createTodoSubtask,
   deleteTodo,
-  deleteTodoSubtask,
   setTodoCompleted,
-  setTodoSubtaskCompleted,
   type TodoItem,
 } from '../lib/todos';
+import {
+  createTodoSubtask,
+  deleteTodoSubtask,
+  setTodoSubtaskCompleted,
+} from '../lib/todoSubtasks';
 import { TaskConfetti } from './TaskConfetti';
 
 type Props = {

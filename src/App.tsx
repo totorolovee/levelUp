@@ -17,6 +17,7 @@ import { UniversitiesPage } from './pages/UniversitiesPage';
 import { LeaguesPage } from './pages/LeaguesPage';
 import { ReflectionPage } from './pages/ReflectionPage';
 import { TodosPage } from './pages/TodosPage';
+import { AuthenticatedPage } from './components/AuthenticatedPage';
 
 // Здесь живут только маршруты. Сами экраны складывай в src/pages/.
 export default function App() {
@@ -31,15 +32,15 @@ export default function App() {
               <div className="page-transition" key={location}>
                 <Switch>
                   <Route path="/" component={HomePage} />
-                  <Route path="/todos" component={TodosPage} />
-                  <Route path="/goals" component={GoalsPage} />
-                  <Route path="/universities" component={UniversitiesPage} />
-                  <Route path="/reading" component={ReadingPage} />
-                  <Route path="/investing" component={InvestingPage} />
-                  <Route path="/journal" component={JournalPage} />
-                  <Route path="/coach" component={CoachPage} />
-                  <Route path="/leagues" component={LeaguesPage} />
-                  <Route path="/reflection" component={ReflectionPage} />
+                  <Route path="/todos"><AuthenticatedPage><TodosPage /></AuthenticatedPage></Route>
+                  <Route path="/goals"><AuthenticatedPage><GoalsPage /></AuthenticatedPage></Route>
+                  <Route path="/universities"><AuthenticatedPage><UniversitiesPage /></AuthenticatedPage></Route>
+                  <Route path="/reading"><AuthenticatedPage><ReadingPage /></AuthenticatedPage></Route>
+                  <Route path="/investing"><AuthenticatedPage><InvestingPage /></AuthenticatedPage></Route>
+                  <Route path="/journal"><AuthenticatedPage><JournalPage /></AuthenticatedPage></Route>
+                  <Route path="/coach"><AuthenticatedPage><CoachPage /></AuthenticatedPage></Route>
+                  <Route path="/leagues"><AuthenticatedPage><LeaguesPage /></AuthenticatedPage></Route>
+                  <Route path="/reflection"><AuthenticatedPage><ReflectionPage /></AuthenticatedPage></Route>
                   <Route path="/login" component={LoginPage} />
                   <Route path="/profile" component={ProfilePage} />
                   <Route component={NotFoundPage} />

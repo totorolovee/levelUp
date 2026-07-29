@@ -26,6 +26,7 @@ button, a, input, textarea, select { transition: border-color .2s, background-co
 .shell { width: min(1160px, calc(100% - 40px)); margin: 0 auto; padding-bottom: 72px; }
 .app-header { position: sticky; top: 0; z-index: 20; width: 100vw; min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-left: calc(50% - 50vw); padding-inline: 20px; background: rgba(247, 248, 244, .88); backdrop-filter: blur(14px); }
 .header-actions { display: flex; min-width: 0; align-items: center; justify-content: flex-end; gap: 6px; }
+.route-loading { min-height: 100vh; background: #14162a; }
 .language-toggle { width: 38px; height: 34px; flex: 0 0 auto; padding: 0; border: 1px solid #d8d2e6; border-radius: 10px; color: #7059c7; background: #fff; font-size: 11px; font-weight: 850; cursor: pointer; }
 .header-login { padding: 8px 13px; border-radius: 10px; color: #fff; background: #7059c7; font-size: 12px; font-weight: 800; text-decoration: none; }
 .header-username { display: flex; max-width: 180px; align-items: center; gap: 8px; padding: 5px 11px 5px 5px; overflow: hidden; border: 1px solid #d8d2e6; border-radius: 99px; color: #51458a; background: #fff; font-size: 12px; font-weight: 800; text-decoration: none; text-overflow: ellipsis; white-space: nowrap; }

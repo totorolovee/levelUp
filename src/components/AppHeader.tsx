@@ -7,16 +7,15 @@ import { useLanguage } from '../lib/language';
 import { getUserAvatarUrl } from '../lib/avatars';
 
 const links = [
-  { href: '/todos', label: 'Задачи', authOnly: true },
+  { href: '/todos', label: 'Задачи' },
   { href: '/goals', label: 'Цели' },
   { href: '/universities', label: 'Вузы' },
   { href: '/reading', label: 'Книги' },
   { href: '/investing', label: 'Инвестиции' },
   { href: '/journal', label: 'Журнал' },
   { href: '/coach', label: 'AI совет' },
-  { href: '/reflection', label: 'Рефлексия', authOnly: true },
-  { href: '/leagues', label: 'Лиги', authOnly: true },
-  { href: '/login', label: 'Вход' },
+  { href: '/reflection', label: 'Рефлексия' },
+  { href: '/leagues', label: 'Лиги' },
 ];
 
 export function AppHeader() {
@@ -104,7 +103,7 @@ export function AppHeader() {
           <span aria-hidden="true" className="theme-icon moon">☾</span>
           <span aria-hidden="true" className="theme-thumb" />
         </button>
-        <nav aria-label="Главная навигация" className={isMenuOpen ? 'mobile-open' : ''}>
+        {user && <nav aria-label="Главная навигация" className={isMenuOpen ? 'mobile-open' : ''}>
           <button
             aria-expanded={isMenuOpen}
             className="nav-trigger"
@@ -114,12 +113,7 @@ export function AppHeader() {
             Разделы <span>↓</span>
           </button>
           <div className="nav-menu">
-            {links
-              .filter((link) =>
-                (!('authOnly' in link) || !link.authOnly || Boolean(user))
-                && (link.href !== '/login' || user === null),
-              )
-              .map((link) => (
+            {links.map((link) => (
               <Link
                 className={location === link.href ? 'nav-link active' : 'nav-link'}
                 href={link.href}
@@ -129,7 +123,7 @@ export function AppHeader() {
               </Link>
               ))}
           </div>
-        </nav>
+        </nav>}
       </div>
     </header>
   );

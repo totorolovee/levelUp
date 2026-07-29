@@ -5,11 +5,15 @@ import { universities } from '../lib/universities';
 import { getSpecialtyTranslation, getUniversityContent } from '../lib/universityTranslations';
 import { universitySpecialties } from '../lib/universitySpecialties';
 import { UniversityDetails } from './UniversityDetails';
+import { UniversityDocumentAssistant } from './UniversityDocumentAssistant';
 
 export function ProfileUniversities() {
   const { language } = useLanguage();
   const [saved, setSaved] = useState<SavedUniversity[]>([]);
-  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [openPanel, setOpenPanel] = useState<{
+    universityId: string;
+    type: 'requirements' | 'documents';
+  } | null>(null);
   const isRussian = language === 'ru';
 
   useEffect(() => {
@@ -41,7 +45,10 @@ export function ProfileUniversities() {
         const specialtyName = specialty
           ? getSpecialtyTranslation(specialty, language)?.name ?? specialty.name
           : item.specialtyId;
-        const isExpanded = expandedId === university.id;
+        const requirementsOpen = openPanel?.universityId === university.id
+          && openPanel.type === 'requirements';
+        const documentsOpen = openPanel?.universityId === university.id
+          && openPanel.type === 'documents';
         return (
           <article className="saved-university-card" key={university.id}>
             <div>
@@ -49,15 +56,25 @@ export function ProfileUniversities() {
               <h3>{content.name}</h3>
               <small>{specialtyName}</small>
             </div>
-            <button onClick={() => setExpandedId(isExpanded ? null : university.id)} type="button">
-              {isExpanded
+            <button onClick={() => setOpenPanel(requirementsOpen ? null : {
+              universityId: university.id, type: 'requirements',
+            })} type="button">
+              {requirementsOpen
                 ? (isRussian ? 'Скрыть требования' : 'Hide requirements')
                 : (isRussian ? 'Все требования' : 'Full requirements')}
+            </button>
+            <button onClick={() => setOpenPanel(documentsOpen ? null : {
+              universityId: university.id, type: 'documents',
+            })} type="button">
+              {documentsOpen
+                ? (isRussian ? 'Скрыть документы' : 'Hide documents')
+                : (isRussian ? 'Документы' : 'Documents')}
             </button>
             <button className="remove-saved-university" onClick={() => remove(university.id)} type="button">
               {isRussian ? 'Удалить' : 'Remove'}
             </button>
-            {isExpanded && <UniversityDetails specialty={specialtyName} university={university} />}
+            {requirementsOpen && <UniversityDetails specialty={specialtyName} university={university} />}
+            {documentsOpen && <UniversityDocumentAssistant specialty={specialtyName} university={university} />}
           </article>
         );
       })}

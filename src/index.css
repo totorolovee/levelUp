@@ -1516,12 +1516,30 @@ html[data-theme="dark"] .nav-menu {
 .profile-universities > header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .profile-universities > header h2 { margin: 0; }
 .profile-universities > header strong { display: grid; width: 54px; height: 54px; place-items: center; border-radius: 15px; color: #7057d5; background: #eee9f8; }
-.saved-university-card { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 9px; padding: 16px; border: 1px solid #ded9e9; border-radius: 15px; background: #f8f6fb; }
+.saved-university-card { display: grid; grid-template-columns: 1fr auto auto auto; align-items: center; gap: 9px; padding: 16px; border: 1px solid #ded9e9; border-radius: 15px; background: #f8f6fb; }
 .saved-university-card h3 { margin: 3px 0; }
 .saved-university-card span, .saved-university-card small { color: #777c94; font-size: 11px; }
 .saved-university-card > button { padding: 8px 11px; border: 1px solid #d6cfea; border-radius: 9px; color: #654fc0; background: #fff; font-weight: 750; cursor: pointer; }
 .saved-university-card > .remove-saved-university { color: #a4516c; }
 .saved-university-card > .university-details { grid-column: 1 / -1; margin-top: 8px; }
+.saved-university-card > .document-assistant { grid-column: 1 / -1; }
+.document-assistant { display: grid; gap: 16px; margin-top: 8px; padding: 20px; border: 1px solid #ddd6eb; border-radius: 16px; background: #fff; }
+.document-assistant > header { display: grid; grid-template-columns: 1fr minmax(140px, 260px); align-items: end; gap: 20px; }
+.document-assistant > header h3 { margin: 0 0 4px; font-size: 20px; }
+.document-assistant > header small { color: #777c94; font-weight: 750; }
+.document-progress { height: 8px; overflow: hidden; border-radius: 99px; background: #ece8f3; }
+.document-progress span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #7057d5, #56a3df); transition: width .3s; }
+.document-checklist { display: grid; gap: 9px; }
+.document-checklist article { display: grid; grid-template-columns: minmax(210px, 1fr) 150px; gap: 9px; padding: 13px; border: 1px solid #e1dcea; border-radius: 12px; background: #f8f6fb; }
+.document-checklist article > label { display: flex; align-items: center; gap: 9px; cursor: pointer; }
+.document-checklist article > label input { width: 18px; height: 18px; accent-color: #765de0; }
+.document-checklist article.completed strong { color: #9296aa; text-decoration: line-through; }
+.document-checklist article > textarea { grid-column: 1 / -1; min-height: 54px; resize: vertical; }
+.document-assistant > footer { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.document-assistant > footer button { padding: 11px 15px; border: 0; border-radius: 10px; color: #fff; background: linear-gradient(135deg, #7057d5, #9270e8); font-weight: 800; cursor: pointer; }
+.document-assistant > footer a { color: #7057d5; font-size: 12px; font-weight: 800; text-decoration: none; }
+.document-ai-answer { padding: 15px; border-left: 3px solid #8068d5; border-radius: 0 12px 12px 0; background: #eee9f8; }
+.document-ai-answer p { margin: 7px 0 0; color: #5f647d; line-height: 1.6; white-space: pre-wrap; }
 .book-completed { border-color: #8d78dd; box-shadow: 0 15px 38px rgba(105, 80, 194, .14); }
 .book-completed .book-cover::after { content: "✓"; position: absolute; z-index: 3; top: 10px; right: 10px; display: grid; width: 31px; height: 31px; place-items: center; border-radius: 50%; color: #fff; background: linear-gradient(135deg, #7057d5, #9270e8); box-shadow: 0 6px 16px rgba(47, 34, 91, .25); font-weight: 900; }
 .book-completed .book-details > span { color: #8068d5; font-weight: 850; }
@@ -1530,6 +1548,12 @@ html[data-theme="dark"] .profile-universities > header strong { color: #c6b9ff; 
 html[data-theme="dark"] .saved-university-card { border-color: #414668; background: #292d4b; }
 html[data-theme="dark"] .saved-university-card > button { color: #c6b9ff; border-color: #4b4770; background: #222640; }
 html[data-theme="dark"] .saved-university-card > .remove-saved-university { color: #e6a7bd; }
+html[data-theme="dark"] .document-assistant { border-color: #414668; background: #222640; }
+html[data-theme="dark"] .document-checklist article { border-color: #414668; background: #292d4b; }
+html[data-theme="dark"] .document-progress { background: #171b32; }
+html[data-theme="dark"] .document-assistant > footer a { color: #b5a3fa; }
+html[data-theme="dark"] .document-ai-answer { background: #343052; }
+html[data-theme="dark"] .document-ai-answer p { color: #d4d6e6; }
 
 @media (max-width: 700px) {
   .profile-tabs { overflow-x: auto; justify-content: start; }
@@ -1538,6 +1562,10 @@ html[data-theme="dark"] .saved-university-card > .remove-saved-university { colo
   .saved-university-card { grid-template-columns: 1fr 1fr; }
   .saved-university-card > div { grid-column: 1 / -1; }
   .saved-university-card > button { width: 100%; }
+  .document-assistant > header,
+  .document-checklist article { grid-template-columns: 1fr; }
+  .document-checklist article > textarea { grid-column: 1; }
+  .document-assistant > footer { align-items: stretch; flex-direction: column; }
 }
 
 @media (max-width: 560px) {

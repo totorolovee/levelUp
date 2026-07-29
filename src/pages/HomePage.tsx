@@ -3,9 +3,11 @@ import { AppHeader } from '../components/AppHeader';
 import { SectionCard } from '../components/SectionCard';
 import { SmoothLink } from '../components/SmoothLink';
 import { HeroDashboardPreview } from '../components/HeroDashboardPreview';
+import { useLanguage } from '../lib/language';
 import { supabase } from '../lib/supabase';
 
 export function HomePage() {
+  const { language } = useLanguage();
   const [isSignedIn, setIsSignedIn] = useState<boolean | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [areSectionsVisible, setAreSectionsVisible] = useState(false);
@@ -89,7 +91,7 @@ export function HomePage() {
               description="Работа, учёба и личные задачи в одном месте"
               href="/todos"
               icon="✓"
-              title="Tick the box"
+              title={language === 'ru' ? 'Поставь галочку' : 'Tick the box'}
             />
             <SectionCard
               accent="#7559ff"

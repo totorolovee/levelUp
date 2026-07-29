@@ -1,4 +1,9 @@
+import { useLanguage } from '../lib/language';
+
 export function HeroDashboardPreview() {
+  const { language } = useLanguage();
+  const isRussian = language === 'ru';
+
   return (
     <div className="hero-dashboard-preview" aria-hidden="true">
       <div className="preview-topline">
@@ -15,13 +20,13 @@ export function HeroDashboardPreview() {
       </div>
       <div className="preview-widgets">
         <article>
-          <small>Tick the box</small>
+          <small>{isRussian ? 'Поставь галочку' : 'Tick the box'}</small>
           <div className="preview-tasks">
-            <p><i>✓</i><span>Повторить SAT</span></p>
-            <p><i /><span>Закончить проект</span></p>
-            <p><i /><span>Тренировка</span></p>
+            <p><i /><span>{isRussian ? 'Создай первую задачу' : 'Create your first task'}</span></p>
+            <p><i /><span>{isRussian ? 'Раздели дела по темам' : 'Sort tasks into topics'}</span></p>
+            <p><i /><span>{isRussian ? 'Отмечай выполненное' : 'Tick off completed tasks'}</span></p>
           </div>
-          <strong>1 из 3 готово</strong>
+          <strong>{isRussian ? 'Твой список ждёт' : 'Your list is waiting'}</strong>
         </article>
         <article>
           <small>Опыт</small>

@@ -2,12 +2,11 @@ import { useState } from 'react';
 import { useLanguage } from '../lib/language';
 import {
   createTodo,
-  deleteTodo,
-  setTodoCompleted,
   type TodoCategoryDefinition,
   type TodoItem,
   type TodoPriority,
 } from '../lib/todos';
+import { TodoTaskCard } from './TodoTaskCard';
 
 type Props = {
   category: TodoCategoryDefinition;
@@ -40,18 +39,6 @@ export function TodoColumn({ category, items, onChange, onDeleteCategory }: Prop
     } finally {
       setIsSaving(false);
     }
-  };
-
-  const toggle = async (item: TodoItem) => {
-    await setTodoCompleted(item.id, !item.completed);
-    onChange(items.map((current) =>
-      current.id === item.id ? { ...current, completed: !current.completed } : current,
-    ));
-  };
-
-  const remove = async (id: string) => {
-    await deleteTodo(id);
-    onChange(items.filter((item) => item.id !== id));
   };
 
   return (
@@ -107,24 +94,13 @@ export function TodoColumn({ category, items, onChange, onDeleteCategory }: Prop
       </div>
       <div className="todo-list">
         {sortedItems.map((item) => (
-          <article className={`${item.completed ? 'completed ' : ''}priority-${item.priority}`} key={item.id}>
-            <button aria-label={language === 'ru' ? 'Поставить галочку' : 'Tick the box'} className="todo-check" onClick={() => toggle(item)} type="button">
-              {item.completed ? '✓' : ''}
-            </button>
-            <div>
-              <p>{item.title}</p>
-              <small>
-                {isRussian
-                  ? { low: 'Низкий', medium: 'Средний', high: 'Высокий' }[item.priority]
-                  : { low: 'Low', medium: 'Medium', high: 'High' }[item.priority]}
-                {item.dueDate && ` · ${new Intl.DateTimeFormat(isRussian ? 'ru-RU' : 'en-US', {
-                  day: 'numeric',
-                  month: 'short',
-                }).format(new Date(`${item.dueDate}T00:00:00`))}`}
-              </small>
-            </div>
-            <button aria-label={language === 'ru' ? 'Удалить' : 'Delete'} className="todo-delete" onClick={() => remove(item.id)} type="button">×</button>
-          </article>
+          <TodoTaskCard
+            isRussian={isRussian}
+            item={item}
+            key={item.id}
+            onRemove={() => onChange(items.filter((current) => current.id !== item.id))}
+            onUpdate={(next) => onChange(items.map((current) => current.id === next.id ? next : current))}
+          />
         ))}
       </div>
     </section>

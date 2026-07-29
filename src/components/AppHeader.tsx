@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { User } from '@supabase/supabase-js';
 import { Link, useLocation } from 'wouter';
 import { supabase } from '../lib/supabase';
@@ -23,6 +23,7 @@ export function AppHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null | undefined>(undefined);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const menuRef = useRef<HTMLElement>(null);
   const { theme, toggleTheme } = useTheme();
   const { language, setLanguage } = useLanguage();
 
@@ -38,6 +39,22 @@ export function AppHeader() {
   }, []);
 
   useEffect(() => setIsMenuOpen(false), [location]);
+
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const closeOutside = (event: PointerEvent) => {
+      if (!menuRef.current?.contains(event.target as Node)) setIsMenuOpen(false);
+    };
+    const closeWithEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsMenuOpen(false);
+    };
+    document.addEventListener('pointerdown', closeOutside);
+    document.addEventListener('keydown', closeWithEscape);
+    return () => {
+      document.removeEventListener('pointerdown', closeOutside);
+      document.removeEventListener('keydown', closeWithEscape);
+    };
+  }, [isMenuOpen]);
 
   useEffect(() => {
     if (!user) {
@@ -93,9 +110,11 @@ export function AppHeader() {
           <span aria-hidden="true" className="theme-icon moon">☾</span>
           <span aria-hidden="true" className="theme-thumb" />
         </button>
-        {user && <nav aria-label="Главная навигация" className={isMenuOpen ? 'mobile-open' : ''}>
+        {user && <nav aria-label="Главная навигация" className={isMenuOpen ? 'mobile-open' : ''} ref={menuRef}>
           <button
-            aria-label={language === 'ru' ? 'Открыть меню' : 'Open menu'}
+            aria-label={isMenuOpen
+              ? (language === 'ru' ? 'Закрыть меню' : 'Close menu')
+              : (language === 'ru' ? 'Открыть меню' : 'Open menu')}
             aria-expanded={isMenuOpen}
             className="nav-trigger"
             onClick={() => setIsMenuOpen((current) => !current)}

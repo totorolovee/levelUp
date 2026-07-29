@@ -1,6 +1,7 @@
 import type { University } from '../lib/universities';
 import { useLanguage } from '../lib/language';
 import { getUniversityContent } from '../lib/universityTranslations';
+import { qsWorldRankings2027 } from '../lib/universityRankings';
 
 export function UniversityDetails({
   university,
@@ -53,9 +54,14 @@ export function UniversityDetails({
         <Requirement title={labels.english}>{content.englishNote}</Requirement>
         <Requirement title={labels.deadlines}>{content.deadlines}</Requirement>
       </div>
-      <h3 className="requirements-title">
-        {language === 'ru' ? 'Подробный список требований' : 'Detailed requirements checklist'}
-      </h3>
+      <div className="requirements-heading">
+        <h3 className="requirements-title">
+          {language === 'ru' ? 'Подробный список требований' : 'Detailed requirements checklist'}
+        </h3>
+        {qsWorldRankings2027[university.id] && (
+          <span>QS #{qsWorldRankings2027[university.id]}</span>
+        )}
+      </div>
       <div className="university-columns">
         <UniversityList items={content.documents} title={labels.prepare} />
         <UniversityList items={content.opportunities} title={labels.offers} />

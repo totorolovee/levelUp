@@ -1514,6 +1514,10 @@ html[data-theme="dark"] .nav-menu {
 .save-university button { justify-self: end; padding: 11px 16px; border: 0; border-radius: 10px; color: #fff; background: linear-gradient(135deg, #7057d5, #9270e8); font-weight: 800; cursor: pointer; }
 .save-university small { justify-self: end; color: #b34f6b; }
 .requirements-title { margin: 0 0 12px; font-size: 15px; }
+.requirements-heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 12px; }
+.requirements-heading .requirements-title { margin: 0; }
+.requirements-heading > span { flex: 0 0 auto; padding: 6px 9px; border-radius: 99px; color: #654fc0; background: #eee9f8; font-size: 11px; font-weight: 850; }
+html[data-theme="dark"] .requirements-heading > span { color: #c6b9ff; background: #343052; }
 .profile-universities { display: grid; gap: 12px; padding: 24px; }
 .profile-universities > header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .profile-universities > header h2 { margin: 0; }

@@ -1,0 +1,73 @@
+.brain-game-library { gap: 22px; }
+.brain-game-library > section { --accent: #d2b65f; position: relative; overflow: hidden; padding: 22px; border: 1px solid #34394f; border-top: 3px solid var(--accent); background: #1e2234; box-shadow: none; }
+.brain-game-library > section.recommended { border-color: #3f455f; border-top-color: var(--accent); box-shadow: none; }
+.brain-game-library > .category-memory { --accent: #6f91bd; }
+.brain-game-library > .category-speed { --accent: #bb7065; }
+.brain-game-library > .category-logic { --accent: #8972b6; }
+.brain-game-library > .category-math { --accent: #779c8a; }
+.brain-game-library section > header { margin-bottom: 18px; }
+.brain-game-library h2 { color: #f2f2fa; font-size: 24px; }
+.brain-game-library header span { color: #161927; background: var(--accent); }
+.brain-game-library header > strong { color: #b9bfd2; background: #292d41; }
+.game-carousel-track { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.game-carousel-track > button,
+.game-carousel-track > button.priority-game,
+.category-speed .game-carousel-track > button,
+.category-memory .game-carousel-track > button,
+.category-logic .game-carousel-track > button,
+.category-math .game-carousel-track > button { display: grid; height: 320px; grid-template-rows: 43% 1fr; padding: 0; overflow: hidden; outline: 0; border: 1px solid #383d54; border-radius: 18px; color: #f0f1f8; background: #272b3f; box-shadow: 0 12px 24px rgba(0,0,0,.12); }
+.game-card-art { position: relative; display: grid; min-height: 0; place-items: center; overflow: hidden; background: linear-gradient(145deg, #30354a, #292d41); }
+.game-card-art::before { content: ""; position: absolute; width: 130px; height: 130px; border: 1px solid color-mix(in srgb, var(--accent) 48%, transparent); border-radius: 50%; }
+.game-card-art > span { position: relative; z-index: 1; color: var(--accent); font-size: 52px; font-weight: 900; }
+.game-card-art > i { position: absolute; right: 12px; top: 10px; color: #858ba2; font-size: 13px; font-style: normal; }
+.game-card-copy { gap: 7px; padding: 15px; }
+.game-card-heading > strong { color: #f3f3fa; font-size: 17px; }
+.game-card-copy > p { display: -webkit-box; margin: 0; overflow: hidden; color: #9fa5bc; font-size: 10px; line-height: 1.45; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.brain-game-library button small,
+.brain-game-library .priority-game small { min-height: 0; color: #b8bdd0; font-size: 9px; font-weight: 700; }
+.game-card-copy em { margin-top: auto; color: #aeb4c9; border-color: #3c4158; }
+.game-card-copy em b { color: #f0d27a; }
+.game-card-play { color: var(--accent); font-size: 10px; font-weight: 900; }
+.carousel-arrow { color: #e1e2ed; border-color: #41475f; background: #292e43; }
+.brain-training-page .brain-game,
+.brain-training-page .brain-game-preview,
+.brain-training-page .brain-assessment,
+.brain-training-page .training-result { color: #f2f3fa; border-color: #34394f; background: #1e2234; }
+.brain-training-page .brain-game header,
+.brain-training-page .brain-game header p,
+.brain-training-page .brain-game-preview p,
+.brain-training-page .training-result p { color: #aeb3c9; }
+.brain-training-page .brain-game-back { color: #c9cddd; border-color: #3d4259; background: #24283b; }
+.game-result-screen h1 small,
+.daily-training-result h1 small { font-size: .28em; }
+.xp-earned { display: block; color: #e2c66f; font-size: 20px; }
+.result-badges { display: flex; justify-content: center; gap: 7px; margin: 18px 0; flex-wrap: wrap; }
+.result-badges b { padding: 8px 11px; border-radius: 99px; color: #f0d789; background: #343040; font-size: 10px; }
+.daily-result-progress { color: #8f95ad; font-size: 11px !important; }
+.daily-training-result { width: min(760px, 100%); margin: 55px auto 0; padding: clamp(30px, 6vw, 58px); border: 1px solid #34394f; border-radius: 28px; background: #1e2234; text-align: center; }
+.daily-result-icon { display: grid; width: 68px; height: 68px; margin: 0 auto 20px; place-items: center; border-radius: 21px; color: #171928; background: #e0c46f; font-size: 30px; }
+.daily-training-result h1 { margin: 8px 0; font-size: clamp(72px, 13vw, 110px); }
+.daily-improvement { color: #b6bbcd; font-size: 16px; }
+.daily-result-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin: 28px 0; }
+.daily-result-stats article { padding: 15px; border-radius: 14px; background: #292d41; }
+.daily-result-stats span, .daily-result-stats strong { display: block; }
+.daily-result-stats span { color: #858ba2; font-size: 9px; text-transform: uppercase; }
+.daily-result-stats strong { margin-top: 5px; font-size: 18px; }
+.daily-achievement { display: flex; align-items: center; justify-content: center; gap: 11px; margin-bottom: 25px; color: #e3c974; }
+.daily-achievement > span { font-size: 30px; }
+.daily-achievement div { display: grid; text-align: left; }
+.daily-achievement small { color: #9399b0; }
+.daily-training-result > button { min-height: 48px; padding: 12px 20px; border: 0; border-radius: 12px; color: #171928; background: #e0c46f; font-weight: 900; cursor: pointer; }
+@media (max-width: 700px) {
+  .game-carousel-track > button,
+  .game-carousel-track > button.priority-game,
+  .category-speed .game-carousel-track > button,
+  .category-memory .game-carousel-track > button,
+  .category-logic .game-carousel-track > button,
+  .category-math .game-carousel-track > button { width: min(76vw, 280px); flex-basis: min(76vw, 280px); height: 315px; }
+}
+@media (max-width: 560px) {
+  .brain-game-library > section { padding: 16px; border-radius: 20px; }
+  .brain-game-library h2 { font-size: 21px; }
+  .daily-result-stats { grid-template-columns: 1fr; }
+}

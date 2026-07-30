@@ -1,4 +1,4 @@
-import type { BrainGameId } from '../components/BrainGameLibrary';
+import type { BrainGameId } from './brainGameCatalog';
 import type { BrainGameCategory } from './brainGameResults';
 
 const actions: Record<BrainGameId, { ru: string; en: string }> = {

@@ -1,5 +1,5 @@
 import { AttentionTrainingGame } from './AttentionTrainingGame';
-import type { BrainGameId } from './BrainGameLibrary';
+import type { BrainGameId } from '../lib/brainGameCatalog';
 import { MemoryTrainingGame } from './MemoryTrainingGame';
 import { SpeedTrainingGame } from './SpeedTrainingGame';
 import { FocusMatchGame, TargetCountGame } from './brainGames/AttentionExtraGames';

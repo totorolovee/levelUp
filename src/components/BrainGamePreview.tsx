@@ -1,5 +1,4 @@
-import type { BrainGameId } from './BrainGameLibrary';
-import { getBrainGameInfo } from './BrainGameLibrary';
+import { getBrainGameInfo, type BrainGameId } from '../lib/brainGameCatalog';
 import type { BrainGameCategory, BrainGameProgress } from '../lib/brainGameResults';
 import { getBrainGameDescription } from '../lib/brainGameDescriptions';
 

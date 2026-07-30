@@ -1395,9 +1395,14 @@ html[data-theme="dark"] .reflection-history article p { color: #d1d3e3; }
 .todo-edit strong { font-size: 10px; }
 .todo-task-body { min-width: 0; }
 .todo-task-body > small { margin-left: -2px; }
-.todo-task-editor { display: grid; gap: 7px; }
-.todo-task-editor > input,
-.todo-task-editor > select { min-width: 0; height: 38px; }
+.todo-task-editor { display: grid; gap: 12px; }
+.todo-task-editor > header { display: grid; gap: 2px; }
+.todo-task-editor > header strong { font-size: 16px; }
+.todo-task-editor > header small { color: #858aa1; font-size: 11px; font-weight: 600; }
+.todo-task-editor > label,
+.todo-editor-date-field { display: grid; gap: 6px; color: #686d85; font-size: 11px; font-weight: 800; }
+.todo-task-editor > label input,
+.todo-task-editor > label select { min-width: 0; height: 42px; }
 .todo-editor-deadline { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; }
 .todo-editor-deadline > button,
 .todo-editor-actions button { padding: 8px 10px; border: 0; border-radius: 8px; cursor: pointer; }
@@ -1528,13 +1533,14 @@ html[data-theme="dark"] .nav-menu {
   .todo-composer > button { grid-column: 2; grid-row: 4; min-height: 44px; }
   .friendly-date-picker { width: 100%; overflow: visible; }
   .friendly-date-picker input { min-height: 36px; font-size: 16px; }
-  .todo-list article { grid-template-columns: 28px minmax(0, 1fr) auto; }
-  .todo-list article > .todo-delete { grid-column: 3; grid-row: 1; }
-  .todo-list article > .todo-edit { grid-column: 2 / 4; grid-row: 2; min-height: 38px; justify-content: center; border: 1px solid #d5cbea; border-radius: 9px; background: #eee9f8; }
-  .todo-list article > .todo-edit strong { font-size: 12px; }
+  .todo-list article { grid-template-columns: 28px minmax(0, 1fr) 36px 32px; align-items: center; padding: 12px; }
+  .todo-list article > .todo-edit { width: 36px; height: 36px; justify-content: center; padding: 0; border: 1px solid #d5cbea; border-radius: 10px; background: #eee9f8; }
+  .todo-list article > .todo-edit strong { display: none; }
+  .todo-list article > .todo-delete { display: grid; width: 32px; height: 36px; place-items: center; border-radius: 9px; }
   .todo-list article.editing { grid-template-columns: 1fr; }
-  .todo-task-editor > input,
-  .todo-task-editor > select { min-height: 46px; font-size: 16px; }
+  .todo-task-editor { gap: 14px; }
+  .todo-task-editor > label input,
+  .todo-task-editor > label select { min-height: 48px; font-size: 16px; }
   .todo-editor-deadline { grid-template-columns: 1fr; }
   .todo-editor-deadline > button { min-height: 40px; }
   .todo-editor-actions { display: grid; grid-template-columns: 1fr 1fr; }

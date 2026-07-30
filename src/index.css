@@ -1530,6 +1530,7 @@ html[data-theme="dark"] .nav-menu {
   }
   .nav-link { min-height: 41px; display: grid; place-items: center; }
   .nav-profile { display: grid; min-height: 55px; place-items: initial; text-align: left; }
+  .preview-widgets > article:last-child { display: none; }
   .todo-column { padding: 14px; }
   .todo-composer { grid-template-columns: minmax(0, 1fr) 44px; }
   .todo-composer > input:first-child,

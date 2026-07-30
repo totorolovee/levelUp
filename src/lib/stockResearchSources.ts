@@ -21,6 +21,26 @@ const investorRelations: Record<string, string> = {
   HSBK: 'https://halykbank.com/investors',
 };
 
+const secCiks: Record<string, string> = {
+  AAPL: '0000320193',
+  AMD: '0000002488',
+  AMZN: '0001018724',
+  DIS: '0001744489',
+  GOOGL: '0001652044',
+  KO: '0000021344',
+  KSPI: '0001985487',
+  MCD: '0000063908',
+  META: '0001326801',
+  MSFT: '0000789019',
+  NFLX: '0001065280',
+  NKE: '0000320187',
+  NVDA: '0001045810',
+  PEP: '0000077476',
+  SBUX: '0000829224',
+  TSLA: '0001318605',
+  V: '0001403161',
+};
+
 const macrotrendsSlugs: Record<string, string> = {
   AAPL: 'apple',
   NVDA: 'nvidia',
@@ -41,9 +61,9 @@ const macrotrendsSlugs: Record<string, string> = {
   PEP: 'pepsico',
 };
 
-function secUrl(symbol: string, form: string) {
+function secUrl(cik: string, form: string) {
   const params = new URLSearchParams({
-    CIK: symbol,
+    CIK: cik,
     type: form,
     owner: 'exclude',
     count: '40',
@@ -55,13 +75,22 @@ export function getResearchSources(stock: Stock, isRussian = false) {
   const quote = stock.quoteSymbol ?? stock.symbol;
   const annualForm = stock.symbol === 'KSPI' ? '20-F' : '10-K';
   const quarterlyForm = stock.symbol === 'KSPI' ? '6-K' : '10-Q';
+  const cik = secCiks[stock.symbol];
+  const officialReports = cik
+    ? [
+      { label: `${isRussian ? 'Годовой отчёт' : 'Annual Report'} (${annualForm})`, url: secUrl(cik, annualForm), source: 'SEC EDGAR' },
+      { label: `${isRussian ? 'Квартальный отчёт' : 'Quarterly Report'} (${quarterlyForm})`, url: secUrl(cik, quarterlyForm), source: 'SEC EDGAR' },
+    ]
+    : [
+      { label: isRussian ? 'Годовой отчёт' : 'Annual Report', url: investorRelations[stock.symbol], source: isRussian ? 'Отдел для инвесторов' : 'Investor Relations' },
+      { label: isRussian ? 'Квартальные результаты' : 'Quarterly Results', url: investorRelations[stock.symbol], source: isRussian ? 'Отдел для инвесторов' : 'Investor Relations' },
+    ];
   const morningstarExchange = stock.exchange === 'NYSE' ? 'xnys' : 'xnas';
   const macroSlug = macrotrendsSlugs[stock.symbol];
 
   return {
     official: [
-      { label: `${isRussian ? 'Годовой отчёт' : 'Annual Report'} (${annualForm})`, url: secUrl(stock.symbol, annualForm), source: 'SEC EDGAR' },
-      { label: `${isRussian ? 'Квартальный отчёт' : 'Quarterly Report'} (${quarterlyForm})`, url: secUrl(stock.symbol, quarterlyForm), source: 'SEC EDGAR' },
+      ...officialReports,
       { label: isRussian ? 'Презентация для инвесторов' : 'Investor Presentation', url: investorRelations[stock.symbol], source: isRussian ? 'Отдел для инвесторов' : 'Investor Relations' },
       { label: isRussian ? 'Презентация результатов' : 'Earnings Presentation', url: investorRelations[stock.symbol], source: isRussian ? 'Отдел для инвесторов' : 'Investor Relations' },
       {

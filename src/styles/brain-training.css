@@ -1,4 +1,4 @@
-.brain-training-page { min-height: 100vh; }
+.brain-training-page { min-width: 0; min-height: 100vh; }
 .training-intro, .brain-game, .training-result, .brain-assessment {
   width: min(760px, 100%);
   margin: 70px auto 0;
@@ -31,15 +31,15 @@
 .education-choice { display: grid; gap: 7px; margin: 22px 0; font-weight: 800; }
 .education-choice select { padding: 12px; border: 1px solid #d8d2e6; border-radius: 11px; background: #f7f4fa; }
 .personal-focus { width: fit-content; margin: 20px auto 0; padding: 8px 13px; border-radius: 99px; color: #65599a !important; background: #eee9f8; font-size: 13px !important; }
-.brain-library-screen { padding-top: 38px; }
-.brain-game-library { display: grid; gap: 18px; padding-bottom: 60px; }
-.brain-game-library > section { padding: 24px; border: 1px solid #ded9e9; border-radius: 24px; background: #fff; box-shadow: 0 16px 40px rgba(75,61,126,.07); }
+.brain-library-screen { min-width: 0; max-width: 100%; padding-top: 38px; }
+.brain-game-library { display: grid; min-width: 0; max-width: 100%; gap: 18px; padding-bottom: 60px; }
+.brain-game-library > section { min-width: 0; max-width: 100%; padding: 24px; border: 1px solid #ded9e9; border-radius: 24px; background: #fff; box-shadow: 0 16px 40px rgba(75,61,126,.07); }
 .brain-game-library > section.recommended { border-color: #9c88dc; box-shadow: 0 16px 42px rgba(112,89,199,.13); }
 .brain-game-library section > header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
 .brain-game-library h2 { margin: 0; font-size: 23px; }
 .brain-game-library header span { display: inline-block; margin-top: 5px; padding: 3px 8px; border-radius: 99px; color: #7059c7; background: #eee9f8; font-size: 10px; font-weight: 850; }
 .brain-game-library header > strong { display: grid; width: 40px; height: 40px; place-items: center; border-radius: 12px; color: #7059c7; background: #f0ecf8; }
-.game-carousel { position: relative; }
+.game-carousel { position: relative; width: 100%; min-width: 0; max-width: 100%; }
 .game-carousel-track { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .carousel-arrow { display: none; }
 .game-carousel-track > button { display: block; height: 124px; min-width: 0; padding: 14px; overflow: hidden; border: 0; border-radius: 17px; color: #29243f; background: linear-gradient(145deg, #e5ddff, #d3c6fb); box-shadow: 0 9px 20px rgba(64,48,116,.1); text-align: left; cursor: pointer; }

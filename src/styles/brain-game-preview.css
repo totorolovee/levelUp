@@ -31,10 +31,13 @@ html[data-theme="dark"] .game-preview-stats dd { color: #c6b9ff; }
   .page-transition:has(.brain-training-page) { touch-action: auto; }
   .game-carousel-track {
     display: flex;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
     gap: 11px;
-    margin-inline: -17px;
-    padding: 3px 17px 14px;
-    overflow-x: scroll;
+    margin-inline: 0;
+    padding: 3px 2px 14px;
+    overflow-x: auto;
     overflow-y: hidden;
     overscroll-behavior-inline: contain;
     scroll-padding-inline: 17px;
@@ -45,6 +48,7 @@ html[data-theme="dark"] .game-preview-stats dd { color: #c6b9ff; }
     user-select: none;
     -webkit-overflow-scrolling: touch;
   }
+  .game-carousel { overflow: hidden; }
   .game-carousel-track.dragging { cursor: grabbing; scroll-snap-type: none; }
   .game-carousel-track::-webkit-scrollbar { display: none; }
   .game-carousel-track > button {
@@ -72,7 +76,7 @@ html[data-theme="dark"] .game-preview-stats dd { color: #c6b9ff; }
     transform: translateY(-50%);
   }
   .carousel-arrow.previous { left: -10px; }
-  .carousel-arrow.next { right: -10px; }
+  .carousel-arrow.next { right: 4px; }
   html[data-theme="dark"] .carousel-arrow { color: #d4caff; border-color: #4b4770; background: rgba(42,46,75,.94); }
   .carousel-arrow.previous { display: none; }
   .brain-game-preview { margin-top: 20px; border-radius: 22px; }

@@ -10,6 +10,7 @@ import {
   setTodoSubtaskCompleted,
 } from '../lib/todoSubtasks';
 import { TaskConfetti } from './TaskConfetti';
+import { TodoTaskEditor } from './TodoTaskEditor';
 
 type Props = {
   isRussian: boolean;
@@ -27,6 +28,7 @@ export function TodoTaskCard({ isRussian, item, onRemove, onUpdate }: Props) {
   const [subtaskTitle, setSubtaskTitle] = useState('');
   const [isAdding, setIsAdding] = useState(false);
   const [confettiRun, setConfettiRun] = useState(0);
+  const [isEditing, setIsEditing] = useState(false);
   const language = isRussian ? 'ru' : 'en';
 
   const toggleTask = async () => {
@@ -68,20 +70,34 @@ export function TodoTaskCard({ isRussian, item, onRemove, onUpdate }: Props) {
   };
 
   return (
-    <article className={`${item.completed ? 'completed ' : ''}priority-${item.priority}`}>
+    <article className={`${item.completed ? 'completed ' : ''}${isEditing ? 'editing ' : ''}priority-${item.priority}`}>
       <TaskConfetti run={confettiRun} />
       <button aria-label={isRussian ? 'Выполнить задачу' : 'Complete task'} className="todo-check" onClick={toggleTask} type="button">
         {item.completed ? '✓' : ''}
       </button>
       <div className="todo-task-body">
-        <p>{item.title}</p>
-        <small>
-          {priorityLabels[language][item.priority]}
-          {item.dueDate && ` · ${new Intl.DateTimeFormat(isRussian ? 'ru-RU' : 'en-US', {
-            day: 'numeric',
-            month: 'short',
-          }).format(new Date(`${item.dueDate}T00:00:00`))}`}
-        </small>
+        {isEditing ? (
+          <TodoTaskEditor
+            isRussian={isRussian}
+            item={item}
+            onCancel={() => setIsEditing(false)}
+            onSave={(updated) => {
+              onUpdate(updated);
+              setIsEditing(false);
+            }}
+          />
+        ) : (
+          <>
+            <p>{item.title}</p>
+            <small>
+              {priorityLabels[language][item.priority]}
+              {item.dueDate && ` · ${new Intl.DateTimeFormat(isRussian ? 'ru-RU' : 'en-US', {
+                day: 'numeric',
+                month: 'short',
+              }).format(new Date(`${item.dueDate}T00:00:00`))}`}
+            </small>
+          </>
+        )}
         <div className="todo-subtasks">
           {item.subtasks.map((subtask) => (
             <div className={subtask.completed ? 'completed' : ''} key={subtask.id}>
@@ -106,6 +122,15 @@ export function TodoTaskCard({ isRussian, item, onRemove, onUpdate }: Props) {
           </label>
         </div>
       </div>
+      <button
+        aria-label={isRussian ? 'Изменить задачу' : 'Edit task'}
+        className="todo-edit"
+        onClick={() => setIsEditing((current) => !current)}
+        type="button"
+      >
+        <span aria-hidden="true">✎</span>
+        <strong>{isRussian ? 'Изменить' : 'Edit'}</strong>
+      </button>
       <button aria-label={isRussian ? 'Удалить' : 'Delete'} className="todo-delete" onClick={removeTask} type="button">×</button>
     </article>
   );

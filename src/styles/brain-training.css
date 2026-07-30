@@ -121,6 +121,9 @@
 .training-best { margin: 22px 0 0; font-size: 13px !important; }
 .brain-game h1 { margin-inline: auto; font-size: clamp(30px, 5vw, 52px); letter-spacing: -2px; }
 .memory-sequence { margin: 42px 0 10px; color: #7059c7; font-size: clamp(54px, 12vw, 96px); font-weight: 900; letter-spacing: 14px; }
+.memory-answer { margin: 12px 0 0; font-weight: 800; }
+.memory-answer.correct { color: #24865c; }
+.memory-answer.error { color: #bd4567; }
 .brain-game form { display: grid; grid-template-columns: 1fr auto; gap: 10px; max-width: 440px; margin: 38px auto 0; }
 .brain-game input { min-width: 0; padding: 14px; border: 1px solid #d8d2e6; border-radius: 12px; text-align: center; }
 .attention-level { display: flex; justify-content: space-between; gap: 18px; max-width: 520px; margin: 0 auto; color: #747990; font-size: 12px; }

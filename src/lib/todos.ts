@@ -121,6 +121,27 @@ export async function setTodoCompleted(id: string, completed: boolean) {
   if (error) throw error;
 }
 
+export async function updateTodo(
+  id: string,
+  title: string,
+  priority: TodoPriority,
+  dueDate: string,
+) {
+  const { data, error } = await supabase
+    .from('todo_items')
+    .update({
+      title: title.trim(),
+      priority,
+      due_date: dueDate || null,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', id)
+    .select(columns)
+    .single();
+  if (error) throw error;
+  return toTodoItem(data as TodoRow);
+}
+
 export async function deleteTodo(id: string) {
   const { error } = await supabase.from('todo_items').delete().eq('id', id);
   if (error) throw error;

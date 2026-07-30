@@ -20,7 +20,7 @@ export type BuyDecision = {
 };
 
 export function BuyStockForm({ stock, balance, onBuy }: BuyStockFormProps) {
-  const [quantity, setQuantity] = useState(1);
+  const [quantityInput, setQuantityInput] = useState('');
   const [reason, setReason] = useState('');
   const [risk, setRisk] = useState('');
   const [invalidation, setInvalidation] = useState('');
@@ -28,6 +28,7 @@ export function BuyStockForm({ stock, balance, onBuy }: BuyStockFormProps) {
   const [confidence, setConfidence] = useState(5);
   const [isChecking, setIsChecking] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const quantity = Number(quantityInput);
   const total = stock.price * quantity;
   const answersReady = reason.trim().length >= MIN_ANSWER_LENGTH
     && risk.trim().length >= MIN_ANSWER_LENGTH;
@@ -63,10 +64,14 @@ export function BuyStockForm({ stock, balance, onBuy }: BuyStockFormProps) {
       <label>
         Количество акций
         <input
-          min="1"
-          onChange={(event) => setQuantity(Number(event.target.value))}
-          type="number"
-          value={quantity}
+          inputMode="numeric"
+          onChange={(event) => setQuantityInput(
+            event.target.value.replace(/\D/g, '').replace(/^0+(?=\d)/, ''),
+          )}
+          pattern="[0-9]*"
+          placeholder="1"
+          type="text"
+          value={quantityInput}
         />
       </label>
       <label>

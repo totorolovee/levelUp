@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { GameAnswerFeedback } from './brainGames/GameAnswerFeedback';
 
 type Props = {
   difficulty: number;
@@ -71,13 +72,11 @@ export function MemoryTrainingGame({ isRussian, sequenceLength, onComplete }: Pr
           <button disabled={answer.length !== sequence.length || Boolean(result)} type="submit">
             {isRussian ? 'Проверить' : 'Check'}
           </button>
-          {result && (
-            <p className={result.isCorrect ? 'memory-answer correct' : 'memory-answer error'} role="status">
-              {result.isCorrect
-                ? (isRussian ? 'Верно!' : 'Correct!')
-                : (isRussian ? `Ошибка. Правильный ответ: ${sequence}` : `Mistake. Correct answer: ${sequence}`)}
-            </p>
-          )}
+          {result && <GameAnswerFeedback
+            errorText={`${isRussian ? 'Правильный ответ' : 'Correct answer'}: ${sequence}`}
+            isRussian={isRussian}
+            status={result.isCorrect ? 'correct' : 'error'}
+          />}
         </form>
       )}
     </section>

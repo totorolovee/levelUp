@@ -1,5 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
+import { calculateSpeedGameScore } from '../../lib/speedGameScore';
+import { GameAnswerFeedback } from './GameAnswerFeedback';
 import type { BrainGameProps } from './types';
+import { useAnswerFeedback } from './useAnswerFeedback';
 
 export function RapidMathGame({ isRussian, onComplete }: BrainGameProps) {
   const rounds = useMemo(() => Array.from({ length: 14 }, () => {
@@ -10,15 +13,27 @@ export function RapidMathGame({ isRussian, onComplete }: BrainGameProps) {
   }), []);
   const [round, setRound] = useState(0);
   const [correct, setCorrect] = useState(0);
+  const roundStartedAt = useRef(performance.now());
+  const totalResponseMs = useRef(0);
+  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
   const current = rounds[round];
 
   const answer = (choice: boolean) => {
-    const nextCorrect = correct + Number(choice === current.isTrue);
-    if (round === rounds.length - 1) onComplete(Math.round(nextCorrect / rounds.length * 100));
-    else {
+    const isCorrect = choice === current.isTrue;
+    const nextCorrect = correct + Number(isCorrect);
+    const responseTime = performance.now() - roundStartedAt.current;
+    const accepted = showFeedback(isCorrect, () => {
+      if (round === rounds.length - 1) {
+        onComplete(calculateSpeedGameScore(
+          nextCorrect, rounds.length, totalResponseMs.current, 900, 4200,
+        ));
+        return;
+      }
       setCorrect(nextCorrect);
       setRound((value) => value + 1);
-    }
+      roundStartedAt.current = performance.now();
+    });
+    if (accepted) totalResponseMs.current += responseTime;
   };
 
   return (
@@ -27,9 +42,16 @@ export function RapidMathGame({ isRussian, onComplete }: BrainGameProps) {
       <h1>{current.left} + {current.right} = {current.shown}</h1>
       <p>{isRussian ? 'Верно ли равенство?' : 'Is this correct?'} · {isRussian ? 'Уровень' : 'Level'} {round + 1}/{rounds.length}</p>
       <div className="game-choice-row">
-        <button onClick={() => answer(true)} type="button">{isRussian ? 'Да' : 'Yes'}</button>
-        <button onClick={() => answer(false)} type="button">{isRussian ? 'Нет' : 'No'}</button>
+        <button disabled={isLocked} onClick={() => answer(true)} type="button">{isRussian ? 'Да' : 'Yes'}</button>
+        <button disabled={isLocked} onClick={() => answer(false)} type="button">{isRussian ? 'Нет' : 'No'}</button>
       </div>
+      <GameAnswerFeedback
+        errorText={current.isTrue
+          ? (isRussian ? 'Равенство было верным.' : 'The equation was correct.')
+          : (isRussian ? `Правильная сумма: ${current.left + current.right}` : `Correct sum: ${current.left + current.right}`)}
+        isRussian={isRussian}
+        status={feedback}
+      />
     </section>
   );
 }

@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
+import { GameAnswerFeedback } from './GameAnswerFeedback';
 import type { BrainGameProps } from './types';
+import { useAnswerFeedback } from './useAnswerFeedback';
 
 const colors = ['red', 'blue'] as const;
 
@@ -11,16 +13,21 @@ export function RuleSwitchGame({ isRussian, onComplete }: BrainGameProps) {
   })), []);
   const [round, setRound] = useState(0);
   const [correct, setCorrect] = useState(0);
+  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
   const current = rounds[round];
 
   const answer = (choice: 'red' | 'blue') => {
     const expected = current.rule === 'word' ? current.word : current.ink;
-    const nextCorrect = correct + Number(choice === expected);
-    if (round === rounds.length - 1) onComplete(Math.round(nextCorrect / rounds.length * 100));
-    else {
+    const isCorrect = choice === expected;
+    const nextCorrect = correct + Number(isCorrect);
+    showFeedback(isCorrect, () => {
+      if (round === rounds.length - 1) {
+        onComplete(Math.round(nextCorrect / rounds.length * 100));
+        return;
+      }
       setCorrect(nextCorrect);
       setRound((value) => value + 1);
-    }
+    });
   };
 
   return (
@@ -32,9 +39,20 @@ export function RuleSwitchGame({ isRussian, onComplete }: BrainGameProps) {
       <p>{isRussian ? 'Уровень' : 'Level'} {round + 1}/{rounds.length}</p>
       <div className={`rule-word ${current.ink}`}>{current.word === 'red' ? (isRussian ? 'КРАСНЫЙ' : 'RED') : (isRussian ? 'СИНИЙ' : 'BLUE')}</div>
       <div className="game-choice-row">
-        <button onClick={() => answer('red')} type="button">{isRussian ? 'Красный' : 'Red'}</button>
-        <button onClick={() => answer('blue')} type="button">{isRussian ? 'Синий' : 'Blue'}</button>
+        <button disabled={isLocked} onClick={() => answer('red')} type="button">{isRussian ? 'Красный' : 'Red'}</button>
+        <button disabled={isLocked} onClick={() => answer('blue')} type="button">{isRussian ? 'Синий' : 'Blue'}</button>
       </div>
+      <GameAnswerFeedback
+        errorText={`${isRussian ? 'Правильный ответ' : 'Correct answer'}: ${
+          expectedLabel(current.rule === 'word' ? current.word : current.ink, isRussian)}`}
+        isRussian={isRussian}
+        status={feedback}
+      />
     </section>
   );
+}
+
+function expectedLabel(color: 'red' | 'blue', isRussian: boolean) {
+  if (color === 'red') return isRussian ? 'красный' : 'red';
+  return isRussian ? 'синий' : 'blue';
 }

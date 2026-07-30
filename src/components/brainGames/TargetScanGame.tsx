@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
+import { GameAnswerFeedback } from './GameAnswerFeedback';
 import type { BrainGameProps } from './types';
+import { useAnswerFeedback } from './useAnswerFeedback';
 
 const marks = ['●', '▲', '■', '◆', '✦'];
 
@@ -17,27 +19,32 @@ export function TargetScanGame({ isRussian, onComplete }: BrainGameProps) {
   const [levelMistakes, setLevelMistakes] = useState(0);
   const [totalMistakes, setTotalMistakes] = useState(0);
   const [correctLevels, setCorrectLevels] = useState(0);
+  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
   const current = useMemo(() => createRound(level), [level]);
 
   const choose = (index: number) => {
     if (chosen.has(index)) return;
     if (current.cells[index] !== current.target) {
-      setLevelMistakes((value) => value + 1);
-      setTotalMistakes((value) => value + 1);
+      if (showFeedback(false, () => undefined)) {
+        setLevelMistakes((value) => value + 1);
+        setTotalMistakes((value) => value + 1);
+      }
       return;
     }
     const nextChosen = new Set(chosen).add(index);
     setChosen(nextChosen);
     if (nextChosen.size !== current.targets) return;
     const nextCorrect = correctLevels + Number(levelMistakes === 0);
-    if (level === 9) {
-      onComplete(Math.max(20, Math.round((nextCorrect / 10) * 100 - totalMistakes * 2)));
-    } else {
-      setCorrectLevels(nextCorrect);
-      setChosen(new Set());
-      setLevelMistakes(0);
-      setLevel((value) => value + 1);
-    }
+    showFeedback(true, () => {
+      if (level === 9) {
+        onComplete(Math.max(20, Math.round((nextCorrect / 10) * 100 - totalMistakes * 2)));
+      } else {
+        setCorrectLevels(nextCorrect);
+        setChosen(new Set());
+        setLevelMistakes(0);
+        setLevel((value) => value + 1);
+      }
+    });
   };
 
   return (
@@ -47,9 +54,14 @@ export function TargetScanGame({ isRussian, onComplete }: BrainGameProps) {
       <p>{isRussian ? 'Уровень' : 'Level'} {level + 1}/10</p>
       <div className="scan-grid">
         {current.cells.map((mark, index) => (
-          <button className={chosen.has(index) ? 'found' : ''} key={`${level}-${index}`} onClick={() => choose(index)} type="button">{mark}</button>
+          <button className={chosen.has(index) ? 'found' : ''} disabled={isLocked} key={`${level}-${index}`} onClick={() => choose(index)} type="button">{mark}</button>
         ))}
       </div>
+      <GameAnswerFeedback
+        errorText={isRussian ? `Ищи только символ ${current.target}` : `Look only for the ${current.target} symbol`}
+        isRussian={isRussian}
+        status={feedback}
+      />
     </section>
   );
 }

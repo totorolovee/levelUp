@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
+import { GameAnswerFeedback } from './GameAnswerFeedback';
 import type { BrainGameProps } from './types';
+import { useAnswerFeedback } from './useAnswerFeedback';
 
 const marks = ['●', '▲', '■'];
 
@@ -13,13 +15,19 @@ export function TargetCountGame({ isRussian, onComplete }: BrainGameProps) {
   }), []);
   const [level, setLevel] = useState(0);
   const [correct, setCorrect] = useState(0);
+  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
   const current = rounds[level];
-  const options = [...new Set([current.answer, current.answer + 1, Math.max(0, current.answer - 1)])];
+  const options = useMemo(() =>
+    [...new Set([current.answer, current.answer + 1, Math.max(0, current.answer - 1)])]
+      .sort(() => Math.random() - .5), [current.answer]);
 
   const choose = (value: number) => {
-    const next = correct + Number(value === current.answer);
-    if (level === rounds.length - 1) onComplete(Math.round(next / rounds.length * 100));
-    else { setCorrect(next); setLevel((item) => item + 1); }
+    const isCorrect = value === current.answer;
+    const next = correct + Number(isCorrect);
+    showFeedback(isCorrect, () => {
+      if (level === rounds.length - 1) onComplete(Math.round(next / rounds.length * 100));
+      else { setCorrect(next); setLevel((item) => item + 1); }
+    });
   };
 
   return <section className="brain-game">
@@ -27,8 +35,9 @@ export function TargetCountGame({ isRussian, onComplete }: BrainGameProps) {
     <h1>{isRussian ? 'Сколько здесь' : 'How many'} {current.target}?</h1>
     <p>{isRussian ? 'Уровень' : 'Level'} {level + 1}/{rounds.length}</p>
     <div className="symbol-cloud">{current.cells.map((mark, index) => <span key={index}>{mark}</span>)}</div>
-    <div className="game-choice-row">{options.sort(() => Math.random() - .5).map((value) =>
-      <button key={value} onClick={() => choose(value)} type="button">{value}</button>)}</div>
+    <div className="game-choice-row">{options.map((value) =>
+      <button disabled={isLocked} key={value} onClick={() => choose(value)} type="button">{value}</button>)}</div>
+    <GameAnswerFeedback errorText={`${isRussian ? 'Правильный ответ' : 'Correct answer'}: ${current.answer}`} isRussian={isRussian} status={feedback} />
   </section>;
 }
 
@@ -41,11 +50,15 @@ export function FocusMatchGame({ isRussian, onComplete }: BrainGameProps) {
   }), []);
   const [level, setLevel] = useState(0);
   const [correct, setCorrect] = useState(0);
+  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
   const current = rounds[level];
   const choose = (same: boolean) => {
-    const next = correct + Number(same === current.same);
-    if (level === rounds.length - 1) onComplete(Math.round(next / rounds.length * 100));
-    else { setCorrect(next); setLevel((item) => item + 1); }
+    const isCorrect = same === current.same;
+    const next = correct + Number(isCorrect);
+    showFeedback(isCorrect, () => {
+      if (level === rounds.length - 1) onComplete(Math.round(next / rounds.length * 100));
+      else { setCorrect(next); setLevel((item) => item + 1); }
+    });
   };
   return <section className="brain-game">
     <p className="eyebrow">{isRussian ? 'Внимание · Совпадение' : 'Attention · Focus match'}</p>
@@ -53,8 +66,15 @@ export function FocusMatchGame({ isRussian, onComplete }: BrainGameProps) {
     <p>{isRussian ? 'Уровень' : 'Level'} {level + 1}/{rounds.length}</p>
     <div className="focus-pair"><span>{current.first}</span><span>{current.second}</span></div>
     <div className="game-choice-row">
-      <button onClick={() => choose(true)} type="button">{isRussian ? 'Да' : 'Yes'}</button>
-      <button onClick={() => choose(false)} type="button">{isRussian ? 'Нет' : 'No'}</button>
+      <button disabled={isLocked} onClick={() => choose(true)} type="button">{isRussian ? 'Да' : 'Yes'}</button>
+      <button disabled={isLocked} onClick={() => choose(false)} type="button">{isRussian ? 'Нет' : 'No'}</button>
     </div>
+    <GameAnswerFeedback
+      errorText={current.same
+        ? (isRussian ? 'Фигуры одинаковые.' : 'The shapes are identical.')
+        : (isRussian ? 'Фигуры разные.' : 'The shapes are different.')}
+      isRussian={isRussian}
+      status={feedback}
+    />
   </section>;
 }

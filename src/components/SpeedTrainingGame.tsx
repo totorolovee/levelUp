@@ -1,4 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
+import { calculateReactionScore } from '../lib/speedGameScore';
+import { GameAnswerFeedback } from './brainGames/GameAnswerFeedback';
+import { useAnswerFeedback } from './brainGames/useAnswerFeedback';
 
 type Props = {
   difficulty: number;
@@ -11,7 +14,9 @@ export function SpeedTrainingGame({ difficulty, isRussian, roundsCount, onComple
   const [round, setRound] = useState(1);
   const [state, setState] = useState<'waiting' | 'ready'>('waiting');
   const results = useRef<number[]>([]);
+  const falseStarts = useRef(0);
   const startedAt = useRef(0);
+  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
 
   useEffect(() => {
     setState('waiting');
@@ -23,14 +28,21 @@ export function SpeedTrainingGame({ difficulty, isRussian, roundsCount, onComple
   }, [difficulty, round]);
 
   const react = () => {
-    if (state !== 'ready') return;
-    results.current.push(performance.now() - startedAt.current);
-    if (round === roundsCount) {
-      const average = results.current.reduce((sum, value) => sum + value, 0) / roundsCount;
-      onComplete(Math.max(0, Math.min(100, Math.round(120 - average / 5))));
-    } else {
-      setRound((value) => value + 1);
+    if (isLocked) return;
+    if (state !== 'ready') {
+      if (showFeedback(false, () => undefined)) falseStarts.current += 1;
+      return;
     }
+    const responseTime = performance.now() - startedAt.current;
+    const accepted = showFeedback(true, () => {
+      if (round === roundsCount) {
+        const average = results.current.reduce((sum, value) => sum + value, 0) / roundsCount;
+        onComplete(calculateReactionScore(average, falseStarts.current));
+      } else {
+        setRound((value) => value + 1);
+      }
+    });
+    if (accepted) results.current.push(responseTime);
   };
 
   return (
@@ -47,6 +59,13 @@ export function SpeedTrainingGame({ difficulty, isRussian, roundsCount, onComple
       >
         {state === 'ready' ? (isRussian ? 'ЖМИ' : 'TAP') : '…'}
       </button>
+      <GameAnswerFeedback
+        errorText={isRussian
+          ? 'Слишком рано — дождись зелёного сигнала.'
+          : 'Too early — wait for the green signal.'}
+        isRussian={isRussian}
+        status={feedback}
+      />
     </section>
   );
 }

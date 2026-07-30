@@ -1,4 +1,6 @@
 import { useMemo, useState } from 'react';
+import { GameAnswerFeedback } from './brainGames/GameAnswerFeedback';
+import { useAnswerFeedback } from './brainGames/useAnswerFeedback';
 
 const TOTAL_LEVELS = 20;
 const shapes = ['circle', 'square', 'diamond', 'hexagon'] as const;
@@ -42,16 +44,20 @@ type Props = {
 export function AttentionTrainingGame({ difficulty, isRussian, onComplete }: Props) {
   const [level, setLevel] = useState(1);
   const [correct, setCorrect] = useState(0);
+  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
   const current = useMemo(() => createLevel(level, difficulty), [difficulty, level]);
 
   const choose = (index: number) => {
-    const nextCorrect = correct + Number(index === current.oddIndex);
-    if (level === TOTAL_LEVELS) {
-      onComplete(Math.round(nextCorrect / TOTAL_LEVELS * 100));
-      return;
-    }
-    setCorrect(nextCorrect);
-    setLevel((value) => value + 1);
+    const isCorrect = index === current.oddIndex;
+    const nextCorrect = correct + Number(isCorrect);
+    showFeedback(isCorrect, () => {
+      if (level === TOTAL_LEVELS) {
+        onComplete(Math.round(nextCorrect / TOTAL_LEVELS * 100));
+        return;
+      }
+      setCorrect(nextCorrect);
+      setLevel((value) => value + 1);
+    });
   };
 
   return (
@@ -69,7 +75,8 @@ export function AttentionTrainingGame({ difficulty, isRussian, onComplete }: Pro
         {Array.from({ length: current.count }, (_, index) => (
           <button
             aria-label={isRussian ? `Фигура ${index + 1}` : `Shape ${index + 1}`}
-            className={`attention-shape ${current.shape}`}
+            className={`attention-shape ${current.shape}${feedback === 'error' && index === current.oddIndex ? ' answer-target' : ''}`}
+            disabled={isLocked}
             key={`${level}-${index}`}
             onClick={() => choose(index)}
             style={{
@@ -81,6 +88,13 @@ export function AttentionTrainingGame({ difficulty, isRussian, onComplete }: Pro
           />
         ))}
       </div>
+      <GameAnswerFeedback
+        errorText={isRussian
+          ? 'Правильная фигура отмечена светлой рамкой.'
+          : 'The correct shape is marked with a light outline.'}
+        isRussian={isRussian}
+        status={feedback}
+      />
     </section>
   );
 }

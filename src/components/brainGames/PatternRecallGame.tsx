@@ -1,11 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
+import { GameAnswerFeedback } from './GameAnswerFeedback';
 import type { BrainGameProps } from './types';
+import { useAnswerFeedback } from './useAnswerFeedback';
 
 export function PatternRecallGame({ isRussian, onComplete }: BrainGameProps) {
   const [level, setLevel] = useState(0);
   const [show, setShow] = useState(true);
   const [chosen, setChosen] = useState<Set<number>>(new Set());
   const [score, setScore] = useState(0);
+  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
   const targets = useMemo(() => {
     const values = new Set<number>();
     while (values.size < 4 + level) values.add(Math.floor(Math.random() * 25));
@@ -23,15 +26,19 @@ export function PatternRecallGame({ isRussian, onComplete }: BrainGameProps) {
     if (show || chosen.has(index)) return;
     const nextChosen = new Set(chosen).add(index);
     setChosen(nextChosen);
-    if (nextChosen.size !== targets.size) return;
+    if (nextChosen.size !== targets.size) {
+      if (!targets.has(index)) showFeedback(false, () => undefined);
+      return;
+    }
     const hits = [...nextChosen].filter((value) => targets.has(value)).length;
     const nextScore = score + hits / targets.size;
-    if (level === 4) {
-      window.setTimeout(() => onComplete(Math.round(nextScore / 5 * 100)), 250);
-    } else {
-      setScore(nextScore);
-      setLevel((value) => value + 1);
-    }
+    showFeedback(hits === targets.size, () => {
+      if (level === 4) onComplete(Math.round(nextScore / 5 * 100));
+      else {
+        setScore(nextScore);
+        setLevel((value) => value + 1);
+      }
+    });
   };
 
   return (
@@ -45,12 +52,18 @@ export function PatternRecallGame({ isRussian, onComplete }: BrainGameProps) {
         {Array.from({ length: 25 }, (_, index) => (
           <button
             className={(show && targets.has(index)) || chosen.has(index) ? 'active' : ''}
+            disabled={show || isLocked}
             key={`${level}-${index}`}
             onClick={() => choose(index)}
             type="button"
           />
         ))}
       </div>
+      <GameAnswerFeedback
+        errorText={isRussian ? 'Эта клетка не входила в рисунок.' : 'That cell was not part of the pattern.'}
+        isRussian={isRussian}
+        status={feedback}
+      />
     </section>
   );
 }

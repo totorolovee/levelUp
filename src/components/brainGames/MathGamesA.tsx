@@ -1,5 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
+import { calculateSpeedGameScore } from '../../lib/speedGameScore';
+import { GameAnswerFeedback } from './GameAnswerFeedback';
 import type { BrainGameProps } from './types';
+import { useAnswerFeedback } from './useAnswerFeedback';
 
 export function GreaterExpressionGame({ isRussian, onComplete }: BrainGameProps) {
   const rounds = useMemo(() => Array.from({ length: 18 }, (_, level) => {
@@ -11,24 +14,35 @@ export function GreaterExpressionGame({ isRussian, onComplete }: BrainGameProps)
   }), []);
   const [level, setLevel] = useState(0);
   const [correct, setCorrect] = useState(0);
-  const started = useMemo(() => performance.now(), []);
+  const roundStartedAt = useRef(performance.now());
+  const totalResponseMs = useRef(0);
+  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
   const current = rounds[level];
   const choose = (side: 'left' | 'right') => {
     const expected = current.leftValue >= current.rightValue ? 'left' : 'right';
-    const next = correct + Number(side === expected);
-    if (level === rounds.length - 1) {
-      const penalty = (performance.now() - started) / 1800;
-      onComplete(Math.max(20, Math.round(next / rounds.length * 108 - penalty)));
-    } else { setCorrect(next); setLevel((item) => item + 1); }
+    const isCorrect = side === expected;
+    const next = correct + Number(isCorrect);
+    const responseTime = performance.now() - roundStartedAt.current;
+    const accepted = showFeedback(isCorrect, () => {
+      if (level === rounds.length - 1) {
+        onComplete(calculateSpeedGameScore(next, rounds.length, totalResponseMs.current, 950, 4200));
+      } else {
+        setCorrect(next);
+        setLevel((item) => item + 1);
+        roundStartedAt.current = performance.now();
+      }
+    });
+    if (accepted) totalResponseMs.current += responseTime;
   };
   return <section className="brain-game">
     <p className="eyebrow">{isRussian ? 'Математика · Что больше' : 'Math · Greater value'}</p>
     <h1>{isRussian ? 'Какое значение больше?' : 'Which value is greater?'}</h1>
     <p>{isRussian ? 'Уровень' : 'Level'} {level + 1}/{rounds.length}</p>
     <div className="number-duel expression-duel">
-      <button onClick={() => choose('left')} type="button">{current.left}</button>
-      <button onClick={() => choose('right')} type="button">{current.right}</button>
+      <button disabled={isLocked} onClick={() => choose('left')} type="button">{current.left}</button>
+      <button disabled={isLocked} onClick={() => choose('right')} type="button">{current.right}</button>
     </div>
+    <GameAnswerFeedback errorText={`${isRussian ? 'Большее значение' : 'Greater value'}: ${Math.max(current.leftValue, current.rightValue)}`} isRussian={isRussian} status={feedback} />
   </section>;
 }
 
@@ -41,17 +55,22 @@ export function MultiplicationSprintGame({ isRussian, onComplete }: BrainGamePro
   }), []);
   const [level, setLevel] = useState(0);
   const [correct, setCorrect] = useState(0);
+  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
   const current = rounds[level];
   const choose = (value: number) => {
-    const next = correct + Number(value === current.answer);
-    if (level === rounds.length - 1) onComplete(Math.round(next / rounds.length * 100));
-    else { setCorrect(next); setLevel((item) => item + 1); }
+    const isCorrect = value === current.answer;
+    const next = correct + Number(isCorrect);
+    showFeedback(isCorrect, () => {
+      if (level === rounds.length - 1) onComplete(Math.round(next / rounds.length * 100));
+      else { setCorrect(next); setLevel((item) => item + 1); }
+    });
   };
   return <section className="brain-game">
     <p className="eyebrow">{isRussian ? 'Математика · Умножение' : 'Math · Multiplication'}</p>
     <h1>{current.left} × {current.right} = ?</h1>
     <p>{isRussian ? 'Уровень' : 'Level'} {level + 1}/{rounds.length}</p>
-    <div className="game-choice-row">{current.options.map((value) => <button key={value} onClick={() => choose(value)} type="button">{value}</button>)}</div>
+    <div className="game-choice-row">{current.options.map((value) => <button disabled={isLocked} key={value} onClick={() => choose(value)} type="button">{value}</button>)}</div>
+    <GameAnswerFeedback errorText={`${isRussian ? 'Правильный ответ' : 'Correct answer'}: ${current.answer}`} isRussian={isRussian} status={feedback} />
   </section>;
 }
 
@@ -66,16 +85,21 @@ export function NumberPathGame({ isRussian, onComplete }: BrainGameProps) {
   }), []);
   const [level, setLevel] = useState(0);
   const [correct, setCorrect] = useState(0);
+  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
   const current = rounds[level];
   const choose = (value: number) => {
-    const next = correct + Number(value === current.answer);
-    if (level === rounds.length - 1) onComplete(Math.round(next / rounds.length * 100));
-    else { setCorrect(next); setLevel((item) => item + 1); }
+    const isCorrect = value === current.answer;
+    const next = correct + Number(isCorrect);
+    showFeedback(isCorrect, () => {
+      if (level === rounds.length - 1) onComplete(Math.round(next / rounds.length * 100));
+      else { setCorrect(next); setLevel((item) => item + 1); }
+    });
   };
   return <section className="brain-game">
     <p className="eyebrow">{isRussian ? 'Математика · Числовой путь' : 'Math · Number path'}</p>
     <h1>{current.start} → +{current.step} → ?</h1>
     <p>{isRussian ? 'Выбери следующий блок' : 'Choose the next block'} · {isRussian ? 'уровень' : 'level'} {level + 1}/{rounds.length}</p>
-    <div className="number-path">{current.options.map((value) => <button key={value} onClick={() => choose(value)} type="button">{value}</button>)}</div>
+    <div className="number-path">{current.options.map((value) => <button disabled={isLocked} key={value} onClick={() => choose(value)} type="button">{value}</button>)}</div>
+    <GameAnswerFeedback errorText={`${isRussian ? 'Следующий блок' : 'Next block'}: ${current.answer}`} isRussian={isRussian} status={feedback} />
   </section>;
 }

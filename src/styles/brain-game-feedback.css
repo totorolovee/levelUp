@@ -1,0 +1,96 @@
+.game-answer-feedback-slot { height: 78px; margin-top: 16px; }
+.game-answer-feedback {
+  display: flex;
+  width: min(460px, 100%);
+  min-height: 68px;
+  align-items: center;
+  gap: 13px;
+  margin: 16px auto 0;
+  padding: 12px 15px;
+  border: 1px solid;
+  border-radius: 17px;
+  text-align: left;
+}
+.game-answer-feedback > span {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  place-items: center;
+  border-radius: 13px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 950;
+}
+.game-answer-feedback > div { display: grid; gap: 2px; }
+.game-answer-feedback strong { font-size: 14px; }
+.game-answer-feedback small { font-size: 11px; line-height: 1.4; }
+.game-answer-feedback.error {
+  color: #ffd9d5;
+  border-color: #a95453;
+  background: linear-gradient(135deg, rgba(116,49,53,.92), rgba(68,39,48,.96));
+  box-shadow: 0 12px 32px rgba(167,63,61,.24), inset 3px 0 0 #ed756d;
+  animation: answer-error-arrive .38s ease-out;
+}
+.game-answer-feedback.error > span { background: #e56861; box-shadow: 0 6px 16px rgba(229,104,97,.28); }
+.game-answer-feedback.error small { color: #f0bbb6; }
+.game-answer-feedback.correct {
+  color: #d9f7e8;
+  border-color: #477f6b;
+  background: linear-gradient(135deg, rgba(40,91,73,.9), rgba(34,57,59,.96));
+  box-shadow: inset 3px 0 0 #58bb91;
+  animation: answer-correct-arrive .3s ease-out;
+}
+.game-answer-feedback.correct > span { background: #45a77e; }
+.game-answer-feedback.correct small { color: #b6ddcb; }
+.brain-game form > .game-answer-feedback { grid-column: 1 / -1; }
+.attention-shape.answer-target {
+  outline: 4px solid #fff1b8;
+  outline-offset: 3px;
+  filter: drop-shadow(0 0 12px rgba(255,225,133,.75));
+}
+.brain-training-page .memory-answer {
+  grid-column: 1 / -1;
+  padding: 12px 14px;
+  border: 1px solid;
+  border-radius: 14px;
+}
+.brain-training-page .memory-answer.error {
+  color: #ffd9d5;
+  border-color: #a95453;
+  background: #542f38;
+  box-shadow: inset 3px 0 0 #ed756d;
+  animation: answer-error-arrive .38s ease-out;
+}
+.brain-training-page .memory-answer.correct {
+  color: #d9f7e8;
+  border-color: #477f6b;
+  background: #294b42;
+}
+.brain-training-page .training-result > .game-mistake-feedback {
+  padding: 17px 18px;
+  color: #ffd9d5;
+  border-color: #a95453;
+  background: linear-gradient(135deg, #63343c, #3f2b35);
+  box-shadow: 0 14px 34px rgba(167,63,61,.2), inset 4px 0 0 #ed756d;
+}
+.brain-training-page .game-mistake-feedback > span { width: 40px; height: 40px; flex-basis: 40px; background: #e56861; }
+.brain-training-page .game-mistake-feedback small { color: #f0bbb6; }
+.brain-game button:disabled { cursor: default; opacity: .7; }
+@keyframes answer-error-arrive {
+  0% { opacity: 0; transform: translateY(7px) scale(.98); }
+  45% { transform: translateX(-3px); }
+  70% { transform: translateX(3px); }
+  100% { opacity: 1; transform: translate(0) scale(1); }
+}
+@keyframes answer-correct-arrive {
+  from { opacity: 0; transform: translateY(7px) scale(.98); }
+}
+@media (max-width: 560px) {
+  .game-answer-feedback-slot { height: 73px; }
+  .game-answer-feedback { min-height: 63px; padding: 10px 12px; border-radius: 15px; }
+  .game-answer-feedback > span { width: 36px; height: 36px; flex-basis: 36px; border-radius: 11px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .game-answer-feedback { animation: none !important; }
+}

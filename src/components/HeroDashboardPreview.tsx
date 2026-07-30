@@ -1,4 +1,5 @@
 import { useLanguage } from '../lib/language';
+import { Link } from 'wouter';
 
 type Props = {
   isSignedIn: boolean;
@@ -7,9 +8,22 @@ type Props = {
 export function HeroDashboardPreview({ isSignedIn }: Props) {
   const { language } = useLanguage();
   const isRussian = language === 'ru';
+  const taskContent = (
+    <>
+      <small>{isSignedIn
+        ? (isRussian ? 'Сегодняшние задачи' : "Today's tasks")
+        : (isRussian ? 'Задачи' : 'Tasks')}</small>
+      <div className="preview-tasks">
+        <p><i /><span>{isRussian ? 'Создай первую задачу' : 'Create your first task'}</span></p>
+        <p><i /><span>{isRussian ? 'Раздели дела по темам' : 'Sort tasks into topics'}</span></p>
+        <p><i /><span>{isRussian ? 'Отмечай выполненное' : 'Tick off completed tasks'}</span></p>
+      </div>
+      <strong>{isRussian ? 'Твой список ждёт' : 'Your list is waiting'}</strong>
+    </>
+  );
 
   return (
-    <div className="hero-dashboard-preview" aria-hidden="true">
+    <div className="hero-dashboard-preview" aria-hidden={isSignedIn ? undefined : true}>
       <div className="preview-topline">
         <span>
           {isSignedIn
@@ -37,15 +51,9 @@ export function HeroDashboardPreview({ isSignedIn }: Props) {
         <div className="preview-orb"><span>L</span></div>
       </div>
       <div className="preview-widgets">
-        <article>
-          <small>{isRussian ? 'Задачи' : 'Tasks'}</small>
-          <div className="preview-tasks">
-            <p><i /><span>{isRussian ? 'Создай первую задачу' : 'Create your first task'}</span></p>
-            <p><i /><span>{isRussian ? 'Раздели дела по темам' : 'Sort tasks into topics'}</span></p>
-            <p><i /><span>{isRussian ? 'Отмечай выполненное' : 'Tick off completed tasks'}</span></p>
-          </div>
-          <strong>{isRussian ? 'Твой список ждёт' : 'Your list is waiting'}</strong>
-        </article>
+        {isSignedIn
+          ? <Link className="preview-task-link" href="/todos">{taskContent}</Link>
+          : <article>{taskContent}</article>}
         <article>
           <small>{isRussian ? 'Путь развития' : 'Growth path'}</small>
           <strong className="preview-xp">

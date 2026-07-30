@@ -44,7 +44,7 @@ type Props = {
 export function AttentionTrainingGame({ difficulty, isRussian, onComplete }: Props) {
   const [level, setLevel] = useState(1);
   const [correct, setCorrect] = useState(0);
-  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
+  const { adjustScore, feedback, isLocked, showFeedback } = useAnswerFeedback();
   const current = useMemo(() => createLevel(level, difficulty), [difficulty, level]);
 
   const choose = (index: number) => {
@@ -52,7 +52,7 @@ export function AttentionTrainingGame({ difficulty, isRussian, onComplete }: Pro
     const nextCorrect = correct + Number(isCorrect);
     showFeedback(isCorrect, () => {
       if (level === TOTAL_LEVELS) {
-        onComplete(Math.round(nextCorrect / TOTAL_LEVELS * 100));
+        onComplete(adjustScore(Math.round(nextCorrect / TOTAL_LEVELS * 100), TOTAL_LEVELS));
         return;
       }
       setCorrect(nextCorrect);

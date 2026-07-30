@@ -1,13 +1,16 @@
 import { useState } from 'react';
+import type { UniversityDocumentAnalysis } from '../lib/universityDocumentAnalysis';
 import type { UniversityDocumentProgress } from '../lib/universityDocuments';
 import {
   deleteUniversityDocumentFile,
   getUniversityDocumentUrl,
   uploadUniversityDocument,
 } from '../lib/universityDocumentFiles';
+import { DocumentAiReview } from './DocumentAiReview';
 import { FriendlyDatePicker } from './FriendlyDatePicker';
 
 type Props = {
+  analysis?: UniversityDocumentAnalysis;
   isRussian: boolean;
   progress: UniversityDocumentProgress;
   title: string;
@@ -16,6 +19,7 @@ type Props = {
 };
 
 export function UniversityDocumentRow({
+  analysis,
   isRussian,
   progress,
   title,
@@ -103,6 +107,7 @@ export function UniversityDocumentRow({
         )}
         {fileStatus === 'error' && <small>{isRussian ? 'Не удалось обработать файл.' : 'Could not process the file.'}</small>}
       </div>
+      {analysis && <DocumentAiReview analysis={analysis} isRussian={isRussian} />}
     </article>
   );
 }

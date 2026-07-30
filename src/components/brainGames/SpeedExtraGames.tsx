@@ -12,20 +12,22 @@ export function DirectionRushGame({ isRussian, onComplete }: BrainGameProps) {
   const [correct, setCorrect] = useState(0);
   const roundStartedAt = useRef(performance.now());
   const totalResponseMs = useRef(0);
-  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
+  const { adjustScore, feedback, isLocked, showFeedback } = useAnswerFeedback();
   const choose = (value: number) => {
     const isCorrect = value === rounds[level];
     const next = correct + Number(isCorrect);
     const responseTime = performance.now() - roundStartedAt.current;
     const accepted = showFeedback(isCorrect, () => {
       if (level === rounds.length - 1) {
-        onComplete(calculateSpeedGameScore(
+        onComplete(adjustScore(calculateSpeedGameScore(
           next, rounds.length, totalResponseMs.current, 450, 1900,
-        ));
+        ), rounds.length));
         return;
       }
       setCorrect(next);
       setLevel((item) => item + 1);
+      roundStartedAt.current = performance.now();
+    }, () => {
       roundStartedAt.current = performance.now();
     });
     if (accepted) totalResponseMs.current += responseTime;
@@ -55,7 +57,7 @@ export function CategorySortGame({ isRussian, onComplete }: BrainGameProps) {
   const [correct, setCorrect] = useState(0);
   const roundStartedAt = useRef(performance.now());
   const totalResponseMs = useRef(0);
-  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
+  const { adjustScore, feedback, isLocked, showFeedback } = useAnswerFeedback();
   const current = rounds[level];
   const choose = (choice: string) => {
     const answer = current.rule === 'parity'
@@ -66,13 +68,15 @@ export function CategorySortGame({ isRussian, onComplete }: BrainGameProps) {
     const responseTime = performance.now() - roundStartedAt.current;
     const accepted = showFeedback(isCorrect, () => {
       if (level === rounds.length - 1) {
-        onComplete(calculateSpeedGameScore(
+        onComplete(adjustScore(calculateSpeedGameScore(
           next, rounds.length, totalResponseMs.current, 650, 2800,
-        ));
+        ), rounds.length));
         return;
       }
       setCorrect(next);
       setLevel((item) => item + 1);
+      roundStartedAt.current = performance.now();
+    }, () => {
       roundStartedAt.current = performance.now();
     });
     if (accepted) totalResponseMs.current += responseTime;

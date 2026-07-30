@@ -15,20 +15,21 @@
 .category-speed .game-carousel-track > button,
 .category-memory .game-carousel-track > button,
 .category-logic .game-carousel-track > button,
-.category-math .game-carousel-track > button { position: relative; display: block; height: 330px; padding: 0; overflow: hidden; outline: 0; border: 1px solid #383d54; border-radius: 18px; color: #f0f1f8; background: #202438; box-shadow: 0 12px 24px rgba(0,0,0,.12); }
+.category-math .game-carousel-track > button { position: relative; display: block; height: 350px; padding: 0; overflow: hidden; outline: 0; border: 1px solid #383d54; border-radius: 18px; color: #f0f1f8; background: #202438; box-shadow: 0 12px 24px rgba(0,0,0,.12); }
 .game-card-art { position: absolute; display: grid; inset: 0; place-items: center; overflow: hidden; background: radial-gradient(circle at 50% 30%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 48%), linear-gradient(145deg, #30354a, #202438); }
 .game-card-art::before { content: ""; position: absolute; width: 230px; height: 230px; border: 1px solid color-mix(in srgb, var(--accent) 52%, transparent); border-radius: 50%; box-shadow: 0 0 70px color-mix(in srgb, var(--accent) 12%, transparent), inset 0 0 45px color-mix(in srgb, var(--accent) 9%, transparent); }
 .game-card-art::after { content: ""; position: absolute; width: 150px; height: 150px; border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); border-radius: 38%; transform: rotate(24deg); }
 .game-card-art > span { position: relative; z-index: 1; color: var(--accent); font-size: 86px; font-weight: 950; transform: translateY(-32px); text-shadow: 0 14px 34px rgba(0,0,0,.35); }
 .game-card-art > i { position: absolute; z-index: 2; right: 15px; top: 13px; color: #a6acc1; font-size: 16px; font-style: normal; }
-.game-card-copy { position: relative; z-index: 3; gap: 7px; padding: 158px 16px 16px; background: linear-gradient(to bottom, transparent 20%, rgba(25,28,43,.72) 49%, #191c2b 76%); }
-.game-card-heading > strong { color: #f3f3fa; font-size: 17px; }
-.game-card-copy > p { display: -webkit-box; margin: 0; overflow: hidden; color: #9fa5bc; font-size: 10px; line-height: 1.45; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.game-card-copy { position: relative; z-index: 3; gap: 8px; padding: 166px 17px 17px; background: linear-gradient(to bottom, transparent 20%, rgba(25,28,43,.72) 49%, #191c2b 76%); }
+.game-card-heading > strong { color: #f3f3fa; font-size: 20px; line-height: 1.15; }
+.game-card-copy > p { display: -webkit-box; margin: 0; overflow: hidden; color: #aeb3c6; font-size: 13px; line-height: 1.4; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .brain-game-library button small,
-.brain-game-library .priority-game small { min-height: 0; color: #b8bdd0; font-size: 9px; font-weight: 700; }
+.brain-game-library .priority-game small { min-height: 0; color: #c3c7d7; font-size: 11px; font-weight: 700; }
 .game-card-copy em { margin-top: auto; color: #aeb4c9; border-color: #3c4158; }
-.game-card-copy em b { color: #f0d27a; }
-.game-card-play { color: var(--accent); font-size: 10px; font-weight: 900; }
+.game-card-copy em { font-size: 11px; }
+.game-card-copy em b { color: #f0d27a; font-size: 17px; }
+.game-card-play { color: var(--accent); font-size: 12px; font-weight: 900; }
 .carousel-arrow { color: #e1e2ed; border-color: #41475f; background: #292e43; }
 .brain-training-page .brain-game,
 .brain-training-page .brain-game-preview,
@@ -65,10 +66,12 @@
   .category-speed .game-carousel-track > button,
   .category-memory .game-carousel-track > button,
   .category-logic .game-carousel-track > button,
-  .category-math .game-carousel-track > button { width: min(76vw, 280px); flex-basis: min(76vw, 280px); height: 315px; }
+  .category-math .game-carousel-track > button { width: min(80vw, 300px); flex-basis: min(80vw, 300px); height: 345px; }
 }
 @media (max-width: 560px) {
   .brain-game-library > section { padding: 16px; border-radius: 20px; }
   .brain-game-library h2 { font-size: 21px; }
+  .game-card-heading > strong { font-size: 18px; }
+  .game-card-copy > p { font-size: 12px; }
   .daily-result-stats { grid-template-columns: 1fr; }
 }

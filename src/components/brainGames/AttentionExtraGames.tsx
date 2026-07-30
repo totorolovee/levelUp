@@ -15,7 +15,7 @@ export function TargetCountGame({ isRussian, onComplete }: BrainGameProps) {
   }), []);
   const [level, setLevel] = useState(0);
   const [correct, setCorrect] = useState(0);
-  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
+  const { adjustScore, feedback, isLocked, showFeedback } = useAnswerFeedback();
   const current = rounds[level];
   const options = useMemo(() =>
     [...new Set([current.answer, current.answer + 1, Math.max(0, current.answer - 1)])]
@@ -25,7 +25,9 @@ export function TargetCountGame({ isRussian, onComplete }: BrainGameProps) {
     const isCorrect = value === current.answer;
     const next = correct + Number(isCorrect);
     showFeedback(isCorrect, () => {
-      if (level === rounds.length - 1) onComplete(Math.round(next / rounds.length * 100));
+      if (level === rounds.length - 1) {
+        onComplete(adjustScore(Math.round(next / rounds.length * 100), rounds.length));
+      }
       else { setCorrect(next); setLevel((item) => item + 1); }
     });
   };
@@ -50,13 +52,15 @@ export function FocusMatchGame({ isRussian, onComplete }: BrainGameProps) {
   }), []);
   const [level, setLevel] = useState(0);
   const [correct, setCorrect] = useState(0);
-  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
+  const { adjustScore, feedback, isLocked, showFeedback } = useAnswerFeedback();
   const current = rounds[level];
   const choose = (same: boolean) => {
     const isCorrect = same === current.same;
     const next = correct + Number(isCorrect);
     showFeedback(isCorrect, () => {
-      if (level === rounds.length - 1) onComplete(Math.round(next / rounds.length * 100));
+      if (level === rounds.length - 1) {
+        onComplete(adjustScore(Math.round(next / rounds.length * 100), rounds.length));
+      }
       else { setCorrect(next); setLevel((item) => item + 1); }
     });
   };

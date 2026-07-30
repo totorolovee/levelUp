@@ -8,7 +8,7 @@ export function PatternRecallGame({ isRussian, onComplete }: BrainGameProps) {
   const [show, setShow] = useState(true);
   const [chosen, setChosen] = useState<Set<number>>(new Set());
   const [score, setScore] = useState(0);
-  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
+  const { adjustScore, feedback, isLocked, showFeedback } = useAnswerFeedback();
   const targets = useMemo(() => {
     const values = new Set<number>();
     while (values.size < 4 + level) values.add(Math.floor(Math.random() * 25));
@@ -24,16 +24,17 @@ export function PatternRecallGame({ isRussian, onComplete }: BrainGameProps) {
 
   const choose = (index: number) => {
     if (show || chosen.has(index)) return;
-    const nextChosen = new Set(chosen).add(index);
-    setChosen(nextChosen);
-    if (nextChosen.size !== targets.size) {
-      if (!targets.has(index)) showFeedback(false, () => undefined);
+    if (!targets.has(index)) {
+      showFeedback(false, () => undefined);
       return;
     }
+    const nextChosen = new Set(chosen).add(index);
+    setChosen(nextChosen);
+    if (nextChosen.size !== targets.size) return;
     const hits = [...nextChosen].filter((value) => targets.has(value)).length;
     const nextScore = score + hits / targets.size;
     showFeedback(hits === targets.size, () => {
-      if (level === 4) onComplete(Math.round(nextScore / 5 * 100));
+      if (level === 4) onComplete(adjustScore(Math.round(nextScore / 5 * 100), 5));
       else {
         setScore(nextScore);
         setLevel((value) => value + 1);

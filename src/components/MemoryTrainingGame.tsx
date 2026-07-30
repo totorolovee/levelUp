@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { GameAnswerFeedback } from './brainGames/GameAnswerFeedback';
 
 type Props = {
@@ -10,7 +10,9 @@ type Props = {
 
 export function MemoryTrainingGame({ isRussian, sequenceLength, onComplete }: Props) {
   const [level, setLevel] = useState(0);
+  const [attempt, setAttempt] = useState(0);
   const [correctTotal, setCorrectTotal] = useState(0);
+  const mistakes = useRef(0);
   const sequence = useMemo(
     () => Array.from(
       { length: Math.min(9, sequenceLength + Math.floor(level / 2)) },
@@ -25,13 +27,20 @@ export function MemoryTrainingGame({ isRussian, sequenceLength, onComplete }: Pr
   useEffect(() => {
     const timer = window.setTimeout(() => setIsVisible(false), 3500);
     return () => window.clearTimeout(timer);
-  }, [level]);
+  }, [attempt, level]);
 
   useEffect(() => {
     if (!result) return;
     const timer = window.setTimeout(() => {
+      if (!result.isCorrect) {
+        setAnswer('');
+        setResult(null);
+        setIsVisible(true);
+        setAttempt((value) => value + 1);
+        return;
+      }
       if (level === 6) {
-        onComplete(Math.round(result.nextTotal / 7 * 100));
+        onComplete(Math.max(0, Math.round(result.nextTotal / 7 * 100 - mistakes.current * (100 / 7))));
         return;
       }
       setCorrectTotal(result.nextTotal);
@@ -39,14 +48,14 @@ export function MemoryTrainingGame({ isRussian, sequenceLength, onComplete }: Pr
       setResult(null);
       setIsVisible(true);
       setLevel((value) => value + 1);
-    }, 1200);
+    }, result.isCorrect ? 420 : 1200);
     return () => window.clearTimeout(timer);
   }, [level, onComplete, result]);
 
   const check = () => {
-    const correct = [...answer].filter((digit, index) => digit === sequence[index]).length;
-    const nextTotal = correctTotal + correct / sequence.length;
-    setResult({ isCorrect: answer === sequence, nextTotal });
+    const isCorrect = answer === sequence;
+    if (!isCorrect) mistakes.current += 1;
+    setResult({ isCorrect, nextTotal: correctTotal + Number(isCorrect) });
   };
 
   return (

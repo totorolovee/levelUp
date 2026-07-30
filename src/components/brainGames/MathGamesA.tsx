@@ -16,7 +16,7 @@ export function GreaterExpressionGame({ isRussian, onComplete }: BrainGameProps)
   const [correct, setCorrect] = useState(0);
   const roundStartedAt = useRef(performance.now());
   const totalResponseMs = useRef(0);
-  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
+  const { adjustScore, feedback, isLocked, showFeedback } = useAnswerFeedback();
   const current = rounds[level];
   const choose = (side: 'left' | 'right') => {
     const expected = current.leftValue >= current.rightValue ? 'left' : 'right';
@@ -25,12 +25,17 @@ export function GreaterExpressionGame({ isRussian, onComplete }: BrainGameProps)
     const responseTime = performance.now() - roundStartedAt.current;
     const accepted = showFeedback(isCorrect, () => {
       if (level === rounds.length - 1) {
-        onComplete(calculateSpeedGameScore(next, rounds.length, totalResponseMs.current, 950, 4200));
+        onComplete(adjustScore(
+          calculateSpeedGameScore(next, rounds.length, totalResponseMs.current, 950, 4200),
+          rounds.length,
+        ));
       } else {
         setCorrect(next);
         setLevel((item) => item + 1);
         roundStartedAt.current = performance.now();
       }
+    }, () => {
+      roundStartedAt.current = performance.now();
     });
     if (accepted) totalResponseMs.current += responseTime;
   };
@@ -55,13 +60,15 @@ export function MultiplicationSprintGame({ isRussian, onComplete }: BrainGamePro
   }), []);
   const [level, setLevel] = useState(0);
   const [correct, setCorrect] = useState(0);
-  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
+  const { adjustScore, feedback, isLocked, showFeedback } = useAnswerFeedback();
   const current = rounds[level];
   const choose = (value: number) => {
     const isCorrect = value === current.answer;
     const next = correct + Number(isCorrect);
     showFeedback(isCorrect, () => {
-      if (level === rounds.length - 1) onComplete(Math.round(next / rounds.length * 100));
+      if (level === rounds.length - 1) {
+        onComplete(adjustScore(Math.round(next / rounds.length * 100), rounds.length));
+      }
       else { setCorrect(next); setLevel((item) => item + 1); }
     });
   };
@@ -85,13 +92,15 @@ export function NumberPathGame({ isRussian, onComplete }: BrainGameProps) {
   }), []);
   const [level, setLevel] = useState(0);
   const [correct, setCorrect] = useState(0);
-  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
+  const { adjustScore, feedback, isLocked, showFeedback } = useAnswerFeedback();
   const current = rounds[level];
   const choose = (value: number) => {
     const isCorrect = value === current.answer;
     const next = correct + Number(isCorrect);
     showFeedback(isCorrect, () => {
-      if (level === rounds.length - 1) onComplete(Math.round(next / rounds.length * 100));
+      if (level === rounds.length - 1) {
+        onComplete(adjustScore(Math.round(next / rounds.length * 100), rounds.length));
+      }
       else { setCorrect(next); setLevel((item) => item + 1); }
     });
   };

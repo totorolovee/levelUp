@@ -8,6 +8,8 @@ import './styles/brain-game-feedback.css';
 import './styles/brain-dashboard.css';
 import './styles/brain-library-redesign.css';
 import './styles/research-hub.css';
+import './styles/document-ai-review.css';
+import './styles/reflection-ai.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

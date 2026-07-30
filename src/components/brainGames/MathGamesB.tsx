@@ -10,14 +10,16 @@ export function FractionCompareGame({ isRussian, onComplete }: BrainGameProps) {
     return { a, b, c, d };
   }), []);
   const [level, setLevel] = useState(0); const [correct, setCorrect] = useState(0);
-  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
+  const { adjustScore, feedback, isLocked, showFeedback } = useAnswerFeedback();
   const current = rounds[level];
   const choose = (side: 'left' | 'right') => {
     const expected = current.a / current.b >= current.c / current.d ? 'left' : 'right';
     const isCorrect = side === expected;
     const next = correct + Number(isCorrect);
     showFeedback(isCorrect, () => {
-      if (level === rounds.length - 1) onComplete(Math.round(next / rounds.length * 100));
+      if (level === rounds.length - 1) {
+        onComplete(adjustScore(Math.round(next / rounds.length * 100), rounds.length));
+      }
       else { setCorrect(next); setLevel((item) => item + 1); }
     });
   };
@@ -47,7 +49,7 @@ export function MissingNumberGame({ isRussian, onComplete }: BrainGameProps) {
     return { shown: values.map((value, index) => index === missingIndex ? '?' : String(value)), answer, step };
   }), []);
   const [level, setLevel] = useState(0); const [correct, setCorrect] = useState(0);
-  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
+  const { adjustScore, feedback, isLocked, showFeedback } = useAnswerFeedback();
   const current = rounds[level];
   const options = useMemo(() =>
     [current.answer, current.answer + current.step, current.answer - current.step]
@@ -56,7 +58,9 @@ export function MissingNumberGame({ isRussian, onComplete }: BrainGameProps) {
     const isCorrect = value === current.answer;
     const next = correct + Number(isCorrect);
     showFeedback(isCorrect, () => {
-      if (level === rounds.length - 1) onComplete(Math.round(next / rounds.length * 100));
+      if (level === rounds.length - 1) {
+        onComplete(adjustScore(Math.round(next / rounds.length * 100), rounds.length));
+      }
       else { setCorrect(next); setLevel((item) => item + 1); }
     });
   };

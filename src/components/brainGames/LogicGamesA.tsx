@@ -12,7 +12,7 @@ export function NumberPatternGame({ isRussian, onComplete }: BrainGameProps) {
   }), []);
   const [level, setLevel] = useState(0);
   const [correct, setCorrect] = useState(0);
-  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
+  const { adjustScore, feedback, isLocked, showFeedback } = useAnswerFeedback();
   const current = rounds[level];
   const options = useMemo(() =>
     [current.answer, current.answer + current.step, current.answer - 1]
@@ -21,7 +21,9 @@ export function NumberPatternGame({ isRussian, onComplete }: BrainGameProps) {
     const isCorrect = value === current.answer;
     const next = correct + Number(isCorrect);
     showFeedback(isCorrect, () => {
-      if (level === rounds.length - 1) onComplete(Math.round(next / rounds.length * 100));
+      if (level === rounds.length - 1) {
+        onComplete(adjustScore(Math.round(next / rounds.length * 100), rounds.length));
+      }
       else { setCorrect(next); setLevel((item) => item + 1); }
     });
   };
@@ -45,13 +47,15 @@ export function TargetEquationGame({ isRussian, onComplete }: BrainGameProps) {
   }), []);
   const [level, setLevel] = useState(0);
   const [correct, setCorrect] = useState(0);
-  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
+  const { adjustScore, feedback, isLocked, showFeedback } = useAnswerFeedback();
   const current = rounds[level];
   const choose = (operator: string) => {
     const isCorrect = operator === current.operator;
     const next = correct + Number(isCorrect);
     showFeedback(isCorrect, () => {
-      if (level === rounds.length - 1) onComplete(Math.round(next / rounds.length * 100));
+      if (level === rounds.length - 1) {
+        onComplete(adjustScore(Math.round(next / rounds.length * 100), rounds.length));
+      }
       else { setCorrect(next); setLevel((item) => item + 1); }
     });
   };
@@ -77,12 +81,14 @@ export function OddRuleGame({ isRussian, onComplete }: BrainGameProps) {
   }), []);
   const [level, setLevel] = useState(0);
   const [correct, setCorrect] = useState(0);
-  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
+  const { adjustScore, feedback, isLocked, showFeedback } = useAnswerFeedback();
   const choose = (index: number) => {
     const isCorrect = index === rounds[level].oddIndex;
     const next = correct + Number(isCorrect);
     showFeedback(isCorrect, () => {
-      if (level === rounds.length - 1) onComplete(Math.round(next / rounds.length * 100));
+      if (level === rounds.length - 1) {
+        onComplete(adjustScore(Math.round(next / rounds.length * 100), rounds.length));
+      }
       else { setCorrect(next); setLevel((item) => item + 1); }
     });
   };

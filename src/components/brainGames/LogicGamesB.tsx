@@ -50,12 +50,14 @@ export function RotationGame({ isRussian, onComplete }: BrainGameProps) {
   const rounds = useMemo(() => Array.from({ length: 14 }, () => Math.floor(Math.random() * 4)), []);
   const [level, setLevel] = useState(0);
   const [correct, setCorrect] = useState(0);
-  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
+  const { adjustScore, feedback, isLocked, showFeedback } = useAnswerFeedback();
   const choose = (rotation: number) => {
     const isCorrect = rotation === rounds[level];
     const next = correct + Number(isCorrect);
     showFeedback(isCorrect, () => {
-      if (level === rounds.length - 1) onComplete(Math.round(next / rounds.length * 100));
+      if (level === rounds.length - 1) {
+        onComplete(adjustScore(Math.round(next / rounds.length * 100), rounds.length));
+      }
       else { setCorrect(next); setLevel((item) => item + 1); }
     });
   };

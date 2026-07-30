@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLanguage } from '../lib/language';
-import { supabase } from '../lib/supabase';
+import {
+  analyzeUniversityDocuments,
+  type UniversityDocumentAnalysis,
+} from '../lib/universityDocumentAnalysis';
 import {
   loadUniversityDocuments,
   saveUniversityDocument,
@@ -18,12 +21,15 @@ type Props = {
 export function UniversityDocumentAssistant({ specialty, university }: Props) {
   const { language } = useLanguage();
   const [progress, setProgress] = useState<Record<string, UniversityDocumentProgress>>({});
-  const [aiText, setAiText] = useState('');
+  const [analyses, setAnalyses] = useState<Record<string, UniversityDocumentAnalysis>>({});
+  const [overview, setOverview] = useState('');
   const [status, setStatus] = useState<'loading' | 'ready' | 'ai' | 'error'>('loading');
   const isRussian = language === 'ru';
   const content = getUniversityContent(university, language);
 
   useEffect(() => {
+    setAnalyses({});
+    setOverview('');
     loadUniversityDocuments(university.id)
       .then((rows) => {
         setProgress(Object.fromEntries(rows.map((row) => [row.documentKey, row])));
@@ -61,6 +67,13 @@ export function UniversityDocumentAssistant({ specialty, university }: Props) {
     };
     const next = { ...current, ...patch };
     setProgress((value) => ({ ...value, [key]: next }));
+    if ('filePath' in patch) {
+      setAnalyses((current) => {
+        const nextAnalyses = { ...current };
+        delete nextAnalyses[key];
+        return nextAnalyses;
+      });
+    }
     try {
       await saveUniversityDocument(university.id, next);
     } catch (error) {
@@ -71,35 +84,19 @@ export function UniversityDocumentAssistant({ specialty, university }: Props) {
 
   const askAssistant = async () => {
     setStatus('ai');
-    setAiText('');
-    const checklist = documents.map(({ title, saved }) =>
-      `${saved.completed ? '✓' : '○'} ${title}`
-      + `${saved.dueDate ? ` — ${isRussian ? 'срок' : 'due'} ${saved.dueDate}` : ''}`
-      + `${saved.fileName ? ` — ${isRussian ? 'файл' : 'file'}: ${saved.fileName}` : ''}`
-      + `${saved.notes ? ` — ${isRussian ? 'заметка' : 'note'}: ${saved.notes}` : ''}`,
-    ).join('\n');
-    const analyzableFiles = documents
-      .map(({ saved }) => saved)
-      .filter(({ fileName }) => /\.(pdf|png|jpe?g)$/i.test(fileName))
-      .map(({ filePath }) => filePath)
-      .filter(Boolean)
-      .slice(0, 3);
-    const { data, error } = await supabase.functions.invoke('ai', {
-      body: {
-        prompt: `${isRussian ? 'Университет' : 'University'}: ${content.name}\n`
-          + `${isRussian ? 'Специальность' : 'Major'}: ${specialty}\n${checklist}`,
-        filePaths: analyzableFiles,
-        system: isRussian
-          ? 'Ты помощник по сбору документов в университет. Проанализируй переданные PDF или изображения: определи тип документа, проверь читаемость, наличие имени, дат, оценок, подписей и явных пропусков. Затем составь приоритетный план по чек-листу и срокам. Для Word-файлов доступно только название. Не обещай поступление, не выдумывай требования и не повторяй лишние персональные данные.'
-          : 'You are a university application document assistant. Analyze the supplied PDFs or images: identify document type and check readability, names, dates, grades, signatures, and obvious omissions. Then give a prioritized checklist and deadline plan. Only file names are available for Word files. Never guarantee admission, invent requirements, or repeat unnecessary personal data.',
-      },
-    });
-    if (error) {
+    setOverview('');
+    try {
+      const result = await analyzeUniversityDocuments(documents, {
+        language,
+        specialty,
+        universityName: content.name,
+      });
+      setAnalyses(result.analyses);
+      setOverview(result.overview);
+      setStatus('ready');
+    } catch {
       setStatus('error');
-      return;
     }
-    setAiText(typeof data?.text === 'string' ? data.text : '');
-    setStatus('ready');
   };
 
   return (
@@ -115,6 +112,7 @@ export function UniversityDocumentAssistant({ specialty, university }: Props) {
       <div className="document-checklist">
         {documents.map(({ key, title, saved }) => (
           <UniversityDocumentRow
+            analysis={analyses[key]}
             isRussian={isRussian}
             key={key}
             onUpdate={(patch) => update(key, patch)}
@@ -128,7 +126,7 @@ export function UniversityDocumentAssistant({ specialty, university }: Props) {
         <button disabled={status === 'ai'} onClick={askAssistant} type="button">
           {status === 'ai'
             ? (isRussian ? 'Анализирую…' : 'Analyzing…')
-            : (isRussian ? 'Что делать дальше? ✦' : 'What should I do next? ✦')}
+            : (isRussian ? 'Проверить документы с AI ✦' : 'Review documents with AI ✦')}
         </button>
         <a href={content.sourceUrl} rel="noreferrer" target="_blank">
           {isRussian ? 'Проверить официальный сайт ↗' : 'Check the official website ↗'}
@@ -136,12 +134,14 @@ export function UniversityDocumentAssistant({ specialty, university }: Props) {
       </footer>
       <small className="document-ai-scope">
         {isRussian
-          ? 'ИИ читает до трёх PDF или изображений за один анализ. Для Word учитываются только название и заметки.'
-          : 'AI reads up to three PDFs or images per analysis. For Word files, it only uses the file name and notes.'}
+          ? 'ИИ проверяет до трёх PDF или изображений и добавляет замечания прямо к карточке файла.'
+          : 'AI reviews up to three PDFs or images and adds annotations directly to each file card.'}
       </small>
       {status === 'loading' && <p>{isRussian ? 'Загружаю чек-лист…' : 'Loading checklist…'}</p>}
-      {status === 'error' && <p className="coach-error">{isRussian ? 'Не удалось сохранить данные.' : 'Could not save your data.'}</p>}
-      {aiText && <div className="document-ai-answer"><strong>{isRussian ? 'Совет помощника' : 'Assistant advice'}</strong><p>{aiText}</p></div>}
+      {status === 'error' && <p className="coach-error">{isRussian
+        ? 'Не удалось обработать данные. Проверь файл и попробуй снова.'
+        : 'Could not process the data. Check the file and try again.'}</p>}
+      {overview && <div className="document-ai-answer"><strong>{isRussian ? 'Следующий шаг' : 'Next step'}</strong><p>{overview}</p></div>}
     </section>
   );
 }

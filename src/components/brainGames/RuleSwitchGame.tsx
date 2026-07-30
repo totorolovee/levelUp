@@ -13,7 +13,7 @@ export function RuleSwitchGame({ isRussian, onComplete }: BrainGameProps) {
   })), []);
   const [round, setRound] = useState(0);
   const [correct, setCorrect] = useState(0);
-  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
+  const { adjustScore, feedback, isLocked, showFeedback } = useAnswerFeedback();
   const current = rounds[round];
 
   const answer = (choice: 'red' | 'blue') => {
@@ -22,7 +22,7 @@ export function RuleSwitchGame({ isRussian, onComplete }: BrainGameProps) {
     const nextCorrect = correct + Number(isCorrect);
     showFeedback(isCorrect, () => {
       if (round === rounds.length - 1) {
-        onComplete(Math.round(nextCorrect / rounds.length * 100));
+        onComplete(adjustScore(Math.round(nextCorrect / rounds.length * 100), rounds.length));
         return;
       }
       setCorrect(nextCorrect);

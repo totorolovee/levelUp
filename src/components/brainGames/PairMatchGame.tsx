@@ -30,7 +30,7 @@ export function PairMatchGame({ isRussian, onComplete }: BrainGameProps) {
         if (completed.size === cards.length) onComplete(Math.max(40, 110 - nextMoves * 5));
       }
       setOpen([]);
-    });
+    }, () => setOpen([]));
   };
 
   return (

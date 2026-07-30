@@ -13,7 +13,7 @@ export function MissingItemGame({ isRussian, onComplete }: BrainGameProps) {
   const [level, setLevel] = useState(0);
   const [show, setShow] = useState(true);
   const [correct, setCorrect] = useState(0);
-  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
+  const { adjustScore, feedback, isLocked, showFeedback } = useAnswerFeedback();
   const current = rounds[level];
   useEffect(() => {
     setShow(true);
@@ -24,7 +24,9 @@ export function MissingItemGame({ isRussian, onComplete }: BrainGameProps) {
     const isCorrect = item === current.missing;
     const next = correct + Number(isCorrect);
     showFeedback(isCorrect, () => {
-      if (level === rounds.length - 1) onComplete(Math.round(next / rounds.length * 100));
+      if (level === rounds.length - 1) {
+        onComplete(adjustScore(Math.round(next / rounds.length * 100), rounds.length));
+      }
       else { setCorrect(next); setLevel((value) => value + 1); }
     });
   };
@@ -44,7 +46,7 @@ export function ReverseSequenceGame({ isRussian, onComplete }: BrainGameProps) {
   const [show, setShow] = useState(true);
   const [answer, setAnswer] = useState('');
   const [correct, setCorrect] = useState(0);
-  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
+  const { adjustScore, feedback, isLocked, showFeedback } = useAnswerFeedback();
   const sequence = useMemo(() => Array.from({ length: 3 + level }, () => Math.floor(Math.random() * 10)).join(''), [level]);
   useEffect(() => {
     setShow(true); setAnswer('');
@@ -56,7 +58,7 @@ export function ReverseSequenceGame({ isRussian, onComplete }: BrainGameProps) {
     const isCorrect = answer === expected;
     const next = correct + Number(isCorrect);
     showFeedback(isCorrect, () => {
-      if (level === 6) onComplete(Math.round(next / 7 * 100));
+      if (level === 6) onComplete(adjustScore(Math.round(next / 7 * 100), 7));
       else { setCorrect(next); setLevel((value) => value + 1); }
     });
   };
@@ -77,7 +79,7 @@ export function GrowingMatrixGame({ isRussian, onComplete }: BrainGameProps) {
   const [show, setShow] = useState(true);
   const [chosen, setChosen] = useState<Set<number>>(new Set());
   const [correct, setCorrect] = useState(0);
-  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
+  const { adjustScore, feedback, isLocked, showFeedback } = useAnswerFeedback();
   const targets = useMemo(() => {
     const result = new Set<number>();
     while (result.size < 3 + level) result.add(Math.floor(Math.random() * 25));
@@ -90,16 +92,17 @@ export function GrowingMatrixGame({ isRussian, onComplete }: BrainGameProps) {
   }, [level]);
   const choose = (index: number) => {
     if (show || chosen.has(index)) return;
-    const nextChosen = new Set(chosen).add(index);
-    setChosen(nextChosen);
-    if (nextChosen.size !== targets.size) {
-      if (!targets.has(index)) showFeedback(false, () => undefined);
+    if (!targets.has(index)) {
+      showFeedback(false, () => undefined);
       return;
     }
+    const nextChosen = new Set(chosen).add(index);
+    setChosen(nextChosen);
+    if (nextChosen.size !== targets.size) return;
     const hits = [...nextChosen].filter((value) => targets.has(value)).length;
     const next = correct + hits / targets.size;
     showFeedback(hits === targets.size, () => {
-      if (level === 6) onComplete(Math.round(next / 7 * 100));
+      if (level === 6) onComplete(adjustScore(Math.round(next / 7 * 100), 7));
       else { setCorrect(next); setLevel((value) => value + 1); }
     });
   };

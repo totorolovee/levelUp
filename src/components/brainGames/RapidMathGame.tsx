@@ -15,7 +15,7 @@ export function RapidMathGame({ isRussian, onComplete }: BrainGameProps) {
   const [correct, setCorrect] = useState(0);
   const roundStartedAt = useRef(performance.now());
   const totalResponseMs = useRef(0);
-  const { feedback, isLocked, showFeedback } = useAnswerFeedback();
+  const { adjustScore, feedback, isLocked, showFeedback } = useAnswerFeedback();
   const current = rounds[round];
 
   const answer = (choice: boolean) => {
@@ -24,13 +24,15 @@ export function RapidMathGame({ isRussian, onComplete }: BrainGameProps) {
     const responseTime = performance.now() - roundStartedAt.current;
     const accepted = showFeedback(isCorrect, () => {
       if (round === rounds.length - 1) {
-        onComplete(calculateSpeedGameScore(
+        onComplete(adjustScore(calculateSpeedGameScore(
           nextCorrect, rounds.length, totalResponseMs.current, 900, 4200,
-        ));
+        ), rounds.length));
         return;
       }
       setCorrect(nextCorrect);
       setRound((value) => value + 1);
+      roundStartedAt.current = performance.now();
+    }, () => {
       roundStartedAt.current = performance.now();
     });
     if (accepted) totalResponseMs.current += responseTime;

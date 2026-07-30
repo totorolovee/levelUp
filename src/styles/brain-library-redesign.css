@@ -15,12 +15,13 @@
 .category-speed .game-carousel-track > button,
 .category-memory .game-carousel-track > button,
 .category-logic .game-carousel-track > button,
-.category-math .game-carousel-track > button { display: grid; height: 320px; grid-template-rows: 43% 1fr; padding: 0; overflow: hidden; outline: 0; border: 1px solid #383d54; border-radius: 18px; color: #f0f1f8; background: #272b3f; box-shadow: 0 12px 24px rgba(0,0,0,.12); }
-.game-card-art { position: relative; display: grid; min-height: 0; place-items: center; overflow: hidden; background: linear-gradient(145deg, #30354a, #292d41); }
-.game-card-art::before { content: ""; position: absolute; width: 130px; height: 130px; border: 1px solid color-mix(in srgb, var(--accent) 48%, transparent); border-radius: 50%; }
-.game-card-art > span { position: relative; z-index: 1; color: var(--accent); font-size: 52px; font-weight: 900; }
-.game-card-art > i { position: absolute; right: 12px; top: 10px; color: #858ba2; font-size: 13px; font-style: normal; }
-.game-card-copy { gap: 7px; padding: 15px; }
+.category-math .game-carousel-track > button { position: relative; display: block; height: 330px; padding: 0; overflow: hidden; outline: 0; border: 1px solid #383d54; border-radius: 18px; color: #f0f1f8; background: #202438; box-shadow: 0 12px 24px rgba(0,0,0,.12); }
+.game-card-art { position: absolute; display: grid; inset: 0; place-items: center; overflow: hidden; background: radial-gradient(circle at 50% 30%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 48%), linear-gradient(145deg, #30354a, #202438); }
+.game-card-art::before { content: ""; position: absolute; width: 230px; height: 230px; border: 1px solid color-mix(in srgb, var(--accent) 52%, transparent); border-radius: 50%; box-shadow: 0 0 70px color-mix(in srgb, var(--accent) 12%, transparent), inset 0 0 45px color-mix(in srgb, var(--accent) 9%, transparent); }
+.game-card-art::after { content: ""; position: absolute; width: 150px; height: 150px; border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); border-radius: 38%; transform: rotate(24deg); }
+.game-card-art > span { position: relative; z-index: 1; color: var(--accent); font-size: 86px; font-weight: 950; transform: translateY(-32px); text-shadow: 0 14px 34px rgba(0,0,0,.35); }
+.game-card-art > i { position: absolute; z-index: 2; right: 15px; top: 13px; color: #a6acc1; font-size: 16px; font-style: normal; }
+.game-card-copy { position: relative; z-index: 3; gap: 7px; padding: 158px 16px 16px; background: linear-gradient(to bottom, transparent 20%, rgba(25,28,43,.72) 49%, #191c2b 76%); }
 .game-card-heading > strong { color: #f3f3fa; font-size: 17px; }
 .game-card-copy > p { display: -webkit-box; margin: 0; overflow: hidden; color: #9fa5bc; font-size: 10px; line-height: 1.45; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .brain-game-library button small,

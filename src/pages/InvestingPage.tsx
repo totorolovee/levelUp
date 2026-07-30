@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { AppHeader } from '../components/AppHeader';
 import { BuyStockForm } from '../components/BuyStockForm';
 import type { BuyDecision } from '../components/BuyStockForm';
-import { CompanyProfile } from '../components/CompanyProfile';
+import { InvestmentMarket } from '../components/InvestmentMarket';
 import { InvestorProgress } from '../components/InvestorProgress';
-import { StockCard } from '../components/StockCard';
+import { PurchaseResearchGate } from '../components/PurchaseResearchGate';
 import { usePortfolio } from '../lib/portfolio';
 import { evaluateInvestment } from '../lib/investmentEvaluator';
 import { formatMoney, stocks } from '../lib/stocks';
@@ -15,6 +15,7 @@ import { SmoothLink } from '../components/SmoothLink';
 export function InvestingPage() {
   const { language } = useLanguage();
   const [notice, setNotice] = useState('');
+  const [researchReadyFor, setResearchReadyFor] = useState<string | null>(null);
   const {
     marketStocks,
     selected,
@@ -121,69 +122,20 @@ export function InvestingPage() {
       )}
       <InvestorProgress score={score} />
       <section className="investing-layout">
-        <div>
-          <div className="section-heading">
-            <div>
-              <p className="eyebrow">Рынок</p>
-              <h2>Кому доверишь свои первые $?</h2>
-            </div>
-            <span className="demo-badge">
-              {marketStatus === 'live'
-                ? `Finnhub · ${marketStocks.length}/${stocks.length}`
-                : 'Загрузка биржи'}
-            </span>
-          </div>
-          <aside className="market-explainer">
-            <span className="market-info-icon">i</span>
-            <div>
-              <strong>Что означают проценты?</strong>
-              <p>
-                Это изменение цены акции за сегодняшний день. Зелёный процент
-                означает рост, красный — снижение. Это не твоя прибыль.
-              </p>
-            </div>
-            <div className="change-examples">
-              <span className="positive">+1.8% рост</span>
-              <span className="negative">−1.3% снижение</span>
-            </div>
-          </aside>
-          {marketUpdatedAt && (
-            <p className="market-update-note">
-              Обновлено {marketUpdatedAt.toLocaleTimeString(language === 'ru' ? 'ru-RU' : 'en-US', {
-                hour: '2-digit',
-                minute: '2-digit',
-              })} · автоматически каждые 12 часов
-            </p>
-          )}
-          {marketStatus === 'loading' && (
-            <p className="market-status">Загружаю последние доступные цены…</p>
-          )}
-          {marketStatus === 'error' && (
-            <p className="coach-error" role="alert">
-              Биржа сейчас не вернула цены. Учебные значения не показываются.
-            </p>
-          )}
-          {marketStatus === 'live' && marketStocks.length < stocks.length && (
-            <p className="market-status">
-              Показаны только котировки, которые сейчас вернула биржа.
-              Учебные цены скрыты.
-            </p>
-          )}
-          <div className="stock-grid">
-            {marketStocks.map((stock) => (
-              <StockCard
-                key={stock.symbol}
-                onSelect={setSelected}
-                ownedQuantity={ownedBySymbol[stock.symbol] ?? 0}
-                selected={selected?.symbol === stock.symbol}
-                stock={stock}
-              />
-            ))}
-          </div>
-          {selected && <CompanyProfile stock={selected} />}
-        </div>
+        <InvestmentMarket
+          language={language}
+          marketStatus={marketStatus}
+          marketStocks={marketStocks}
+          marketUpdatedAt={marketUpdatedAt}
+          onResearchReady={setResearchReadyFor}
+          onSelect={setSelected}
+          ownedBySymbol={ownedBySymbol}
+          selected={selected}
+        />
         {selected && portfolioStatus === 'ready' && (
-          <BuyStockForm balance={balance} onBuy={buyStock} stock={selected} />
+          researchReadyFor === selected.symbol
+            ? <BuyStockForm balance={balance} onBuy={buyStock} stock={selected} />
+            : <PurchaseResearchGate isRussian={language === 'ru'} />
         )}
       </section>
     </main>

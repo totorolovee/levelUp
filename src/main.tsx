@@ -4,6 +4,7 @@ import App from './App.tsx';
 import './index.css';
 import './styles/brain-training.css';
 import './styles/brain-game-preview.css';
+import './styles/research-hub.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

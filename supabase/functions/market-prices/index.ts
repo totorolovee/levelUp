@@ -1,3 +1,5 @@
+import { loadResearch } from './research.ts';
+
 const FINNHUB_API_KEY = Deno.env.get('FINNHUB_API_KEY');
 const cors = {
   'Access-Control-Allow-Origin': '*',
@@ -22,7 +24,16 @@ Deno.serve(async (request) => {
   if (!FINNHUB_API_KEY) return json({ error: 'Котировки пока не настроены.' }, 503);
 
   try {
-    const body = (await request.json()) as { symbols?: unknown };
+    const body = (await request.json()) as {
+      symbols?: unknown;
+      researchSymbol?: unknown;
+    };
+    if (
+      typeof body.researchSymbol === 'string'
+      && /^[A-Z.]{1,10}$/.test(body.researchSymbol)
+    ) {
+      return json(await loadResearch(body.researchSymbol));
+    }
     const symbols = Array.isArray(body.symbols)
       ? body.symbols.filter(
         (symbol): symbol is string =>

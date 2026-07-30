@@ -12,10 +12,10 @@ type SectionProps = {
 
 export function OfficialMaterialsSection(props: SectionProps) {
   const { isRussian, reviewed, onToggle, stock } = props;
-  const sources = getResearchSources(stock);
+  const sources = getResearchSources(stock, isRussian);
   return (
     <section className="research-section official-materials">
-      <header><span>1</span><div><h3>Official Company Materials</h3><small>★★★★★ · {isRussian ? 'обязательно' : 'required'}</small></div></header>
+      <header><span>1</span><div><h3>{isRussian ? 'Официальные материалы компании' : 'Official Company Materials'}</h3><small>★★★★★ · {isRussian ? 'обязательно' : 'required'}</small></div></header>
       <p>{isRussian
         ? 'Начни с документов, за которые отвечает сама компания.'
         : 'Start with documents the company is accountable for.'}</p>
@@ -37,15 +37,15 @@ type AnalystProps = SectionProps & {
 
 export function AnalystViewsSection(props: AnalystProps) {
   const { consensus, isRussian, reviewed, onToggle, stock } = props;
-  const sources = getResearchSources(stock);
+  const sources = getResearchSources(stock, isRussian);
   const views = [
-    ['🟢', 'Bull Case', isRussian ? 'Найди аргументы роста бизнеса.' : 'Find the business growth argument.'],
-    ['🟡', 'Neutral', isRussian ? 'Сравни цену, качество и неопределённость.' : 'Compare price, quality, and uncertainty.'],
-    ['🔴', 'Bear Case', isRussian ? 'Найди причины, почему идея может не сработать.' : 'Find why the thesis could fail.'],
+    ['🟢', isRussian ? 'Позитивный сценарий' : 'Bull Case', isRussian ? 'Найди аргументы роста бизнеса.' : 'Find the business growth argument.'],
+    ['🟡', isRussian ? 'Нейтральный взгляд' : 'Neutral View', isRussian ? 'Сравни цену, качество и неопределённость.' : 'Compare price, quality, and uncertainty.'],
+    ['🔴', isRussian ? 'Негативный сценарий' : 'Bear Case', isRussian ? 'Найди причины, почему идея может не сработать.' : 'Find why the thesis could fail.'],
   ];
   return (
     <section className="research-section analyst-views">
-      <header><span>2</span><div><h3>Analyst Views</h3><small>★★★★★ · {isRussian ? 'обязательно' : 'required'}</small></div></header>
+      <header><span>2</span><div><h3>{isRussian ? 'Мнения аналитиков' : 'Analyst Views'}</h3><small>★★★★★ · {isRussian ? 'обязательно' : 'required'}</small></div></header>
       <div className="analyst-cases">
         {views.map(([icon, title, copy]) => <article key={title}><b>{icon} {title}</b><p>{copy}</p></article>)}
       </div>

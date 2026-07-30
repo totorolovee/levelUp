@@ -1,6 +1,11 @@
 import type { Stock } from '../lib/stocks';
 
-export function CompanyProfile({ stock }: { stock: Stock }) {
+type Props = {
+  isRussian: boolean;
+  stock: Stock;
+};
+
+export function CompanyProfile({ isRussian, stock }: Props) {
   return (
     <section className="company-profile">
       <div className="company-title">
@@ -13,15 +18,15 @@ export function CompanyProfile({ stock }: { stock: Stock }) {
       <p>{stock.business}</p>
       <div className="company-facts">
         <article>
-          <span>Сильная сторона</span>
+          <span>{isRussian ? 'Сильная сторона' : 'Strength'}</span>
           <p>{stock.strength}</p>
         </article>
         <article>
-          <span>Главный риск</span>
+          <span>{isRussian ? 'Главный риск' : 'Main risk'}</span>
           <p>{stock.risk}</p>
         </article>
         <article>
-          <span>Конкуренты</span>
+          <span>{isRussian ? 'Конкуренты' : 'Competitors'}</span>
           <p>{stock.competitors}</p>
         </article>
       </div>

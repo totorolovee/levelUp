@@ -25,53 +25,58 @@ export function InvestmentMarket({
   ownedBySymbol,
   selected,
 }: Props) {
+  const isRussian = language === 'ru';
   return (
     <div>
       <div className="section-heading">
         <div>
-          <p className="eyebrow">Рынок</p>
-          <h2>Кому доверишь свои первые $?</h2>
+          <p className="eyebrow">{isRussian ? 'Рынок' : 'Market'}</p>
+          <h2>{isRussian ? 'Кому доверишь свои первые $?' : 'Which business earns your first investment?'}</h2>
         </div>
         <span className="demo-badge">
           {marketStatus === 'live'
             ? `Finnhub · ${marketStocks.length}/${stocks.length}`
-            : 'Загрузка биржи'}
+            : (isRussian ? 'Загрузка биржи' : 'Loading market')}
         </span>
       </div>
       <aside className="market-explainer">
         <span className="market-info-icon">i</span>
         <div>
-          <strong>Что означают проценты?</strong>
+          <strong>{isRussian ? 'Что означают проценты?' : 'What do the percentages mean?'}</strong>
           <p>
-            Это изменение цены акции за сегодняшний день. Зелёный процент
-            означает рост, красный — снижение. Это не твоя прибыль.
+            {isRussian
+              ? 'Это изменение цены акции за сегодняшний день. Зелёный процент означает рост, красный — снижение. Это не твоя прибыль.'
+              : 'This is today’s share-price change. Green means growth and red means decline. It is not your profit.'}
           </p>
         </div>
         <div className="change-examples">
-          <span className="positive">+1.8% рост</span>
-          <span className="negative">−1.3% снижение</span>
+          <span className="positive">+1.8% {isRussian ? 'рост' : 'growth'}</span>
+          <span className="negative">−1.3% {isRussian ? 'снижение' : 'decline'}</span>
         </div>
       </aside>
       {marketUpdatedAt && (
         <p className="market-update-note">
-          Обновлено {marketUpdatedAt.toLocaleTimeString(language === 'ru' ? 'ru-RU' : 'en-US', {
+          {isRussian ? 'Обновлено' : 'Updated'} {marketUpdatedAt.toLocaleTimeString(isRussian ? 'ru-RU' : 'en-US', {
             hour: '2-digit',
             minute: '2-digit',
-          })} · автоматически каждые 12 часов
+          })} · {isRussian ? 'автоматически каждые 12 часов' : 'automatically every 12 hours'}
         </p>
       )}
       {marketStatus === 'loading' && (
-        <p className="market-status">Загружаю последние доступные цены…</p>
+        <p className="market-status">{isRussian ? 'Загружаю последние доступные цены…' : 'Loading the latest available prices…'}</p>
       )}
       {marketStatus === 'error' && (
         <p className="coach-error" role="alert">
-          Биржа сейчас не вернула цены. Учебные значения не показываются.
+          {isRussian
+            ? 'Биржа сейчас не вернула цены. Учебные значения не показываются.'
+            : 'The market feed did not return prices. Sample values are hidden.'}
         </p>
       )}
       {marketStatus === 'live' && marketStocks.length < stocks.length && (
         <p className="market-status">
-          Показаны только котировки, которые сейчас вернула биржа.
-          Учебные цены скрыты.
+          {isRussian
+            ? 'Показаны только котировки, которые сейчас вернула биржа. Учебные цены скрыты.'
+            : 'Only quotes returned by the market feed are shown. Sample prices are hidden.'}
         </p>
       )}
       <div className="stock-grid">
@@ -87,7 +92,7 @@ export function InvestmentMarket({
       </div>
       {selected && (
         <>
-          <CompanyProfile stock={selected} />
+          <CompanyProfile isRussian={isRussian} stock={selected} />
           <ResearchHub
             isRussian={language === 'ru'}
             key={selected.symbol}

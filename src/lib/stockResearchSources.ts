@@ -51,7 +51,7 @@ function secUrl(symbol: string, form: string) {
   return `https://www.sec.gov/edgar/browse/?${params.toString()}`;
 }
 
-export function getResearchSources(stock: Stock) {
+export function getResearchSources(stock: Stock, isRussian = false) {
   const quote = stock.quoteSymbol ?? stock.symbol;
   const annualForm = stock.symbol === 'KSPI' ? '20-F' : '10-K';
   const quarterlyForm = stock.symbol === 'KSPI' ? '6-K' : '10-Q';
@@ -60,12 +60,12 @@ export function getResearchSources(stock: Stock) {
 
   return {
     official: [
-      { label: `Annual Report (${annualForm})`, url: secUrl(stock.symbol, annualForm), source: 'SEC EDGAR' },
-      { label: `Quarterly Report (${quarterlyForm})`, url: secUrl(stock.symbol, quarterlyForm), source: 'SEC EDGAR' },
-      { label: 'Investor Presentation', url: investorRelations[stock.symbol], source: 'Investor Relations' },
-      { label: 'Earnings Presentation', url: investorRelations[stock.symbol], source: 'Investor Relations' },
+      { label: `${isRussian ? 'Годовой отчёт' : 'Annual Report'} (${annualForm})`, url: secUrl(stock.symbol, annualForm), source: 'SEC EDGAR' },
+      { label: `${isRussian ? 'Квартальный отчёт' : 'Quarterly Report'} (${quarterlyForm})`, url: secUrl(stock.symbol, quarterlyForm), source: 'SEC EDGAR' },
+      { label: isRussian ? 'Презентация для инвесторов' : 'Investor Presentation', url: investorRelations[stock.symbol], source: isRussian ? 'Отдел для инвесторов' : 'Investor Relations' },
+      { label: isRussian ? 'Презентация результатов' : 'Earnings Presentation', url: investorRelations[stock.symbol], source: isRussian ? 'Отдел для инвесторов' : 'Investor Relations' },
       {
-        label: 'Earnings Call Transcript',
+        label: isRussian ? 'Расшифровка звонка по результатам' : 'Earnings Call Transcript',
         url: `https://seekingalpha.com/symbol/${stock.symbol}/earnings/transcripts`,
         source: 'Seeking Alpha',
       },

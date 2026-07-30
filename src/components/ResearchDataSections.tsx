@@ -32,11 +32,11 @@ const metricLabels = {
 
 export function FinancialSnapshotSection(props: Props) {
   const { isRussian, onToggle, research, reviewed, stock } = props;
-  const sources = getResearchSources(stock);
+  const sources = getResearchSources(stock, isRussian);
   const labels = metricLabels[isRussian ? 'ru' : 'en'];
   return (
     <section className="research-section financial-snapshot">
-      <header><span>3</span><div><h3>Financial Snapshot</h3><small>★★★★</small></div></header>
+      <header><span>3</span><div><h3>{isRussian ? 'Финансовый обзор' : 'Financial Snapshot'}</h3><small>★★★★</small></div></header>
       {research?.financials.length ? (
         <div className="financial-metrics">
           {research.financials.map((item) => (
@@ -48,7 +48,7 @@ export function FinancialSnapshotSection(props: Props) {
         </div>
       ) : <p>{isRussian ? 'Показатели сейчас недоступны — проверь графики в источнике.' : 'Metrics are unavailable—check the source charts.'}</p>}
       {sources.macrotrends && <a className="single-source-link" href={sources.macrotrends} rel="noreferrer" target="_blank">Macrotrends ↗</a>}
-      <small className="source-note">{isRussian ? 'Live-показатели: Finnhub.' : 'Live metrics: Finnhub.'}</small>
+      <small className="source-note">{isRussian ? 'Актуальные показатели: Finnhub.' : 'Live metrics: Finnhub.'}</small>
       <ResearchReviewButton isRussian={isRussian} onToggle={onToggle} reviewed={reviewed} />
     </section>
   );
@@ -56,10 +56,10 @@ export function FinancialSnapshotSection(props: Props) {
 
 export function NewsConsensusSection(props: Props) {
   const { isRussian, onToggle, research, reviewed, stock } = props;
-  const sources = getResearchSources(stock);
+  const sources = getResearchSources(stock, isRussian);
   return (
     <section className="research-section news-consensus">
-      <header><span>4</span><div><h3>News & Consensus</h3><small>★★★★</small></div></header>
+      <header><span>4</span><div><h3>{isRussian ? 'Новости и консенсус' : 'News & Consensus'}</h3><small>★★★★</small></div></header>
       <div className="research-news">
         {research?.news.length
           ? research.news.slice(0, 3).map((item) => (

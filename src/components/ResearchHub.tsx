@@ -65,7 +65,7 @@ export function ResearchHub({ isRussian, onReady, stock }: Props) {
     <section className="research-hub">
       <header className="research-hub-heading">
         <div>
-          <p className="eyebrow">Research Hub</p>
+          <p className="eyebrow">{isRussian ? 'Центр исследований' : 'Research Hub'}</p>
           <h2>{isRussian ? 'Сначала исследование. Потом решение.' : 'Research first. Decide second.'}</h2>
         </div>
         <span>{reviewed.size}/4</span>
@@ -85,7 +85,7 @@ export function ResearchHub({ isRussian, onReady, stock }: Props) {
       </div>
       <section className="research-summary">
         <div>
-          <p className="eyebrow">AI Summary</p>
+          <p className="eyebrow">{isRussian ? 'AI-резюме' : 'AI Summary'}</p>
           <h3>{isRussian ? 'Собери факты в одну картину' : 'Bring the evidence together'}</h3>
           <p>{isRussian
             ? 'AI использует профиль компании, доступные показатели, консенсус и заголовки. Он не заменяет оригинальные документы.'

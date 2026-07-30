@@ -2,7 +2,7 @@ export function PurchaseResearchGate({ isRussian }: { isRussian: boolean }) {
   return (
     <aside className="purchase-research-gate">
       <span>🔒</span>
-      <p className="eyebrow">Reflection</p>
+      <p className="eyebrow">{isRussian ? 'Рефлексия' : 'Reflection'}</p>
       <h2>{isRussian ? 'Покупка откроется после исследования' : 'Research before buying'}</h2>
       <p>{isRussian
         ? 'Изучи четыре блока Research Hub и создай AI-резюме. После этого ответь на три вопроса о своём решении.'

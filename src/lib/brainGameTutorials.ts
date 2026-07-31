@@ -19,7 +19,7 @@ const controls: Record<BrainGameId, { ru: string; en: string }> = {
   missing: { ru: 'Запомни предметы и выбери тот, который исчез.', en: 'Remember the objects and choose the one that disappeared.' },
   reverse: { ru: 'После показа введи все цифры в обратном порядке.', en: 'After the reveal, enter every digit in reverse order.' },
   'growing-matrix': { ru: 'С каждым раундом запоминай на одну позицию больше.', en: 'Remember one additional position in every round.' },
-  'face-name': { ru: 'Изучи лицо, отличительные черты и имя. Затем выбери имя по портрету.', en: 'Study the face, distinctive features, and name. Then recall the name from the portrait.' },
+  'face-name': { ru: 'Познакомься с людьми и прочитай их истории. Затем напечатай имя по лицу и подсказке.', en: 'Meet the people and read their stories. Then type each name from the face and clue.' },
   'number-pattern': { ru: 'Найди шаг последовательности и выбери следующее число.', en: 'Find the sequence step and choose the next number.' },
   'target-equation': { ru: 'Подставь знак +, − или ×, чтобы получить показанный результат.', en: 'Insert +, −, or × to produce the shown result.' },
   'odd-rule': { ru: 'Определи общее правило и нажми на число-исключение.', en: 'Identify the shared rule and tap the exception.' },

@@ -38,27 +38,74 @@
   font-size: 24px;
   backdrop-filter: blur(10px);
 }
-.face-name-options {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 9px;
-  width: min(520px, 100%);
-  margin: 18px auto 0;
+.face-name-dialogue {
+  display: flex;
+  width: min(580px, 100%);
+  align-items: flex-start;
+  gap: 11px;
+  margin: 16px auto 0;
+  padding: 14px 16px;
+  border: 1px solid #41475f;
+  border-radius: 16px;
+  background: #292d42;
+  text-align: left;
 }
-.face-name-options button {
+.face-name-dialogue > span { font-size: 20px; }
+.face-name-dialogue p { margin: 0; color: #d6d8e6; font-size: 14px; line-height: 1.55; }
+.face-name-next {
   min-height: 48px;
-  border: 1px solid #474d67;
+  margin-top: 15px;
+  padding: 0 19px;
+  border: 0;
   border-radius: 13px;
-  color: #f3f3fa;
-  background: #30354b;
+  color: #fff;
+  background: #7059c7;
   font-weight: 850;
   cursor: pointer;
 }
-.face-name-options button:hover { border-color: #9380d4; background: #3a3b5a; transform: translateY(-2px); }
+.face-name-next:hover { background: #7e68ce; transform: translateY(-2px); }
+.face-name-recall-form {
+  display: grid;
+  width: min(580px, 100%);
+  gap: 7px;
+  margin: 15px auto 0;
+  text-align: left;
+}
+.face-name-recall-form label { color: #aeb3c8; font-size: 11px; font-weight: 850; }
+.face-name-recall-form > div { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+.face-name-recall-form input {
+  width: 100%;
+  min-width: 0;
+  height: 49px;
+  padding: 0 15px;
+  border: 1px solid #4a506a;
+  border-radius: 13px;
+  outline: none;
+  color: #f4f3fa;
+  background: #25293c;
+  font: inherit;
+  font-size: 16px;
+}
+.face-name-recall-form input:focus { border-color: #9b86e8; box-shadow: 0 0 0 3px rgba(155,134,232,.16); }
+.face-name-recall-form input[aria-invalid="true"] { border-color: #ed756d; }
+.face-name-recall-form button {
+  min-height: 49px;
+  padding: 0 17px;
+  border: 0;
+  border-radius: 13px;
+  color: #fff;
+  background: #7059c7;
+  font-weight: 850;
+  cursor: pointer;
+}
 .face-ai-note { display: block; margin-top: 14px; color: #858ba2; font-size: 9px; }
 @media (max-width: 560px) {
   .face-name-game { padding-inline: 18px; }
   .face-name-stage { width: min(245px, 76vw); border-radius: 18px; }
+  .face-name-recall .face-name-stage { width: min(185px, 52vw); }
   .face-name-stage > strong { font-size: 21px; }
-  .face-name-options { grid-template-columns: 1fr 1fr; }
+  .face-name-dialogue { padding: 12px 13px; }
+  .face-name-dialogue p { font-size: 13px; }
+  .face-name-recall-form > div { grid-template-columns: 1fr; }
+  .face-name-recall-form button { width: 100%; }
 }

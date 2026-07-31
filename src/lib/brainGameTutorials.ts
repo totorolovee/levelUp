@@ -6,6 +6,7 @@ const controls: Record<BrainGameId, { ru: string; en: string }> = {
   shade: { ru: 'Нажми на единственную фигуру, оттенок которой отличается.', en: 'Tap the one shape whose shade is different.' },
   scan: { ru: 'Нажми на каждую фигуру-цель и не отмечай отвлекающие символы.', en: 'Tap every target shape and avoid the distractors.' },
   switch: { ru: 'Сначала прочитай правило: отвечай по цвету чернил или по значению слова.', en: 'Read the rule first: answer by ink color or word meaning.' },
+  coffee: { ru: 'Нажми на сахар или сироп нужное число раз, включи красную кнопку и останови зелёной у линии.', en: 'Tap sugar or syrup the required number of times, start with red, and stop with green at the line.' },
   count: { ru: 'Просканируй поле по строкам, посчитай цель и выбери число.', en: 'Scan row by row, count the target, and choose the number.' },
   'focus-match': { ru: 'Сравни две фигуры и выбери «Да» или «Нет».', en: 'Compare the two shapes and choose Yes or No.' },
   reaction: { ru: 'Не нажимай заранее. Коснись кнопки только после зелёного сигнала.', en: 'Do not tap early. Touch the button only after the green signal.' },
@@ -39,6 +40,11 @@ export function getBrainGameTutorial(id: BrainGameId, category: BrainGameCategor
         ru: 'Чтобы перейти дальше, вспомни все имена без единой ошибки. Каждый новый уровень добавляет ещё одно лицо.',
         en: 'Recall every name without a single mistake to advance. Each new level adds one more face.',
       }
+    : id === 'coffee'
+      ? {
+          ru: 'После каждого стакана ты увидишь точный заказ и свой уровень наполнения. Итог зависит от всех восьми заказов.',
+          en: 'After each cup, you will see the exact order and your fill level. Your result combines all eight orders.',
+        }
     : {
         ru: 'При ошибке уровень не изменится: прочитай подсказку и попробуй тот же вопрос снова.',
         en: 'A mistake will not change the level: read the hint and retry the same question.',

@@ -16,6 +16,7 @@ import { PathPlannerGame, RotationGame } from './brainGames/LogicGamesB';
 import { GreaterExpressionGame, MultiplicationSprintGame, NumberPathGame } from './brainGames/MathGamesA';
 import { FractionCompareGame, MissingNumberGame } from './brainGames/MathGamesB';
 import { FaceNameRecallGame } from './brainGames/FaceNameRecallGame';
+import { CoffeeAttentionGame } from './brainGames/CoffeeAttentionGame';
 
 type Props = {
   difficulty: number;
@@ -37,6 +38,7 @@ export function BrainGameRunner({
     case 'shade': return <AttentionTrainingGame {...common} />;
     case 'scan': return <TargetScanGame {...common} />;
     case 'switch': return <RuleSwitchGame {...common} />;
+    case 'coffee': return <CoffeeAttentionGame {...common} />;
     case 'reaction': return <SpeedTrainingGame {...common} roundsCount={12} />;
     case 'compare': return <QuickCompareGame {...common} />;
     case 'math': return <RapidMathGame {...common} />;

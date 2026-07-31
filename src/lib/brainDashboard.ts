@@ -74,7 +74,7 @@ export async function loadBrainDashboard(): Promise<BrainDashboardData> {
   const scoresForDate = (date: Date) => rows
     .filter((row) => localDateKey(new Date(row.created_at)) === localDateKey(date))
     .map((row) => row.score);
-  const focusGames = new Set(['shade', 'scan', 'switch', 'focus-match']);
+  const focusGames = new Set(['shade', 'scan', 'switch', 'focus-match', 'coffee']);
   const skills = {
     attention: recentAverage(rows, (row) => row.category === 'attention'),
     memory: recentAverage(rows, (row) => row.category === 'memory'),

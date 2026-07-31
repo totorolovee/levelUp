@@ -6,6 +6,7 @@ import './styles/brain-training.css';
 import './styles/brain-game-preview.css';
 import './styles/brain-game-feedback.css';
 import './styles/face-name-game.css';
+import './styles/coffee-game.css';
 import './styles/brain-dashboard.css';
 import './styles/brain-library-redesign.css';
 import './styles/research-hub.css';

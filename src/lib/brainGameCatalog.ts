@@ -1,7 +1,7 @@
 import type { BrainGameCategory } from './brainGameResults';
 
 export type BrainGameId =
-  | 'shade' | 'scan' | 'switch'
+  | 'shade' | 'scan' | 'switch' | 'coffee'
   | 'reaction' | 'compare' | 'math'
   | 'sequence' | 'pairs' | 'pattern'
   | 'count' | 'focus-match' | 'direction' | 'sort'
@@ -33,6 +33,7 @@ export const brainGameCategories: BrainGameCategoryInfo[] = [
       { id: 'shade', icon: '◉', ru: 'Другой оттенок', en: 'Odd shade', priority: true },
       { id: 'scan', icon: '⌖', ru: 'Визуальный сканер', en: 'Visual scanner', priority: true },
       { id: 'switch', icon: '⇄', ru: 'Смена правил', en: 'Rule switch', priority: true },
+      { id: 'coffee', icon: '☕', ru: 'Кофейная смена', en: 'Coffee shift', priority: true },
       { id: 'count', icon: '••', ru: 'Подсчёт целей', en: 'Target count' },
       { id: 'focus-match', icon: '＝', ru: 'Совпадение', en: 'Focus match' },
     ],

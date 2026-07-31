@@ -6,6 +6,7 @@ export type BrainGameId =
   | 'sequence' | 'pairs' | 'pattern'
   | 'count' | 'focus-match' | 'direction' | 'sort'
   | 'missing' | 'reverse' | 'growing-matrix'
+  | 'face-name'
   | 'number-pattern' | 'target-equation' | 'odd-rule' | 'path-planner' | 'rotation'
   | 'greater-expression' | 'multiplication' | 'number-path' | 'fractions' | 'missing-number';
 
@@ -45,6 +46,7 @@ export const brainGameCategories: BrainGameCategoryInfo[] = [
       { id: 'missing', icon: '?', ru: 'Пропавший предмет', en: 'Missing item' },
       { id: 'reverse', icon: '↩', ru: 'Цифры наоборот', en: 'Reverse digits' },
       { id: 'growing-matrix', icon: '▦+', ru: 'Растущая матрица', en: 'Growing matrix' },
+      { id: 'face-name', icon: '◉+', ru: 'Лица и имена', en: 'Face–Name Recall', priority: true },
     ],
   },
   {

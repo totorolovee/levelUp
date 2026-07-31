@@ -18,6 +18,7 @@ const actions: Record<BrainGameId, { ru: string; en: string }> = {
   missing: { ru: 'Запоминай набор предметов и определяй, какой из них исчез.', en: 'Remember a set of objects and identify which one disappeared.' },
   reverse: { ru: 'Удерживай цифры в памяти и вводи последовательность в обратном порядке.', en: 'Hold digits in memory and enter the sequence in reverse order.' },
   'growing-matrix': { ru: 'Запоминай всё больше позиций на матрице за ограниченное время.', en: 'Remember an increasing number of positions on a grid under time pressure.' },
+  'face-name': { ru: 'Знакомься с вымышленными AI-персонажами и вспоминай их имена по лицам.', en: 'Meet fictional AI-generated people and recall their names from their faces.' },
   'number-pattern': { ru: 'Находи правило числового ряда и выбирай следующее значение.', en: 'Discover the number pattern and choose the next value.' },
   'target-equation': { ru: 'Определяй, какой математический знак превращает выражение в верное.', en: 'Identify which operator makes the equation correct.' },
   'odd-rule': { ru: 'Находи число, которое нарушает общее правило группы.', en: 'Find the number that breaks the group’s shared rule.' },

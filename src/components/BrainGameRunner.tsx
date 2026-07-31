@@ -15,6 +15,7 @@ import { NumberPatternGame, OddRuleGame, TargetEquationGame } from './brainGames
 import { PathPlannerGame, RotationGame } from './brainGames/LogicGamesB';
 import { GreaterExpressionGame, MultiplicationSprintGame, NumberPathGame } from './brainGames/MathGamesA';
 import { FractionCompareGame, MissingNumberGame } from './brainGames/MathGamesB';
+import { FaceNameRecallGame } from './brainGames/FaceNameRecallGame';
 
 type Props = {
   difficulty: number;
@@ -49,6 +50,7 @@ export function BrainGameRunner({
     case 'missing': return <MissingItemGame {...common} />;
     case 'reverse': return <ReverseSequenceGame {...common} />;
     case 'growing-matrix': return <GrowingMatrixGame {...common} />;
+    case 'face-name': return <FaceNameRecallGame {...common} />;
     case 'number-pattern': return <NumberPatternGame {...common} />;
     case 'target-equation': return <TargetEquationGame {...common} />;
     case 'odd-rule': return <OddRuleGame {...common} />;

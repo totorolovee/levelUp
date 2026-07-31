@@ -44,7 +44,7 @@ export function BrainTrainingPage() {
     setDailyResults([]);
     setGameId(first.id);
     setCategory(first.category);
-    setStage('game');
+    setStage('preview');
   };
 
   const completeGame = async (score: number) => {
@@ -90,7 +90,7 @@ export function BrainTrainingPage() {
     setDailyIndex((value) => value + 1);
     setGameId(next.id);
     setCategory(next.category);
-    setStage('game');
+    setStage('preview');
   };
 
   const finishDailyTraining = () => {
@@ -121,7 +121,7 @@ export function BrainTrainingPage() {
         <button className="brain-game-back" onClick={leaveGame} type="button">← {isRussian ? 'Выйти из игры' : 'Leave game'}</button>
         <BrainGameRunner difficulty={progress[gameId]?.currentLevel ?? 1} gameId={gameId} isRussian={isRussian} memoryNeed={profile?.memoryNeed ?? 3} onComplete={completeGame} />
       </>}
-      {stage === 'preview' && <BrainGamePreview category={category} gameId={gameId} isRussian={isRussian} onBack={() => setStage('library')} onStart={() => setStage('game')} progress={progress[gameId]} />}
+      {stage === 'preview' && <BrainGamePreview category={category} gameId={gameId} isRussian={isRussian} onBack={leaveGame} onStart={() => setStage('game')} progress={progress[gameId]} />}
       {stage === 'result' && <BrainGameResultScreen dailyPosition={isDailyTraining ? { current: dailyIndex + 1, total: plan.length } : undefined} isRussian={isRussian} onContinue={continueAfterResult} result={result} />}
       {stage === 'daily-result' && dashboard && <DailyTrainingResult dashboard={dashboard} isRussian={isRussian} onDone={finishDailyTraining} results={dailyResults} />}
       {error && <p className="coach-error">{error}</p>}

@@ -18,6 +18,8 @@ export function BrainActivityCalendar({ activeDates, isRussian, streak }: Props)
   const firstWeekday = (new Date(year, month, 1).getDay() + 6) % 7;
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const active = new Set(activeDates);
+  const monthKey = `${year}-${String(month + 1).padStart(2, '0')}`;
+  const activeThisMonth = activeDates.filter((date) => date.startsWith(monthKey)).length;
   const weekdays = isRussian
     ? ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
     : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -30,10 +32,13 @@ export function BrainActivityCalendar({ activeDates, isRussian, streak }: Props)
     <section className="brain-activity-card">
       <header>
         <div>
-          <p className="eyebrow">{isRussian ? 'Календарь активности' : 'Activity calendar'}</p>
+          <p className="eyebrow">{isRussian ? 'Активность' : 'Activity'}</p>
           <h2>{monthTitle}</h2>
         </div>
-        <span>🔥 {streak} {isRussian ? 'дн.' : 'days'}</span>
+        <div className="activity-summary">
+          <span>🔥 {streak} {isRussian ? 'дн.' : 'days'}</span>
+          <small>{activeThisMonth} {isRussian ? 'трен.' : 'sessions'}</small>
+        </div>
       </header>
       <div className="activity-calendar">
         {weekdays.map((day) => <small key={day}>{day}</small>)}
@@ -43,12 +48,21 @@ export function BrainActivityCalendar({ activeDates, isRussian, streak }: Props)
           const isActive = active.has(dateKey(date));
           const isToday = dateKey(date) === dateKey(today);
           return (
-            <span className={`${isActive ? 'active ' : ''}${isToday ? 'today' : ''}`} key={dateKey(date)}>
+            <span
+              aria-label={`${index + 1} ${monthTitle}${isActive ? (isRussian ? ', тренировка выполнена' : ', workout complete') : ''}`}
+              className={`${isActive ? 'active ' : ''}${isToday ? 'today' : ''}`}
+              key={dateKey(date)}
+              title={isActive ? (isRussian ? 'Тренировка выполнена' : 'Workout complete') : undefined}
+            >
               {index + 1}
             </span>
           );
         })}
       </div>
+      <footer className="activity-legend">
+        <span><i className="completed" />{isRussian ? 'Тренировка' : 'Workout'}</span>
+        <span><i className="current" />{isRussian ? 'Сегодня' : 'Today'}</span>
+      </footer>
     </section>
   );
 }

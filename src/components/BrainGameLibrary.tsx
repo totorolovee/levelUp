@@ -40,7 +40,7 @@ export function BrainGameLibrary({ focus, isRussian, progress, onSelect }: Props
                 onClick={() => onSelect(game.id, category.id)}
                 type="button"
               >
-                <div className="game-card-art" aria-hidden="true">
+                <div className={`game-card-art${game.id === 'face-name' ? ' face-name-card-art' : ''}`} aria-hidden="true">
                   <span>{game.icon}</span>
                   <i>{category.icon}</i>
                 </div>

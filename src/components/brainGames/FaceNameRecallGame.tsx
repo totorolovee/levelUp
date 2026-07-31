@@ -1,11 +1,7 @@
 import { useMemo, useRef, useState, type FormEvent } from 'react';
 import { flushSync } from 'react-dom';
-import {
-  faceNameNames,
-  faceNameProfiles,
-  type FaceNameProfile,
-  type LocalizedText,
-} from '../../lib/faceNamePeople';
+import { faceNameProfiles } from '../../lib/faceNamePeople';
+import { createFaceNameSession, shuffled } from '../../lib/faceNameSession';
 import { FaceNamePortrait } from './FaceNamePortrait';
 import type { BrainGameProps } from './types';
 import { GameAnswerFeedback } from './GameAnswerFeedback';
@@ -14,24 +10,9 @@ import { useAnswerFeedback } from './useAnswerFeedback';
 const normalizeName = (value: string) =>
   value.trim().toLocaleLowerCase().replace(/[.,!?'"’\-—\s]/g, '');
 
-function shuffled<T>(items: T[]) {
-  const result = [...items];
-  for (let index = result.length - 1; index > 0; index -= 1) {
-    const randomIndex = Math.floor(Math.random() * (index + 1));
-    [result[index], result[randomIndex]] = [result[randomIndex], result[index]];
-  }
-  return result;
-}
-
-type SessionPerson = FaceNameProfile & { name: LocalizedText };
-
 export function FaceNameRecallGame({ difficulty, isRussian, onComplete }: BrainGameProps) {
   const peopleCount = Math.min(faceNameProfiles.length, Math.max(5, difficulty + 4));
-  const sessionPeople = useMemo<SessionPerson[]>(() => {
-    const names = shuffled(faceNameNames);
-    return shuffled(faceNameProfiles).slice(0, peopleCount)
-      .map((profile, index) => ({ ...profile, name: names[index] }));
-  }, [peopleCount]);
+  const sessionPeople = useMemo(() => createFaceNameSession(peopleCount), [peopleCount]);
   const recallOrder = useMemo(
     () => shuffled(sessionPeople.map((_, index) => index)),
     [sessionPeople],

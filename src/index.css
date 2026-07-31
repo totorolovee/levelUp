@@ -1,5 +1,6 @@
 :root {
-  font-family: Manrope, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-netflix: "Netflix Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: var(--font-netflix);
   color: #252842;
   background: #f4f2f8;
   font-synthesis: none;
@@ -38,7 +39,7 @@ button, a, input, textarea, select { transition: border-color .2s, background-co
 .theme-icon.moon { right: 3px; color: #747991; }
 .theme-thumb { position: absolute; z-index: 1; left: 3px; top: 50%; width: 28px; height: 28px; border-radius: 50%; background: #e1b866; box-shadow: 0 3px 9px rgba(92, 76, 41, .24); transform: translate3d(var(--thumb-shift), -50%, 0); transition: transform .35s cubic-bezier(.22, 1, .36, 1), background-color .25s; }
 .brand-group { display: flex; min-width: 0; align-items: center; gap: 12px; }
-.brand { color: #252842; font-family: Unbounded, Manrope, sans-serif; font-size: 19px; font-weight: 800; text-decoration: none; letter-spacing: -1px; }
+.brand { color: #252842; font-family: var(--font-netflix); font-size: 21px; font-weight: 800; text-decoration: none; letter-spacing: -1px; }
 .brand span { color: #7059c7; }
 .creator-name { padding-left: 12px; border-left: 1px solid #d4cee0; color: #747990; font-size: 12px; }
 nav { position: relative; display: flex; width: 38px; min-height: 34px; flex: 0 0 auto; gap: 0; padding: 0; border: 0; border-radius: 10px; background: transparent; }
@@ -59,7 +60,7 @@ nav.mobile-open .nav-menu { opacity: 1; pointer-events: auto; transform: transla
 .eyebrow { margin: 0 0 10px; color: #7059c7; font-size: 12px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; }
 h1, h2, p { margin-top: 0; }
 h1, .title-screen h1, .dashboard-intro h2 {
-  font-family: Unbounded, Manrope, ui-sans-serif, sans-serif;
+  font-family: var(--font-netflix);
   font-weight: 700;
 }
 h1 { max-width: 760px; margin-bottom: 20px; font-size: clamp(38px, 5.4vw, 68px); line-height: 1.02; letter-spacing: -3px; }
@@ -439,7 +440,7 @@ button:disabled { opacity: .45; cursor: not-allowed; }
 .progress-cards article > span { font-size: 22px; }
 .progress-cards article > small { color: #747990; font-size: 12px; }
 .profile-identity { display: flex; align-items: center; gap: 20px; }
-.profile-avatar { display: grid; width: 82px; height: 82px; flex: 0 0 auto; place-items: center; border-radius: 24px; color: #fff; background: #7059c7; font-family: Unbounded, sans-serif; font-size: 34px; font-weight: 800; }
+.profile-avatar { display: grid; width: 82px; height: 82px; flex: 0 0 auto; place-items: center; border-radius: 24px; color: #fff; background: #7059c7; font-family: var(--font-netflix); font-size: 34px; font-weight: 800; }
 .avatar-uploader { display: grid; justify-items: start; gap: 5px; margin-top: 9px; }
 .avatar-uploader button { padding: 7px 10px; border: 1px solid #d4cee0; border-radius: 9px; color: #51458a; background: #fff; font-size: 12px; font-weight: 750; cursor: pointer; }
 .avatar-uploader small { max-width: 280px; font-size: 12px; }
@@ -883,7 +884,7 @@ html[data-theme="dark"] .nav-link.active { color: #c5baff; background: #332e52; 
 .preview-highlight strong { display: block; margin: 9px 0 2px; font-size: 46px; line-height: 1; }
 .preview-highlight p { margin: 8px 0 0; color: #e4ddff; font-size: 12px; }
 .preview-orb { display: grid; width: 108px; height: 108px; place-items: center; border-radius: 50%; background: radial-gradient(circle at 35% 25%, #ffadfa, #9d3cf1 46%, #5325a9 72%); box-shadow: inset -12px -14px 24px rgba(34,8,83,.42), 0 18px 32px rgba(40,15,91,.35); }
-.preview-orb span { font-family: Unbounded, sans-serif; font-size: 42px; font-weight: 900; transform: rotate(-8deg); }
+.preview-orb span { font-family: var(--font-netflix); font-size: 42px; font-weight: 900; transform: rotate(-8deg); }
 .preview-widgets { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .preview-widgets article,
 .preview-task-link { min-height: 150px; padding: 18px; border: 1px solid rgba(255,255,255,.07); border-radius: 16px; color: inherit; background: #252a49; box-shadow: 0 12px 25px rgba(0,0,0,.16); text-decoration: none; }

@@ -34,7 +34,7 @@ export function FaceNameRecallGame({ difficulty, isRussian, onComplete }: BrainG
   const [round, setRound] = useState(0);
   const [answer, setAnswer] = useState('');
   const [phase, setPhase] = useState<'intro' | 'recall'>('intro');
-  const { adjustScore, feedback, isLocked, showFeedback } = useAnswerFeedback();
+  const { adjustScore, feedback, isLocked, showFeedback } = useAnswerFeedback(1000, 2500);
   const personIndex = phase === 'intro' ? introOrder[introIndex] : recallOrder[round];
   const person = faceNamePeople[personIndex];
 
@@ -73,7 +73,6 @@ export function FaceNameRecallGame({ difficulty, isRussian, onComplete }: BrainG
         : `${isRussian ? 'Проверка памяти' : 'Memory check'} ${round + 1}/${recallOrder.length}`}</p>
       <div className="face-name-stage">
         <FacePortrait index={personIndex} isRussian={isRussian} />
-        {phase === 'intro' && <strong>{isRussian ? person.name.ru : person.name.en}</strong>}
       </div>
       <div className="face-name-dialogue">
         <span aria-hidden="true">{phase === 'intro' ? '👋' : '💬'}</span>

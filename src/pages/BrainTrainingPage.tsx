@@ -122,7 +122,7 @@ export function BrainTrainingPage() {
         <BrainGameRunner difficulty={progress[gameId]?.currentLevel ?? 1} gameId={gameId} isRussian={isRussian} memoryNeed={profile?.memoryNeed ?? 3} onComplete={completeGame} />
       </>}
       {stage === 'preview' && <BrainGamePreview category={category} gameId={gameId} isRussian={isRussian} onBack={leaveGame} onStart={() => setStage('game')} progress={progress[gameId]} />}
-      {stage === 'result' && <BrainGameResultScreen dailyPosition={isDailyTraining ? { current: dailyIndex + 1, total: plan.length } : undefined} isRussian={isRussian} onContinue={continueAfterResult} result={result} />}
+      {stage === 'result' && <BrainGameResultScreen dailyPosition={isDailyTraining ? { current: dailyIndex + 1, total: plan.length } : undefined} isRussian={isRussian} onContinue={continueAfterResult} perfectRequired={gameId === 'face-name'} result={result} />}
       {stage === 'daily-result' && dashboard && <DailyTrainingResult dashboard={dashboard} isRussian={isRussian} onDone={finishDailyTraining} results={dailyResults} />}
       {error && <p className="coach-error">{error}</p>}
     </main>

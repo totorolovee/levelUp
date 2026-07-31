@@ -34,16 +34,22 @@ const controls: Record<BrainGameId, { ru: string; en: string }> = {
 
 export function getBrainGameTutorial(id: BrainGameId, category: BrainGameCategory) {
   const action = getBrainGameDescription(id, category).action;
+  const mistakeRule = id === 'face-name'
+    ? {
+        ru: 'Чтобы перейти дальше, вспомни все имена без единой ошибки. Каждый новый уровень добавляет ещё одно лицо.',
+        en: 'Recall every name without a single mistake to advance. Each new level adds one more face.',
+      }
+    : {
+        ru: 'При ошибке уровень не изменится: прочитай подсказку и попробуй тот же вопрос снова.',
+        en: 'A mistake will not change the level: read the hint and retry the same question.',
+      };
   return [
     { ru: 'Пойми цель', en: 'Understand the goal', copy: action },
     { ru: 'Сделай ход', en: 'Make your move', copy: controls[id] },
     {
       ru: 'Учись на ошибке',
       en: 'Learn from mistakes',
-      copy: {
-        ru: 'При ошибке уровень не изменится: прочитай подсказку и попробуй тот же вопрос снова.',
-        en: 'A mistake will not change the level: read the hint and retry the same question.',
-      },
+      copy: mistakeRule,
     },
   ];
 }

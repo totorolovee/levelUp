@@ -1,6 +1,12 @@
-import { useMemo, useRef, useState, type CSSProperties, type FormEvent } from 'react';
+import { useMemo, useRef, useState, type FormEvent } from 'react';
 import { flushSync } from 'react-dom';
-import { faceNamePeople } from '../../lib/faceNamePeople';
+import {
+  faceNameNames,
+  faceNameProfiles,
+  type FaceNameProfile,
+  type LocalizedText,
+} from '../../lib/faceNamePeople';
+import { FaceNamePortrait } from './FaceNamePortrait';
 import type { BrainGameProps } from './types';
 import { GameAnswerFeedback } from './GameAnswerFeedback';
 import { useAnswerFeedback } from './useAnswerFeedback';
@@ -8,35 +14,35 @@ import { useAnswerFeedback } from './useAnswerFeedback';
 const normalizeName = (value: string) =>
   value.trim().toLocaleLowerCase().replace(/[.,!?'"’\-—\s]/g, '');
 
-function FacePortrait({ index, isRussian }: { index: number; isRussian: boolean }) {
-  const person = faceNamePeople[index];
-  const style = {
-    backgroundPosition: `${person.column * (100 / 3)}% ${person.row * 100}%`,
-  } satisfies CSSProperties;
-  return (
-    <div
-      aria-label={isRussian ? 'Вымышленный портрет, созданный AI' : 'AI-generated fictional portrait'}
-      className="face-name-portrait"
-      role="img"
-      style={style}
-    />
-  );
+function shuffled<T>(items: T[]) {
+  const result = [...items];
+  for (let index = result.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [result[index], result[randomIndex]] = [result[randomIndex], result[index]];
+  }
+  return result;
 }
 
+type SessionPerson = FaceNameProfile & { name: LocalizedText };
+
 export function FaceNameRecallGame({ difficulty, isRussian, onComplete }: BrainGameProps) {
-  const peopleCount = Math.min(8, 5 + Math.floor((difficulty - 1) / 4));
-  const introOrder = useMemo(() => (
-    faceNamePeople.map((_, index) => index).sort(() => Math.random() - .5).slice(0, peopleCount)
-  ), [peopleCount]);
-  const recallOrder = useMemo(() => [...introOrder].sort(() => Math.random() - .5), [introOrder]);
+  const peopleCount = Math.min(faceNameProfiles.length, Math.max(5, difficulty + 4));
+  const sessionPeople = useMemo<SessionPerson[]>(() => {
+    const names = shuffled(faceNameNames);
+    return shuffled(faceNameProfiles).slice(0, peopleCount)
+      .map((profile, index) => ({ ...profile, name: names[index] }));
+  }, [peopleCount]);
+  const recallOrder = useMemo(
+    () => shuffled(sessionPeople.map((_, index) => index)),
+    [sessionPeople],
+  );
   const inputRef = useRef<HTMLInputElement>(null);
   const [introIndex, setIntroIndex] = useState(0);
   const [round, setRound] = useState(0);
   const [answer, setAnswer] = useState('');
   const [phase, setPhase] = useState<'intro' | 'recall'>('intro');
   const { adjustScore, feedback, isLocked, showFeedback } = useAnswerFeedback(1000, 2500);
-  const personIndex = phase === 'intro' ? introOrder[introIndex] : recallOrder[round];
-  const person = faceNamePeople[personIndex];
+  const person = sessionPeople[phase === 'intro' ? introIndex : recallOrder[round]];
 
   const beginRecall = () => {
     flushSync(() => setPhase('recall'));
@@ -68,27 +74,35 @@ export function FaceNameRecallGame({ difficulty, isRussian, onComplete }: BrainG
       <h1>{phase === 'intro'
         ? (isRussian ? 'Познакомься с персонажами' : 'Meet the people')
         : (isRussian ? 'Вспомни имя' : 'Recall the name')}</h1>
+      <div className="face-name-level-rule">
+        <strong>{isRussian ? 'Уровень' : 'Level'} {difficulty} · {peopleCount} {isRussian ? 'лиц' : 'faces'}</strong>
+        <span>{isRussian
+          ? 'Следующий уровень откроется, только если вспомнишь все имена без ошибок.'
+          : 'Recall every name without a mistake to unlock the next level.'}</span>
+      </div>
       <p>{phase === 'intro'
-        ? `${isRussian ? 'Знакомство' : 'Introduction'} ${introIndex + 1}/${introOrder.length}`
+        ? `${isRussian ? 'Знакомство' : 'Introduction'} ${introIndex + 1}/${sessionPeople.length}`
         : `${isRussian ? 'Проверка памяти' : 'Memory check'} ${round + 1}/${recallOrder.length}`}</p>
       <div className="face-name-stage">
-        <FacePortrait index={personIndex} isRussian={isRussian} />
+        <FaceNamePortrait person={person} isRussian={isRussian} />
       </div>
       <div className="face-name-dialogue">
         <span aria-hidden="true">{phase === 'intro' ? '👋' : '💬'}</span>
-        <p>{isRussian
-          ? (phase === 'intro' ? person.intro.ru : person.recall.ru)
-          : (phase === 'intro' ? person.intro.en : person.recall.en)}</p>
+        <p>{phase === 'intro'
+          ? (isRussian
+            ? `Привет! Меня зовут ${person.name.ru}. ${person.intro.ru}`
+            : `Hi! My name is ${person.name.en}. ${person.intro.en}`)
+          : (isRussian ? person.recall.ru : person.recall.en)}</p>
       </div>
       {phase === 'intro' && (
         <button
           className="face-name-next"
-          onClick={() => introIndex === introOrder.length - 1
+          onClick={() => introIndex === sessionPeople.length - 1
             ? beginRecall()
             : setIntroIndex((value) => value + 1)}
           type="button"
         >
-          {introIndex === introOrder.length - 1
+          {introIndex === sessionPeople.length - 1
             ? (isRussian ? 'Начать проверку' : 'Start memory check')
             : (isRussian ? 'Следующее знакомство' : 'Meet the next person')} →
         </button>
@@ -119,7 +133,9 @@ export function FaceNameRecallGame({ difficulty, isRussian, onComplete }: BrainG
           </div>
         </form>
         <GameAnswerFeedback
-          errorText={isRussian ? person.correction.ru : person.correction.en}
+          errorText={isRussian
+            ? `Я ${person.name.ru} — ${person.role.ru}.`
+            : `I am ${person.name.en} — ${person.role.en}.`}
           isRussian={isRussian}
           status={feedback}
         />

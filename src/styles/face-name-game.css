@@ -20,10 +20,31 @@
 .face-name-portrait {
   width: 100%;
   aspect-ratio: 418 / 470;
-  background-image: url("/assets/ai-face-name-sprite.webp");
   background-repeat: no-repeat;
+}
+.face-name-portrait.base {
+  background-image: url("/assets/ai-face-name-sprite.webp");
   background-size: 400% 200%;
 }
+.face-name-portrait.extra {
+  aspect-ratio: 1;
+  background-image: url("/assets/ai-face-name-sprite-extra.webp");
+  background-size: 300% 200%;
+}
+.face-name-level-rule {
+  display: grid;
+  width: min(580px, 100%);
+  gap: 4px;
+  margin: 13px auto 0;
+  padding: 11px 14px;
+  border: 1px solid #514976;
+  border-radius: 14px;
+  color: #ddd5ff;
+  background: rgba(112,89,199,.13);
+  text-align: left;
+}
+.face-name-level-rule strong { font-size: 13px; }
+.face-name-level-rule span { color: #b9bdd0; font-size: 11px; line-height: 1.45; }
 .face-name-dialogue {
   display: flex;
   width: min(580px, 100%);

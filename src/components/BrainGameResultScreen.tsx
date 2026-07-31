@@ -10,11 +10,12 @@ type Props = {
   dailyPosition?: { current: number; total: number };
   isRussian: boolean;
   onContinue: () => void;
+  perfectRequired?: boolean;
   result: BrainGameResultData;
 };
 
 export function BrainGameResultScreen(props: Props) {
-  const { dailyPosition, isRussian, onContinue, result } = props;
+  const { dailyPosition, isRussian, onContinue, perfectRequired, result } = props;
   return (
     <section className="training-result game-result-screen">
       <span>{result.isNewRecord ? '🏆' : '✓'}</span>
@@ -34,10 +35,16 @@ export function BrainGameResultScreen(props: Props) {
         <div className="game-mistake-feedback" role="status">
           <span aria-hidden="true">!</span>
           <div>
-            <strong>{isRussian ? 'Есть куда расти' : 'Room to improve'}</strong>
-            <small>{isRussian
-              ? 'Ошибки — часть тренировки. Следующая попытка укрепит навык.'
-              : 'Mistakes are part of training. The next attempt strengthens the skill.'}</small>
+            <strong>{perfectRequired
+              ? (isRussian ? `Уровень остался ${result.level}` : `You remain on level ${result.level}`)
+              : (isRussian ? 'Есть куда расти' : 'Room to improve')}</strong>
+            <small>{perfectRequired
+              ? (isRussian
+                ? 'Для следующего уровня нужно вспомнить все имена без единой ошибки.'
+                : 'Recall every name without a single mistake to unlock the next level.')
+              : (isRussian
+                ? 'Ошибки — часть тренировки. Следующая попытка укрепит навык.'
+                : 'Mistakes are part of training. The next attempt strengthens the skill.')}</small>
           </div>
         </div>
       )}

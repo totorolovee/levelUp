@@ -18,7 +18,9 @@
     "ai:secret": "node scripts/setup-ai-secret.mjs",
     "ai:deploy": "supabase functions deploy ai",
     "market:secret": "node scripts/setup-market-secret.mjs",
-    "market:deploy": "supabase functions deploy market-prices"
+    "market:deploy": "supabase functions deploy market-prices",
+    "billing:secret": "node scripts/setup-polar-secrets.mjs",
+    "billing:deploy": "supabase functions deploy billing"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.8",

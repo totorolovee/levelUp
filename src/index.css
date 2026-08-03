@@ -434,6 +434,20 @@ button:disabled { opacity: .45; cursor: not-allowed; }
 .settings-fields input { width: 100%; min-width: 0; padding: 11px; border: 1px solid #d8d2e4; border-radius: 10px; background: #fff; }
 .settings-fields button { padding: 0 14px; border: 0; border-radius: 10px; color: #fff; background: #7059c7; font-weight: 750; cursor: pointer; }
 .settings-message { grid-column: 1 / -1; margin: 0; color: #7059c7; }
+.plus-card { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 14px 20px; padding: 20px; border: 1px solid #ded9e9; border-radius: 16px; background: linear-gradient(135deg, #f7f4ff, #f3f7f4); }
+.plus-card.active { border-color: #b9a8e7; background: linear-gradient(135deg, #eee8ff, #f7f5ff); }
+.plus-card-copy { display: flex; align-items: center; gap: 13px; }
+.plus-card-copy h2 { margin: 0; font-size: 19px; }
+.plus-card-copy p { margin: 4px 0 0; color: #747990; font-size: 13px; }
+.plus-badge { display: grid; width: 48px; height: 48px; flex: 0 0 auto; place-items: center; border-radius: 14px; color: #fff; background: #7059c7; font-size: 11px; font-weight: 900; letter-spacing: .08em; }
+.plus-price { white-space: nowrap; color: #51458a; }
+.plus-price strong { font-size: 25px; }
+.plus-price span { color: #747990; font-size: 12px; }
+.plus-card > button { grid-column: 2; padding: 10px 14px; border: 0; border-radius: 10px; color: #fff; background: #7059c7; font-weight: 800; cursor: pointer; }
+.plus-status, .plus-error, .plus-success { grid-column: 1; margin: 0; font-size: 13px; }
+.plus-status { color: #666b86; }
+.plus-error { color: #a3444d; }
+.plus-success { color: #347453; font-weight: 800; }
 .account-signout { justify-self: start; padding: 10px 14px; border: 1px solid #d7a6aa; border-radius: 10px; color: #a3444d; background: transparent; font-weight: 800; cursor: pointer; }
 .progress-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin-top: 12px; }
 .progress-cards article { display: grid; justify-items: center; gap: 4px; padding: 17px; border: 1px solid #ded9e9; border-radius: 13px; background: #f8f6fb; text-align: center; }
@@ -659,6 +673,11 @@ html[data-theme="dark"] .profile-tabs { background: #1d2139; }
 html[data-theme="dark"] .profile-tabs button.active,
 html[data-theme="dark"] .settings-fields input,
 html[data-theme="dark"] .progress-cards article { color: #eef0ff; border-color: #3d4161; background: #292d4b; }
+html[data-theme="dark"] .plus-card { border-color: #49446b; background: linear-gradient(135deg, #302b50, #252a46); }
+html[data-theme="dark"] .plus-card-copy p,
+html[data-theme="dark"] .plus-price span,
+html[data-theme="dark"] .plus-status { color: #b8bbd1; }
+html[data-theme="dark"] .plus-price { color: #d9d2ff; }
 html[data-theme="dark"] .profile-identity p:last-child { color: #afb4cf; }
 html[data-theme="dark"] .card .google-auth { color: #eef0ff; border-color: #484d70; background: #292d4b; }
 html[data-theme="dark"] .auth-tabs { background: #1b1e35; }
@@ -759,6 +778,9 @@ html[data-theme="dark"] ::selection { color: #14162a; background: #a590e3; }
   .profile-stats { grid-template-columns: 1fr; }
   .achievements-grid { grid-template-columns: 1fr; }
   .settings-fields, .progress-cards { grid-template-columns: 1fr; }
+  .plus-card { grid-template-columns: 1fr; }
+  .plus-price, .plus-card > button, .plus-status, .plus-error, .plus-success { grid-column: 1; }
+  .plus-card > button { justify-self: start; }
   .profile-tabs, .portfolio-fields { grid-template-columns: repeat(2, 1fr); }
   .university-title { align-items: start; }
   .university-title > span { width: 52px; height: 52px; border-radius: 14px; }

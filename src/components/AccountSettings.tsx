@@ -5,6 +5,7 @@ import { useLanguage } from '../lib/language';
 import { AvatarUploader } from './AvatarUploader';
 import { supabase } from '../lib/supabase';
 import { useLocation } from 'wouter';
+import { PlusSubscriptionCard } from './PlusSubscriptionCard';
 
 type Props = {
   profile: UserProfile;
@@ -104,6 +105,7 @@ export function AccountSettings({ profile, onAvatarChange, onNameChange }: Props
         </label>
         {message && <p className="settings-message">{message}</p>}
       </div>
+      <PlusSubscriptionCard />
       <button className="account-signout" disabled={isSaving} onClick={signOut} type="button">
         {isRussian ? 'Выйти из аккаунта' : 'Sign out'}
       </button>

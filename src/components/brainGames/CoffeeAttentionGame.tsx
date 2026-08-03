@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { CoffeeMachine } from './CoffeeMachine';
+import { CoffeeIngredientPanel } from './CoffeeIngredientPanel';
 import { CoffeeOrdersPage } from './CoffeeOrdersPage';
 import { GameAnswerFeedback, type AnswerFeedback } from './GameAnswerFeedback';
 import type { BrainGameProps } from './types';
@@ -49,14 +50,21 @@ export function CoffeeAttentionGame({ isRussian, onComplete }: BrainGameProps) {
       {view === 'orders'
         ? <CoffeeOrdersPage cups={shift.cups} isRussian={isRussian}
             onOpenMachines={openMachines} started={shift.started} />
-        : <div className="coffee-machine-grid">
-            {shift.cups.map((cup) => (
-              <CoffeeMachine cup={cup} isPouring={shift.pouringIds.includes(cup.id)}
-                isRussian={isRussian} key={cup.id}
-                onAdd={(ingredient) => shift.addIngredient(cup.id, ingredient)}
-                onDiscard={() => shift.discard(cup.id)}
-                onToggle={() => shift.toggleMachine(cup.id)} />
-            ))}
+        : <div className="coffee-machine-console">
+            <div className="coffee-machine-grid">
+              {shift.cups.map((cup) => (
+                <CoffeeMachine cup={cup} isPouring={shift.pouringIds.includes(cup.id)}
+                  isRussian={isRussian} key={cup.id}
+                  onDiscard={() => shift.discard(cup.id)}
+                  onSelect={() => shift.selectMachine(cup.id)}
+                  onToggle={() => shift.toggleMachine(cup.id)}
+                  selected={shift.selectedId === cup.id} />
+              ))}
+            </div>
+            <CoffeeIngredientPanel
+              disabled={shift.pouringIds.includes(shift.selectedId)}
+              isRussian={isRussian} onAdd={shift.addIngredient}
+              selectedId={shift.selectedId} />
           </div>}
       <GameAnswerFeedback errorText={noticeText(shift.notice, isRussian)}
         isRussian={isRussian} status={feedback} />

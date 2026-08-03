@@ -19,6 +19,7 @@ export function useCoffeeShift(onComplete: (score: number) => void) {
   const [cups, setCups] = useState<CoffeeCupState[]>(() =>
     Array.from({ length: COFFEE_MACHINE_COUNT }, (_, index) => createCoffeeCup(index + 1)));
   const [pouringIds, setPouringIds] = useState<number[]>([]);
+  const [selectedId, setSelectedId] = useState(1);
   const [secondsLeft, setSecondsLeft] = useState(SHIFT_SECONDS);
   const [served, setServed] = useState(0);
   const [notice, setNotice] = useState<CoffeeNotice>(null);
@@ -59,7 +60,8 @@ export function useCoffeeShift(onComplete: (score: number) => void) {
     setCups((current) => current.map((cup) => cup.id === id ? change(cup) : cup));
   };
 
-  const addIngredient = (id: number, ingredient: CoffeeIngredient) => {
+  const addIngredient = (ingredient: CoffeeIngredient) => {
+    const id = selectedId;
     if (pouringIds.includes(id)) return;
     setNotice(null);
     updateCup(id, (cup) => ({
@@ -76,11 +78,13 @@ export function useCoffeeShift(onComplete: (score: number) => void) {
     if (cup.fill < MIN_READY_FILL) {
       setNotice({ machineId: id, type: 'early' });
       updateCup(id, () => createCoffeeCup(id));
+      setSelectedId(id === COFFEE_MACHINE_COUNT ? 1 : id + 1);
       return;
     }
     if (!hasCorrectIngredients(cup)) {
       setNotice({ machineId: id, type: 'wrong' });
       updateCup(id, () => createCoffeeCup(id));
+      setSelectedId(id === COFFEE_MACHINE_COUNT ? 1 : id + 1);
       return;
     }
     const nextServed = servedRef.current + 1;
@@ -88,9 +92,11 @@ export function useCoffeeShift(onComplete: (score: number) => void) {
     setServed(nextServed);
     setNotice({ machineId: id, type: 'served' });
     updateCup(id, () => createCoffeeCup(id));
+    setSelectedId(id === COFFEE_MACHINE_COUNT ? 1 : id + 1);
   };
 
   const toggleMachine = (id: number) => {
+    setSelectedId(id);
     if (pouringIds.includes(id)) return stopAndServe(id);
     const cup = cupsRef.current.find((item) => item.id === id);
     if (!cup || cup.fill > OVERFLOW_FILL) {
@@ -105,6 +111,7 @@ export function useCoffeeShift(onComplete: (score: number) => void) {
     setPouringIds((current) => current.filter((item) => item !== id));
     setNotice(null);
     updateCup(id, () => createCoffeeCup(id));
+    setSelectedId(id === COFFEE_MACHINE_COUNT ? 1 : id + 1);
   };
 
   const startShift = () => {
@@ -115,6 +122,7 @@ export function useCoffeeShift(onComplete: (score: number) => void) {
 
   return {
     addIngredient, cups, discard, notice, pouringIds, secondsLeft, served,
-    points: served * POINTS_PER_ORDER, started, startShift, toggleMachine,
+    points: served * POINTS_PER_ORDER, selectedId, selectMachine: setSelectedId,
+    started, startShift, toggleMachine,
   };
 }

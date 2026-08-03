@@ -8,7 +8,7 @@ type Props = {
 export function CoffeeOrderIcons({ isRussian, order }: Props) {
   const name = order.ingredient === 'sugar'
     ? (isRussian ? 'кубик сахара' : 'sugar cube')
-    : (isRussian ? 'порция сиропа' : 'syrup shot');
+    : (isRussian ? 'кусочек шоколада' : 'chocolate piece');
   return (
     <span className="coffee-order-icons" role="img" aria-label={`${order.amount} × ${name}`}>
       {Array.from({ length: order.amount }, (_, index) => (

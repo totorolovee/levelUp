@@ -1,61 +1,57 @@
 import type { CSSProperties } from 'react';
-import { OVERFLOW_FILL, type CoffeeOrder } from '../../lib/coffeeGame';
-import { CoffeeOrderIcons } from './CoffeeOrderIcons';
+import { OVERFLOW_FILL, type CoffeeCupState, type CoffeeIngredient } from '../../lib/coffeeGame';
 
 type Props = {
-  canStop: boolean;
-  disabled: boolean;
-  fill: number;
+  cup: CoffeeCupState;
   isPouring: boolean;
   isRussian: boolean;
-  onStart: () => void;
-  onStop: () => void;
-  order: CoffeeOrder;
+  onAdd: (ingredient: CoffeeIngredient) => void;
+  onDiscard: () => void;
+  onToggle: () => void;
 };
 
-export function CoffeeMachine({
-  canStop,
-  disabled,
-  fill,
-  isPouring,
-  isRussian,
-  onStart,
-  onStop,
-  order,
-}: Props) {
-  const cupStyle = { '--coffee-fill': `${Math.min(fill, 100)}%` } as CSSProperties;
-  const hasOverflow = fill > OVERFLOW_FILL;
+export function CoffeeMachine({ cup, isPouring, isRussian, onAdd, onDiscard, onToggle }: Props) {
+  const style = { '--coffee-fill': `${Math.min(cup.fill, 100)}%` } as CSSProperties;
+  const overflow = cup.fill > OVERFLOW_FILL;
+  const pieces = [
+    ...Array.from({ length: cup.ingredients.sugar }, () => 'sugar' as const),
+    ...Array.from({ length: cup.ingredients.chocolate }, () => 'chocolate' as const),
+  ];
 
   return (
-    <div className="coffee-machine">
-      <div className="coffee-machine-top">
-        <span className="coffee-brand">FOCUS BREW</span>
-        <div className="coffee-controls">
-          <button aria-label={isRussian ? 'Начать наливать кофе' : 'Start pouring coffee'}
-            className="coffee-control start" disabled={disabled || isPouring}
-            onClick={onStart} type="button">
-            <i /><span>{isRussian ? 'Старт' : 'Start'}</span>
-          </button>
-          <button aria-label={isRussian ? 'Остановить или выдать заказ' : 'Stop or serve order'}
-            className="coffee-control stop" disabled={!canStop}
-            onClick={onStop} type="button">
-            <i /><span>{isRussian ? 'Стоп' : 'Stop'}</span>
-          </button>
-        </div>
-      </div>
-      <div className="coffee-machine-bay">
-        <div className="coffee-machine-order">
-          <CoffeeOrderIcons isRussian={isRussian} order={order} />
-        </div>
-        <div className="coffee-spout"><span /></div>
+    <article className={`coffee-station${overflow ? ' overflow' : ''}`}>
+      <header>
+        <strong>{isRussian ? 'Машина' : 'Machine'} {cup.id}</strong>
+        <button className={`coffee-machine-action${isPouring ? ' pouring' : ''}`}
+          onClick={onToggle} type="button">
+          <span aria-hidden="true">{isPouring ? '✓' : '💧'}</span>
+          {isPouring ? (isRussian ? 'Отдать' : 'Serve') : (isRussian ? 'Налить' : 'Pour')}
+        </button>
+      </header>
+      <div className="coffee-machine-body">
+        <div className="coffee-station-spout" />
         <div className={`coffee-stream${isPouring ? ' active' : ''}`} />
-        <div className={`coffee-cup${hasOverflow ? ' overflow' : ''}`} style={cupStyle}>
+        <button className="coffee-station-trash" disabled={isPouring}
+          aria-label={isRussian ? 'Выбросить стакан' : 'Discard cup'}
+          onClick={onDiscard} type="button">♲</button>
+        <div className="coffee-cup" style={style}>
           <div className="coffee-liquid" />
-          <div className="coffee-foam" />
+          <div className="coffee-cup-pieces">
+            {pieces.map((piece, index) => <i className={piece} key={`${piece}-${index}`} />)}
+          </div>
         </div>
         <div className="coffee-spill" />
-        <div className="coffee-drip-tray" />
       </div>
-    </div>
+      <div className="coffee-station-ingredients">
+        {(['sugar', 'chocolate'] as const).map((ingredient) => (
+          <button disabled={isPouring} key={ingredient} onClick={() => onAdd(ingredient)} type="button">
+            <i className={ingredient} aria-hidden="true" />
+            {ingredient === 'sugar'
+              ? (isRussian ? 'Сахар' : 'Sugar')
+              : (isRussian ? 'Шоколад' : 'Chocolate')}
+          </button>
+        ))}
+      </div>
+    </article>
   );
 }

@@ -5,7 +5,7 @@ const actions: Record<BrainGameId, { ru: string; en: string }> = {
   shade: { ru: 'Находи фигуру с другим оттенком, пока цвета постепенно становятся почти одинаковыми.', en: 'Find the shape with a different shade as the colors gradually become nearly identical.' },
   scan: { ru: 'Просматривай растущее поле и отмечай все фигуры, совпадающие с целью.', en: 'Scan a growing field and mark every shape that matches the target.' },
   switch: { ru: 'Быстро переключайся между цветом текста и значением написанного слова.', en: 'Switch quickly between the ink color and the meaning of the written word.' },
-  coffee: { ru: 'За одну минуту готовь всё больше заказов одновременно: следи за значками и не переливай кофе.', en: 'Prepare more orders at once during a one-minute shift: follow the icons and avoid overflowing cups.' },
+  coffee: { ru: 'Запоминай страницу заказов и готовь их одновременно на четырёх кофемашинах за одну минуту.', en: 'Remember the orders page and prepare drinks on four coffee machines during a one-minute shift.' },
   count: { ru: 'Считай нужные символы среди множества похожих отвлекающих фигур.', en: 'Count target symbols among many similar distracting shapes.' },
   'focus-match': { ru: 'Сравнивай пары фигур и мгновенно решай, совпадают ли они.', en: 'Compare pairs of shapes and decide instantly whether they match.' },
   reaction: { ru: 'Дожидайся сигнала и нажимай как можно быстрее, не торопясь раньше времени.', en: 'Wait for the signal and react as quickly as possible without tapping early.' },

@@ -6,7 +6,7 @@ const controls: Record<BrainGameId, { ru: string; en: string }> = {
   shade: { ru: 'Нажми на единственную фигуру, оттенок которой отличается.', en: 'Tap the one shape whose shade is different.' },
   scan: { ru: 'Нажми на каждую фигуру-цель и не отмечай отвлекающие символы.', en: 'Tap every target shape and avoid the distractors.' },
   switch: { ru: 'Сначала прочитай правило: отвечай по цвету чернил или по значению слова.', en: 'Read the rule first: answer by ink color or word meaning.' },
-  coffee: { ru: 'Выбери стакан, повтори кубики сахара или капли сиропа, запусти красной кнопкой и останови зелёной, когда стакан полный.', en: 'Choose a cup, match its sugar cubes or syrup drops, start with red, and stop with green when the cup is full.' },
+  coffee: { ru: 'Запомни карточки заказов, перейди к машинам, добавь кубики сахара или шоколада и нажми 💧. Когда стакан полный, эта же кнопка отдаст заказ.', en: 'Remember the order cards, open the machines, add sugar or chocolate pieces, and press 💧. When the cup is full, the same button serves it.' },
   count: { ru: 'Просканируй поле по строкам, посчитай цель и выбери число.', en: 'Scan row by row, count the target, and choose the number.' },
   'focus-match': { ru: 'Сравни две фигуры и выбери «Да» или «Нет».', en: 'Compare the two shapes and choose Yes or No.' },
   reaction: { ru: 'Не нажимай заранее. Коснись кнопки только после зелёного сигнала.', en: 'Do not tap early. Touch the button only after the green signal.' },
@@ -42,8 +42,8 @@ export function getBrainGameTutorial(id: BrainGameId, category: BrainGameCategor
       }
     : id === 'coffee'
       ? {
-          ru: 'Перелитый или испорченный стакан выброси в корзину слева. Каждые 15 секунд появляется ещё один заказ — максимум четыре.',
-          en: 'Throw an overflowed or incorrect cup in the bin on the left. Another order appears every 15 seconds, up to four.',
+          ru: 'Можно возвращаться на страницу заказов, но таймер не остановится. Перелитый или неверный стакан выброси кнопкой ♲.',
+          en: 'You can return to the orders page, but the timer keeps running. Discard an overflowed or incorrect cup with ♲.',
         }
     : {
         ru: 'При ошибке уровень не изменится: прочитай подсказку и попробуй тот же вопрос снова.',

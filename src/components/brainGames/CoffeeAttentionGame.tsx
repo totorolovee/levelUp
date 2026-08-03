@@ -11,9 +11,9 @@ function noticeText(notice: CoffeeNotice, isRussian: boolean) {
   if (!notice) return '';
   const machine = isRussian ? `Машина ${notice.machineId}: ` : `Machine ${notice.machineId}: `;
   const messages = {
-    early: isRussian ? 'стакан ещё не полный — продолжай наливать.' : 'the cup is not full yet — keep pouring.',
+    early: isRussian ? 'стакан сдан слишком рано — очки не начислены.' : 'the cup was served too early — no points awarded.',
     overflow: isRussian ? 'кофе перелился — выброси стакан.' : 'the coffee overflowed — discard the cup.',
-    wrong: isRussian ? 'рецепт неверный — проверь страницу заказов.' : 'the recipe is wrong — check the orders page.',
+    wrong: isRussian ? 'рецепт неверный — стакан очищен без очков.' : 'the recipe was wrong — the cup was cleared with no points.',
     served: '',
   };
   return machine + messages[notice.type];
@@ -35,7 +35,10 @@ export function CoffeeAttentionGame({ isRussian, onComplete }: BrainGameProps) {
           <p className="eyebrow">{isRussian ? 'Внимание · Кофейная смена' : 'Attention · Coffee shift'}</p>
           <h1>{isRussian ? 'Четыре кофемашины' : 'Four coffee machines'}</h1>
         </div>
-        <div className="coffee-shift-stats"><strong>◷ {time}</strong><span>✓ {shift.served}</span></div>
+        <div className="coffee-shift-stats">
+          <strong>◷ {time}</strong><span>★ {shift.points}</span>
+          {shift.notice?.type === 'served' && <em>+1000</em>}
+        </div>
       </div>
       <div className="coffee-page-tabs" aria-label={isRussian ? 'Страницы игры' : 'Game pages'} role="tablist">
         <button className={view === 'orders' ? 'active' : ''}

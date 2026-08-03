@@ -6,6 +6,7 @@ import {
   hasCorrectIngredients,
   MIN_READY_FILL,
   OVERFLOW_FILL,
+  POINTS_PER_ORDER,
   SHIFT_SECONDS,
   type CoffeeCupState,
   type CoffeeIngredient,
@@ -48,7 +49,7 @@ export function useCoffeeShift(onComplete: (score: number) => void) {
     const active = new Set(pouringIds);
     const timer = window.setInterval(() => {
       setCups((current) => current.map((cup) => active.has(cup.id)
-        ? { ...cup, fill: Math.min(112, cup.fill + .9) }
+        ? { ...cup, fill: Math.min(112, cup.fill + .54) }
         : cup));
     }, 40);
     return () => window.clearInterval(timer);
@@ -72,8 +73,16 @@ export function useCoffeeShift(onComplete: (score: number) => void) {
     const cup = cupsRef.current.find((item) => item.id === id);
     if (!cup) return;
     if (cup.fill > OVERFLOW_FILL) return setNotice({ machineId: id, type: 'overflow' });
-    if (cup.fill < MIN_READY_FILL) return setNotice({ machineId: id, type: 'early' });
-    if (!hasCorrectIngredients(cup)) return setNotice({ machineId: id, type: 'wrong' });
+    if (cup.fill < MIN_READY_FILL) {
+      setNotice({ machineId: id, type: 'early' });
+      updateCup(id, () => createCoffeeCup(id));
+      return;
+    }
+    if (!hasCorrectIngredients(cup)) {
+      setNotice({ machineId: id, type: 'wrong' });
+      updateCup(id, () => createCoffeeCup(id));
+      return;
+    }
     const nextServed = servedRef.current + 1;
     servedRef.current = nextServed;
     setServed(nextServed);
@@ -106,6 +115,6 @@ export function useCoffeeShift(onComplete: (score: number) => void) {
 
   return {
     addIngredient, cups, discard, notice, pouringIds, secondsLeft, served,
-    started, startShift, toggleMachine,
+    points: served * POINTS_PER_ORDER, started, startShift, toggleMachine,
   };
 }

@@ -16,6 +16,7 @@ export type CoffeeCupState = {
 
 export const SHIFT_SECONDS = 60;
 export const COFFEE_MACHINE_COUNT = 4;
+export const POINTS_PER_ORDER = 1000;
 export const OVERFLOW_FILL = 104;
 export const MIN_READY_FILL = 96;
 

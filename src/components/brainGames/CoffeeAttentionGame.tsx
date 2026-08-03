@@ -1,114 +1,67 @@
-import { useEffect, useState } from 'react';
-import {
-  createCoffeeOrders,
-  getCoffeePourRate,
-  scoreCoffeeOrder,
-  type CoffeeIngredient,
-  type IngredientCounts,
-} from '../../lib/coffeeGame';
-import { GameAnswerFeedback } from './GameAnswerFeedback';
+import { MIN_READY_FILL, OVERFLOW_FILL } from '../../lib/coffeeGame';
+import { CoffeeCupQueue } from './CoffeeCupQueue';
+import { CoffeeIngredientShelf } from './CoffeeIngredientShelf';
 import { CoffeeMachine } from './CoffeeMachine';
+import { GameAnswerFeedback, type AnswerFeedback } from './GameAnswerFeedback';
 import type { BrainGameProps } from './types';
-import { useAnswerFeedback } from './useAnswerFeedback';
+import { type CoffeeNotice, useCoffeeShift } from './useCoffeeShift';
 
-const emptyIngredients = (): IngredientCounts => ({ sugar: 0, syrup: 0 });
-
-export function CoffeeAttentionGame({ difficulty, isRussian, onComplete }: BrainGameProps) {
-  const [orders] = useState(() => createCoffeeOrders(difficulty));
-  const [round, setRound] = useState(0);
-  const [ingredients, setIngredients] = useState<IngredientCounts>(emptyIngredients);
-  const [fill, setFill] = useState(0);
-  const [isPouring, setIsPouring] = useState(false);
-  const [totalScore, setTotalScore] = useState(0);
-  const [errorText, setErrorText] = useState('');
-  const { feedback, isLocked, showFeedback } = useAnswerFeedback(700, 1500);
-  const order = orders[round];
-
-  useEffect(() => {
-    if (!isPouring) return;
-    let frame = 0;
-    let previous = performance.now();
-    const tick = (now: number) => {
-      const elapsed = now - previous;
-      previous = now;
-      let isFull = false;
-      setFill((value) => {
-        const next = Math.min(100, value + elapsed * getCoffeePourRate(difficulty));
-        isFull = next >= 100;
-        return next;
-      });
-      if (!isFull) frame = requestAnimationFrame(tick);
-    };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [difficulty, isPouring]);
-
-  const ingredientName = (ingredient: CoffeeIngredient) => {
-    if (ingredient === 'sugar') return isRussian ? 'сахар' : 'sugar';
-    return isRussian ? 'сироп' : 'syrup';
+function noticeText(notice: CoffeeNotice, isRussian: boolean) {
+  const messages = {
+    early: isRussian
+      ? 'Стакан ещё не полный. Нажми красную кнопку и продолжай.'
+      : 'The cup is not full yet. Press red and continue pouring.',
+    overflow: isRussian
+      ? 'Кофе перелился. Останови аппарат и выброси стакан в корзину слева.'
+      : 'The coffee overflowed. Stop the machine and throw the cup in the bin.',
+    wrong: isRussian
+      ? 'Ингредиенты не совпадают со значками. Испорченный стакан можно выбросить.'
+      : 'The ingredients do not match the icons. Discard the incorrect cup.',
+    served: '',
   };
+  return notice ? messages[notice] : '';
+}
 
-  const addIngredient = (ingredient: CoffeeIngredient) => {
-    if (isPouring || isLocked) return;
-    setIngredients((current) => ({ ...current, [ingredient]: current[ingredient] + 1 }));
-  };
-
-  const nextRound = (score: number) => {
-    if (round === orders.length - 1) {
-      onComplete(Math.round(score / orders.length));
-      return;
-    }
-    setTotalScore(score);
-    setRound((value) => value + 1);
-    setIngredients(emptyIngredients());
-    setFill(0);
-  };
-
-  const stopAndServe = () => {
-    if (!isPouring || isLocked) return;
-    setIsPouring(false);
-    const result = scoreCoffeeOrder(order, ingredients, fill);
-    const nextScore = totalScore + result.score;
-    setErrorText(isRussian
-      ? `Нужно: ${order.amount} × ${ingredientName(order.ingredient)} и ${order.targetFill}% кофе. У тебя ${Math.round(fill)}%.`
-      : `Needed: ${order.amount} × ${ingredientName(order.ingredient)} and ${order.targetFill}% coffee. You poured ${Math.round(fill)}%.`);
-    showFeedback(result.successful, () => nextRound(nextScore), () => nextRound(nextScore));
-  };
+export function CoffeeAttentionGame({ isRussian, onComplete }: BrainGameProps) {
+  const shift = useCoffeeShift(onComplete);
+  const cup = shift.selectedCup;
+  const feedback: AnswerFeedback = shift.notice === 'served'
+    ? 'correct'
+    : shift.notice ? 'error' : null;
+  const minutes = Math.floor(shift.secondsLeft / 60);
+  const time = `${minutes}:${String(shift.secondsLeft % 60).padStart(2, '0')}`;
+  const isOverflow = cup.fill > OVERFLOW_FILL;
+  const canStop = shift.isPouring || cup.fill >= MIN_READY_FILL;
 
   return (
     <section className="brain-game coffee-attention-game">
       <div className="coffee-game-heading">
         <div>
           <p className="eyebrow">{isRussian ? 'Внимание · Кофейная смена' : 'Attention · Coffee shift'}</p>
-          <h1>{isRussian ? 'Приготовь заказ' : 'Prepare the order'}</h1>
+          <h1>{isRussian ? 'Успей за минуту' : 'One-minute rush'}</h1>
         </div>
-        <strong>{round + 1}/{orders.length}</strong>
-      </div>
-      <div className="coffee-order-ticket">
-        <span>{isRussian ? 'Заказ' : 'Order'} #{round + 1}</span>
-        <strong>{order.amount} × {ingredientName(order.ingredient)}</strong>
-        <small>{isRussian ? `Налей кофе до отметки ${order.targetFill}%` : `Pour coffee to the ${order.targetFill}% line`}</small>
+        <div className="coffee-shift-stats">
+          <strong>◷ {time}</strong>
+          <span>✓ {shift.served}</span>
+        </div>
       </div>
       <div className="coffee-workspace">
-        <CoffeeMachine disabled={isLocked} fill={fill} isPouring={isPouring}
-          isRussian={isRussian} onStart={() => setIsPouring(true)}
-          onStop={stopAndServe} targetFill={order.targetFill} />
-        <div className="coffee-ingredients">
-          {(['sugar', 'syrup'] as const).map((ingredient) => (
-            <button disabled={isPouring || isLocked} key={ingredient}
-              onClick={() => addIngredient(ingredient)} type="button">
-              <span className={`ingredient-jar ${ingredient}`} aria-hidden="true"><i /></span>
-              <strong>{ingredientName(ingredient)}</strong>
-              <small>× {ingredients[ingredient]}</small>
-            </button>
-          ))}
-          <button className="coffee-clear" disabled={isPouring || isLocked}
-            onClick={() => setIngredients(emptyIngredients())} type="button">
-            {isRussian ? 'Очистить стакан' : 'Clear cup'}
-          </button>
-        </div>
+        <button className={`coffee-trash${isOverflow ? ' needed' : ''}`}
+          disabled={shift.isPouring} onClick={shift.discard} type="button">
+          <span aria-hidden="true">♲</span>
+          <strong>{isRussian ? 'Корзина' : 'Bin'}</strong>
+          <small>{isRussian ? 'Выбросить стакан' : 'Discard cup'}</small>
+        </button>
+        <CoffeeMachine canStop={canStop} disabled={isOverflow}
+          fill={cup.fill} isPouring={shift.isPouring} isRussian={isRussian}
+          onStart={shift.startPouring} onStop={shift.stopAndServe} order={cup.order} />
+        <CoffeeIngredientShelf disabled={shift.isPouring}
+          ingredients={cup.ingredients} isRussian={isRussian} onAdd={shift.addIngredient} />
+        <CoffeeCupQueue cups={shift.cups} disabled={shift.isPouring}
+          isRussian={isRussian} onSelect={shift.selectCup} selectedId={shift.selectedId} />
       </div>
-      <GameAnswerFeedback errorText={errorText} isRussian={isRussian} status={feedback} />
+      <GameAnswerFeedback errorText={noticeText(shift.notice, isRussian)}
+        isRussian={isRussian} status={feedback} />
     </section>
   );
 }

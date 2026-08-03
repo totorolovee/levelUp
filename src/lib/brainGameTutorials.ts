@@ -6,7 +6,7 @@ const controls: Record<BrainGameId, { ru: string; en: string }> = {
   shade: { ru: 'Нажми на единственную фигуру, оттенок которой отличается.', en: 'Tap the one shape whose shade is different.' },
   scan: { ru: 'Нажми на каждую фигуру-цель и не отмечай отвлекающие символы.', en: 'Tap every target shape and avoid the distractors.' },
   switch: { ru: 'Сначала прочитай правило: отвечай по цвету чернил или по значению слова.', en: 'Read the rule first: answer by ink color or word meaning.' },
-  coffee: { ru: 'Нажми на сахар или сироп нужное число раз, включи красную кнопку и останови зелёной у линии.', en: 'Tap sugar or syrup the required number of times, start with red, and stop with green at the line.' },
+  coffee: { ru: 'Выбери стакан, повтори кубики сахара или капли сиропа, запусти красной кнопкой и останови зелёной, когда стакан полный.', en: 'Choose a cup, match its sugar cubes or syrup drops, start with red, and stop with green when the cup is full.' },
   count: { ru: 'Просканируй поле по строкам, посчитай цель и выбери число.', en: 'Scan row by row, count the target, and choose the number.' },
   'focus-match': { ru: 'Сравни две фигуры и выбери «Да» или «Нет».', en: 'Compare the two shapes and choose Yes or No.' },
   reaction: { ru: 'Не нажимай заранее. Коснись кнопки только после зелёного сигнала.', en: 'Do not tap early. Touch the button only after the green signal.' },
@@ -42,8 +42,8 @@ export function getBrainGameTutorial(id: BrainGameId, category: BrainGameCategor
       }
     : id === 'coffee'
       ? {
-          ru: 'После каждого стакана ты увидишь точный заказ и свой уровень наполнения. Итог зависит от всех восьми заказов.',
-          en: 'After each cup, you will see the exact order and your fill level. Your result combines all eight orders.',
+          ru: 'Перелитый или испорченный стакан выброси в корзину слева. Каждые 15 секунд появляется ещё один заказ — максимум четыре.',
+          en: 'Throw an overflowed or incorrect cup in the bin on the left. Another order appears every 15 seconds, up to four.',
         }
     : {
         ru: 'При ошибке уровень не изменится: прочитай подсказку и попробуй тот же вопрос снова.',

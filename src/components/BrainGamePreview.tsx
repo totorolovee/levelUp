@@ -49,7 +49,9 @@ export function BrainGamePreview({
       </div>
       <dl className="game-preview-stats">
         <div><dt>{isRussian ? 'Рекорд' : 'Best score'}</dt><dd>{progress ? `${progress.bestScore}/100` : '—'}</dd></div>
-        <div><dt>{isRussian ? 'Сложность' : 'Difficulty'}</dt><dd>{progress?.currentLevel ?? 1}/20</dd></div>
+        {gameId === 'coffee'
+          ? <div><dt>{isRussian ? 'Время' : 'Time'}</dt><dd>1:00</dd></div>
+          : <div><dt>{isRussian ? 'Сложность' : 'Difficulty'}</dt><dd>{progress?.currentLevel ?? 1}/20</dd></div>}
         <div><dt>{isRussian ? 'Всего игр' : 'Games played'}</dt><dd>{progress?.completedCount ?? 0}</dd></div>
       </dl>
       <button className="start-brain-game" onClick={onStart} type="button">

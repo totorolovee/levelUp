@@ -49,7 +49,11 @@ export function BrainGameLibrary({ focus, isRussian, progress, onSelect }: Props
                     <strong>{isRussian ? game.ru : game.en}</strong>
                   </div>
                   <p>{isRussian ? description.action.ru : description.action.en}</p>
-                  <small>{focus === category.id && game.priority
+                  <small>{game.id === 'coffee'
+                    ? saved
+                      ? (isRussian ? `✓ Смен сыграно: ${saved.completedCount}` : `✓ Shifts played: ${saved.completedCount}`)
+                      : (isRussian ? '1 минута · Играть →' : '1 minute · Play →')
+                    : focus === category.id && game.priority
                     ? (isRussian
                       ? `★ Приоритет${saved ? ` · ✓ уровень ${saved.currentLevel}` : ''}`
                       : `★ Priority${saved ? ` · ✓ level ${saved.currentLevel}` : ''}`)

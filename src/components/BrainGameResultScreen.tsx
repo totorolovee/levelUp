@@ -12,10 +12,11 @@ type Props = {
   onContinue: () => void;
   perfectRequired?: boolean;
   result: BrainGameResultData;
+  timedChallenge?: boolean;
 };
 
 export function BrainGameResultScreen(props: Props) {
-  const { dailyPosition, isRussian, onContinue, perfectRequired, result } = props;
+  const { dailyPosition, isRussian, onContinue, perfectRequired, result, timedChallenge } = props;
   return (
     <section className="training-result game-result-screen">
       <span>{result.isNewRecord ? '🏆' : '✓'}</span>
@@ -29,7 +30,8 @@ export function BrainGameResultScreen(props: Props) {
       <strong className="xp-earned">+{result.xp} XP</strong>
       <div className="result-badges">
         {result.isNewRecord && <b>🏆 {isRussian ? 'Новый рекорд' : 'New personal best'}</b>}
-        {result.leveledUp && <b>↑ {isRussian ? `Новый уровень ${result.level}` : `Level ${result.level} reached`}</b>}
+        {timedChallenge && <b>◷ {isRussian ? 'Смена завершена' : 'Shift complete'}</b>}
+        {result.leveledUp && !timedChallenge && <b>↑ {isRussian ? `Новый уровень ${result.level}` : `Level ${result.level} reached`}</b>}
       </div>
       {result.score < 100 && (
         <div className="game-mistake-feedback" role="status">

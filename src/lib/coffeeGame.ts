@@ -1,39 +1,46 @@
 export type CoffeeIngredient = 'sugar' | 'syrup';
 
-export type CoffeeOrder = {
-  ingredient: CoffeeIngredient;
-  amount: number;
-  targetFill: number;
-};
-
 export type IngredientCounts = Record<CoffeeIngredient, number>;
 
-export function createCoffeeOrders(difficulty: number, count = 8): CoffeeOrder[] {
-  const maxAmount = difficulty >= 7 ? 3 : 2;
-  return Array.from({ length: count }, (_, index) => ({
-    ingredient: (index + Math.floor(Math.random() * 2)) % 2 === 0 ? 'sugar' : 'syrup',
-    amount: 1 + Math.floor(Math.random() * maxAmount),
-    targetFill: 74 + Math.floor(Math.random() * 15),
-  }));
-}
+export type CoffeeOrder = {
+  amount: number;
+  ingredient: CoffeeIngredient;
+};
 
-export function getCoffeePourRate(difficulty: number) {
-  return Math.min(0.039, 0.024 + difficulty * 0.00075);
-}
+export type CoffeeCupState = {
+  fill: number;
+  id: number;
+  ingredients: IngredientCounts;
+  order: CoffeeOrder;
+};
 
-export function scoreCoffeeOrder(
-  order: CoffeeOrder,
-  ingredients: IngredientCounts,
-  fill: number,
-) {
-  const ingredientsCorrect = ingredients[order.ingredient] === order.amount
-    && ingredients[order.ingredient === 'sugar' ? 'syrup' : 'sugar'] === 0;
-  const fillError = Math.abs(fill - order.targetFill);
-  const fillScore = Math.max(0, Math.round(45 - fillError * 3));
+export const SHIFT_SECONDS = 60;
+export const MAX_CUPS = 4;
+export const OVERFLOW_FILL = 104;
+export const MIN_READY_FILL = 96;
+
+export function createCoffeeCup(id: number): CoffeeCupState {
   return {
-    fillError,
-    ingredientsCorrect,
-    score: fillScore + (ingredientsCorrect ? 55 : 0),
-    successful: ingredientsCorrect && fillError <= 6,
+    fill: 0,
+    id,
+    ingredients: { sugar: 0, syrup: 0 },
+    order: {
+      amount: 1 + Math.floor(Math.random() * 3),
+      ingredient: Math.random() > .5 ? 'sugar' : 'syrup',
+    },
   };
+}
+
+export function activeCupCount(secondsElapsed: number) {
+  return Math.min(MAX_CUPS, 1 + Math.floor(secondsElapsed / 15));
+}
+
+export function hasCorrectIngredients(cup: CoffeeCupState) {
+  const other = cup.order.ingredient === 'sugar' ? 'syrup' : 'sugar';
+  return cup.ingredients[cup.order.ingredient] === cup.order.amount
+    && cup.ingredients[other] === 0;
+}
+
+export function coffeeShiftScore(served: number) {
+  return Math.min(100, served * 10);
 }

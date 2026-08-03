@@ -55,8 +55,8 @@ async function loadUsernameChangeAvailability(userId: string) {
 
 export async function loadCurrentProfile(): Promise<UserProfile | null> {
   const { data: userData, error: userError } = await supabase.auth.getUser();
-  if (userError) throw userError;
   if (!userData.user) return null;
+  if (userError) throw userError;
 
   const user = userData.user;
   const metadataName = user.user_metadata.display_name
@@ -66,13 +66,22 @@ export async function loadCurrentProfile(): Promise<UserProfile | null> {
   const displayName = typeof metadataName === 'string' && metadataName.trim()
     ? metadataName.trim()
     : email.split('@')[0];
-  const activity = await recordAndLoadDailyStreak(user.id);
-  const experience = await loadExperience(activity.totalActiveDays);
+  const activity = await recordAndLoadDailyStreak(user.id).catch(() => ({
+    streak: 0,
+    totalActiveDays: 0,
+  }));
+  const experience = await loadExperience(activity.totalActiveDays).catch(() => ({
+    xp: 0,
+    rankName: 'Новичок 1',
+    nextRankName: 'Новичок 2',
+    xpToNextRank: 35,
+    rankProgress: 0,
+  }));
   const [leaguePosition, usernameChangeAvailableAt] = await Promise.all([
-    loadLeaguePosition(displayName),
-    loadUsernameChangeAvailability(user.id),
+    loadLeaguePosition(displayName).catch(() => null),
+    loadUsernameChangeAvailability(user.id).catch(() => null),
   ]);
-  const achievements = await loadAchievementProgress(activity.streak);
+  const achievements = await loadAchievementProgress(activity.streak).catch(() => []);
 
   return {
     email,

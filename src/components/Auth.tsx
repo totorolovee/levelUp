@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLocation } from 'wouter';
 import { isSupabaseConfigured, supabase } from '../lib/supabase';
+import { getAuthErrorMessage } from '../lib/auth';
 import { SupabaseSetupMessage } from './SupabaseSetupMessage';
 
 export function Auth() {
@@ -19,25 +20,26 @@ export function Auth() {
     setBusy(true);
     setMessage('');
     try {
+      const normalizedEmail = email.trim().toLowerCase();
       const fn =
         mode === 'signup'
           ? supabase.auth.signUp({
-              email,
+              email: normalizedEmail,
               password,
               options: {
                 data: { display_name: username.trim() },
                 emailRedirectTo: `${window.location.origin}/profile`,
               },
             })
-          : supabase.auth.signInWithPassword({ email, password });
+          : supabase.auth.signInWithPassword({ email: normalizedEmail, password });
       const { data, error } = await fn;
-      if (error) setMessage(error.message);
-      else if (data.session) navigate('/profile');
+      if (error) throw error;
+      if (data.session) navigate('/profile', { replace: true });
       else if (mode === 'signup') {
-        setMessage('Готово! Проверь почту, если нужна подтверждалка.');
+        setMessage('Готово! Проверь почту и подтверди email, затем войди.');
       }
-    } catch {
-      setMessage('Что-то пошло не так. Попробуй ещё раз.');
+    } catch (error) {
+      setMessage(getAuthErrorMessage(error));
     } finally {
       setBusy(false);
     }
@@ -51,9 +53,9 @@ export function Auth() {
         provider: 'google',
         options: { redirectTo: `${window.location.origin}/profile` },
       });
-      if (error) setMessage(error.message);
-    } catch {
-      setMessage('Не получилось открыть вход через Google. Попробуй ещё раз.');
+      if (error) throw error;
+    } catch (error) {
+      setMessage(getAuthErrorMessage(error));
     } finally {
       setBusy(false);
     }

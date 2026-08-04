@@ -66,7 +66,7 @@ export function PlusSubscriptionCard() {
           <p>{isRussian ? 'Безопасная ежемесячная оплата через Polar.' : 'Secure monthly billing through Polar.'}</p>
         </div>
       </div>
-      <div className="plus-price"><strong>$3.99</strong><span>/{isRussian ? 'месяц' : 'month'}</span></div>
+      <div className="plus-price"><strong>₸1,999.99</strong><span>/{isRussian ? 'месяц' : 'month'}</span></div>
       {checkoutSucceeded && subscription?.active && (
         <p className="plus-success">{isRussian ? 'Plus успешно подключён!' : 'Plus is now active!'}</p>
       )}

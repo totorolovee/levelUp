@@ -1,4 +1,5 @@
 import { loadResearch } from './research.ts';
+import { loadYahooQuote } from './yahoo.ts';
 
 const FINNHUB_API_KEY = Deno.env.get('FINNHUB_API_KEY');
 const cors = {
@@ -44,6 +45,11 @@ Deno.serve(async (request) => {
 
     const availableQuotes: Array<{ symbol: string; price: number; change: number }> = [];
     for (const symbol of symbols) {
+      if (symbol === 'HSBK.IL') {
+        const quote = await loadYahooQuote(symbol);
+        if (quote) availableQuotes.push(quote);
+        continue;
+      }
       const url = new URL('https://finnhub.io/api/v1/quote');
       url.searchParams.set('symbol', symbol);
       url.searchParams.set('token', FINNHUB_API_KEY);
